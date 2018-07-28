@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/navProfile"
+            android:icon="@drawable/icon_img"
+            android:title="My profile" />
+
+        <item
+            android:id="@+id/navAlumni"
+            android:icon="@drawable/icon_alumni"
+            android:title="Alumni" />
+        <item
+            android:id="@+id/navPost"
+            android:icon="@drawable/icon_post"
+            android:title="Post a job" />
+        <item
+            android:id="@+id/navUpload"
+            android:icon="@drawable/icon_upload"
+            android:title="Upload CV" />
+        <item
+            android:id="@+id/navFabJob"
+            android:icon="@drawable/icon_fav"
+            android:title="Favourite jobs" />
+        <item
+            android:id="@+id/navSetting"
+            android:icon="@drawable/icon_setting"
+            android:title="Settings" />
+        <item
+            android:id="@+id/navFeedback"
+            android:icon="@drawable/icon_feedback"
+            android:title="Feedback" />
+        <item
+            android:id="@+id/navAbout"
+            android:icon="@drawable/icon_about_us"
+            android:title="About us" />
+
+        <item
+            android:id="@+id/navSignInOut"
+            android:icon="@drawable/icon_log_out"
+            android:title="Sign in" />
+
+    </group>
+
+
+</menu>

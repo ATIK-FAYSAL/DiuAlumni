@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.atik_faysal.diualumni">
+
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+
 
     <application
         android:allowBackup="true"
@@ -9,13 +15,45 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SplashScreen">
+        <activity android:name=".main.SplashScreen"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".main.JobPortal"
+            android:label="Job portal"
+            android:theme="@style/theme"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".main.SignIn"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".main.UserRegistration"
+            android:label="Registration"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".main.PostNewJob"
+            android:screenOrientation="portrait"
+            android:label="New Job"/>
+
+
+
+
+        <meta-data android:name="com.facebook.accountkit.ApplicationName"
+            android:value="@string/app_name" />
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/FACEBOOK_APP_ID" />
+        <meta-data android:name="com.facebook.accountkit.ClientToken"
+            android:value="@string/ACCOUNT_KIT_CLIENT_TOKEN" />
+
+        <activity
+            android:name="com.facebook.accountkit.ui.AccountKitActivity" />
+
+        <meta-data android:name="com.facebook.accountkit.FacebookAppEventsEnabled"
+            android:value="false"/>
+
+
     </application>
 
 </manifest>
