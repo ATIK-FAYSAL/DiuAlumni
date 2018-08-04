@@ -57,7 +57,8 @@
         android:layout_height="match_parent"
         android:id="@+id/jobList"
         android:layout_below="@+id/rLayout"
-        android:layout_margin="7dp">
+        android:background="@color/listBackground"
+        android:layout_marginTop="5dp">
 
     </android.support.v7.widget.RecyclerView>
 

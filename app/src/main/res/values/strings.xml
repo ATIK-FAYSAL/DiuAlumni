@@ -91,10 +91,16 @@
     <string name="noInternet">Please check your internet connection</string>
     <string name="executionFailed">[Error-1001] Execution failed,please try again latter</string>
     <string name="jsonErr">[Error-1002] Execution failed,please try again latter</string>
+    <string name="infoErr">[Error-1003] Informations are not valid,please input valid information</string>
     <string name="invalidDate">Invalid date.Please pick a valid date.</string>
 
     //file location
     <string name="insertUserInfo">http://192.168.56.1/diuAlumni/insertOperation.php</string>
     <string name="login">http://192.168.56.1/diuAlumni/verifyInfo.php</string>
+    <string name="postJob">http://192.168.56.1/diuAlumni/newJob.php</string>
+    <string name="getPostedJob">http://192.168.56.1/diuAlumni/readInfo.php</string>
+
+
+    <string name="text">Miusov, as a man man of breeding and deilcacy, could not but feel some inwrd qualms, when he reached the Father Superior with Ivan: he felt ashamed of havin lost his temper. He felt that he ought to have disdaimed that despicable wretch, Fyodor Pavlovitch, too much to have been upset by him in Father Zossima cell, and so to have forgotten himself. "Teh monks were not to blame, in any case," he reflceted, on the steps. "And if they're decent people here (and the Father Superior, I understand, is a nobleman) why not be friendly and courteous withthem? I won't argue, I'll fall in with everything, I'll win them by politness, and show them that I've nothing to do with that Aesop, thta buffoon, that Pierrot, and have merely been takken in over this affair, just as they have."</string>
 
 </resources>

@@ -103,7 +103,6 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
 
           setToolbar();
           userDataValidator();
-          userBatch();
      }
 
      //button click listener
@@ -113,11 +112,19 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
           {
                case R.id.bProceed:
 
+                    userBatch();//select batch from spinner
+
                     name = txtName.getText().toString();
                     email = txtEmail.getText().toString();
                     stdId = txtStdId.getText().toString();
                     address = txtAddress.getText().toString();
                     password = txtPass.getText().toString();
+
+                    if(batch.equals("Select your batch"))//if don't choose batch
+                    {
+                         Toast.makeText(UserRegistration.this,"Please select your batch",Toast.LENGTH_LONG).show();
+                         return;
+                    }
 
                     if(validator.userDataValidator(name,stdId,email,password,address,memberType,batch,gender))
                     {

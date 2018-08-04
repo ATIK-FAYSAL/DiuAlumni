@@ -13,4 +13,8 @@
     <color name="color5">#e1f705</color>
     <color name="color6">#FF0000</color>
     <color name="color7">#44F103</color>
+    <color name="userName">#FF007CBA</color>
+    <color name="jobTitle">#7bce5d</color>
+    <color name="companyName">#01E9F8</color>
+    <color name="listBackground">#E5E7E9</color>
 </resources>

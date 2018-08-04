@@ -8,8 +8,19 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar"/>
 
+    <ProgressBar
+        android:id="@+id/progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:indeterminate="true"
+        android:visibility="invisible"
+        android:layout_below="@+id/toolbar"/>
+
     <ScrollView
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/progress"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottomLayout">
@@ -193,19 +204,29 @@
                             android:id="@+id/rPartTime"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Part time" />
+                            android:text="Part time"
+                            android:onClick="chooseJobNature"/>
 
                         <RadioButton
                             android:id="@+id/rFullTime"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Full time" />
+                            android:text="Full time"
+                            android:onClick="chooseJobNature"/>
 
                         <RadioButton
                             android:id="@+id/rContract"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Contract" />
+                            android:text="Contract"
+                            android:onClick="chooseJobNature"/>
+
+                        <RadioButton
+                            android:id="@+id/rOther"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Others"
+                            android:onClick="chooseJobNature"/>
 
                     </RadioGroup>
 
