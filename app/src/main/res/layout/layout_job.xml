@@ -34,8 +34,8 @@
                 android:id="@+id/txtLink"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_marginLeft="@dimen/jobMarg"
-                android:layout_marginRight="@dimen/jobMarg"
+                android:layout_marginLeft="@dimen/twenty"
+                android:layout_marginRight="@dimen/twenty"
                 android:layout_marginTop="5dp"
                 android:background="@color/color4"
                 android:elevation="10dp"
@@ -50,8 +50,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/txtLink"
-                android:layout_marginLeft="@dimen/jobMarg"
-                android:layout_marginRight="@dimen/jobMarg"
+                android:layout_marginLeft="@dimen/twenty"
+                android:layout_marginRight="@dimen/twenty"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:orientation="horizontal">
@@ -59,7 +59,7 @@
                 <View
                     android:layout_width="0dp"
                     android:layout_height="2dp"
-                    android:layout_marginLeft="@dimen/jobMarg"
+                    android:layout_marginLeft="@dimen/twenty"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:background="@color/iconColor" />
@@ -76,7 +76,7 @@
                     android:layout_width="0dp"
                     android:layout_height="2dp"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="@dimen/jobMarg"
+                    android:layout_marginRight="@dimen/twenty"
                     android:layout_weight="1"
                     android:background="@color/iconColor" />
 
@@ -94,21 +94,21 @@
                     android:id="@+id/txtTitle"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
-                    android:layout_marginLeft="@dimen/jobMarg"
-                    android:layout_marginRight="@dimen/jobMarg"
+                    android:layout_marginLeft="@dimen/twenty"
+                    android:layout_marginRight="@dimen/twenty"
                     android:background="@drawable/job_text_style"
                     android:hint="Job title"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/textSize" />
+                    android:textSize="@dimen/fifteen" />
 
                 <Spinner
                     android:id="@+id/sCategory"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
-                    android:layout_marginLeft="@dimen/jobMarg"
-                    android:layout_marginRight="@dimen/jobMarg"
+                    android:layout_marginLeft="@dimen/twenty"
+                    android:layout_marginRight="@dimen/twenty"
                     android:layout_marginTop="5dp"
                     android:background="@drawable/job_text_style"
                     android:paddingLeft="15dp"
@@ -119,8 +119,8 @@
                     android:id="@+id/txtDes"
                     android:layout_width="match_parent"
                     android:layout_height="65dp"
-                    android:layout_marginLeft="@dimen/jobMarg"
-                    android:layout_marginRight="@dimen/jobMarg"
+                    android:layout_marginLeft="@dimen/twenty"
+                    android:layout_marginRight="@dimen/twenty"
                     android:layout_marginTop="5dp"
                     android:background="@drawable/job_text_style"
                     android:gravity="start"
@@ -138,8 +138,8 @@
                     android:id="@+id/txtEdu"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginLeft="@dimen/jobMarg"
-                    android:layout_marginRight="@dimen/jobMarg"
+                    android:layout_marginLeft="@dimen/twenty"
+                    android:layout_marginRight="@dimen/twenty"
                     android:layout_marginTop="5dp"
                     android:background="@drawable/job_text_style"
                     android:gravity="start"
@@ -157,12 +157,32 @@
                     android:id="@+id/txtReq"
                     android:layout_width="match_parent"
                     android:layout_height="65dp"
-                    android:layout_marginLeft="@dimen/jobMarg"
-                    android:layout_marginRight="@dimen/jobMarg"
+                    android:layout_marginLeft="@dimen/twenty"
+                    android:layout_marginRight="@dimen/twenty"
                     android:layout_marginTop="5dp"
                     android:background="@drawable/job_text_style"
                     android:gravity="start"
                     android:hint="Additional job requirement"
+                    android:inputType="textMultiLine"
+                    android:lines="15"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="3dp"
+                    android:scrollbars="vertical"
+                    android:textColor="@color/black"
+                    android:textSize="13dp" />
+
+
+                <EditText
+                    android:id="@+id/txtExp"
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:layout_marginLeft="@dimen/twenty"
+                    android:layout_marginRight="@dimen/twenty"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/job_text_style"
+                    android:gravity="start"
+                    android:hint="Experience"
                     android:inputType="textMultiLine"
                     android:lines="15"
                     android:paddingLeft="15dp"
@@ -177,8 +197,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/jobMarg"
-                    android:layout_marginRight="@dimen/jobMarg">
+                    android:layout_marginLeft="@dimen/twenty"
+                    android:layout_marginRight="@dimen/twenty">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -188,7 +208,7 @@
                         android:layout_marginStart="30dp"
                         android:text="Job type"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/textSize"
+                        android:textSize="@dimen/fifteen"
                         android:textStyle="bold"/>
 
                     <RadioGroup
@@ -197,7 +217,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
-                        android:layout_marginLeft="@dimen/jobMarg"
+                        android:layout_marginLeft="@dimen/twenty"
                         android:padding="10dp">
 
                         <RadioButton
@@ -237,8 +257,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="5dp"
-                    android:layout_marginRight="@dimen/jobMarg"
-                    android:layout_marginLeft="@dimen/jobMarg">
+                    android:layout_marginRight="@dimen/twenty"
+                    android:layout_marginLeft="@dimen/twenty">
 
                     <Spinner
                         android:id="@+id/sLocation"
@@ -263,7 +283,7 @@
                         android:paddingRight="5dp"
                         android:gravity="center"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/textSize" />
+                        android:textSize="@dimen/fifteen" />
 
 
                 </LinearLayout>
@@ -272,38 +292,38 @@
                     android:id="@+id/txtSalary"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
-                    android:layout_marginLeft="@dimen/jobMarg"
-                    android:layout_marginRight="@dimen/jobMarg"
+                    android:layout_marginLeft="@dimen/twenty"
+                    android:layout_marginRight="@dimen/twenty"
                     android:background="@drawable/job_text_style"
                     android:hint="Salary"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
                     android:layout_marginTop="5dp"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/textSize" />
+                    android:textSize="@dimen/fifteen" />
 
 
                 <EditText
                     android:id="@+id/txtSource"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
-                    android:layout_marginLeft="@dimen/jobMarg"
-                    android:layout_marginRight="@dimen/jobMarg"
+                    android:layout_marginLeft="@dimen/twenty"
+                    android:layout_marginRight="@dimen/twenty"
                     android:background="@drawable/job_text_style"
                     android:hint="Job source/Company name"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
                     android:layout_marginTop="5dp"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/textSize" />
+                    android:textSize="@dimen/fifteen" />
 
 
                 <EditText
                     android:id="@+id/txtEmail"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
-                    android:layout_marginLeft="@dimen/jobMarg"
-                    android:layout_marginRight="@dimen/jobMarg"
+                    android:layout_marginLeft="@dimen/twenty"
+                    android:layout_marginRight="@dimen/twenty"
                     android:background="@drawable/job_text_style"
                     android:hint="Email"
                     android:inputType="textEmailAddress"
@@ -311,14 +331,14 @@
                     android:paddingRight="15dp"
                     android:layout_marginTop="5dp"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/textSize" />
+                    android:textSize="@dimen/fifteen" />
 
                 <EditText
                     android:id="@+id/txtPhone"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
-                    android:layout_marginLeft="@dimen/jobMarg"
-                    android:layout_marginRight="@dimen/jobMarg"
+                    android:layout_marginLeft="@dimen/twenty"
+                    android:layout_marginRight="@dimen/twenty"
                     android:background="@drawable/job_text_style"
                     android:hint="Phone"
                     android:layout_marginBottom="5dp"
@@ -327,7 +347,7 @@
                     android:paddingRight="15dp"
                     android:layout_marginTop="5dp"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/textSize" />
+                    android:textSize="@dimen/fifteen" />
 
             </LinearLayout>
 

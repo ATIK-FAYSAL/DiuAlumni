@@ -36,7 +36,7 @@
                 android:paddingLeft="10dp"
                 android:text="Android developer"
                 android:textColor="@color/jobTitle"
-                android:textSize="@dimen/TitleText" />
+                android:textSize="@dimen/eighteen" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -63,7 +63,7 @@
                     android:gravity="center_vertical"
                     android:hint="Deadline"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/dateText"
+                    android:textSize="@dimen/twelve"
                     tools:ignore="SpUsage" />
 
             </LinearLayout>
@@ -87,7 +87,7 @@
                 android:paddingLeft="10dp"
                 android:gravity="top"
                 android:textColor="@color/companyName"
-                android:textSize="@dimen/otherText" />
+                android:textSize="@dimen/fifteendp" />
 
             <TextView
                 android:id="@+id/txtDate"
@@ -96,7 +96,7 @@
                 android:hint="posted date"
                 android:paddingLeft="10dp"
                 android:paddingTop="3dp"
-                android:textSize="@dimen/dateText"
+                android:textSize="@dimen/twelve"
                 android:textColor="@color/black"
                 android:layout_below="@+id/txtCompany"/>
 
@@ -149,7 +149,7 @@
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:textColor="@color/color1"
-                        android:textSize="@dimen/textSize"
+                        android:textSize="@dimen/fifteen"
                         android:textStyle="bold"
                         android:drawableLeft="@drawable/icon_taka"
                         android:drawablePadding="5dp"/>
@@ -166,7 +166,7 @@
                 android:paddingLeft="10dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="5dp"
-                android:textSize="@dimen/otherText"
+                android:textSize="@dimen/fifteendp"
                 android:textColor="@color/black"
                 android:layout_below="@+id/text"/>
 
@@ -191,7 +191,7 @@
                 android:paddingLeft="10dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="5dp"
-                android:textSize="@dimen/otherText"
+                android:textSize="@dimen/fifteendp"
                 android:textColor="@color/black"
                 android:layout_below="@+id/text1"/>
 

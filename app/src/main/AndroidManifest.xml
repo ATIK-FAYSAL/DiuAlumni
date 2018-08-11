@@ -37,6 +37,13 @@
             android:screenOrientation="portrait"
             android:label="New Job"/>
 
+        <activity android:name=".others.SetTabLayout"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".main.AlumniMembers"
+            android:screenOrientation="portrait"
+            android:label="Alumni members"/>
+
 
 
 
