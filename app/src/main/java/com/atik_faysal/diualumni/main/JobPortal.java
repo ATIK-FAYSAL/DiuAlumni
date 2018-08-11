@@ -2,21 +2,23 @@ package com.atik_faysal.diualumni.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,9 +28,11 @@ import com.atik_faysal.diualumni.background.PostInfoBackgroundTask;
 import com.atik_faysal.diualumni.background.SharedPreferencesData;
 import com.atik_faysal.diualumni.important.CheckInternetConnection;
 import com.atik_faysal.diualumni.important.DisplayMessage;
+import com.atik_faysal.diualumni.important.RequireMethods;
 import com.atik_faysal.diualumni.interfaces.Methods;
 import com.atik_faysal.diualumni.interfaces.OnResponseTask;
 import com.atik_faysal.diualumni.models.JobsModel;
+import com.atik_faysal.diualumni.others.SetTabLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,6 +42,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class JobPortal extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,Methods
@@ -52,8 +59,11 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
      private LinearLayoutManager layoutManager;
      private PostInfoBackgroundTask backgroundTask;
      private CheckInternetConnection internetConnection;
+     private RequireMethods methods;
 
-     private TextView txtName,txtPhone;
+     private TextView txtName,txtPhone,txtNoResult,txtNumOfJobs;
+     private ProgressBar progressBar;
+     private RelativeLayout emptyView;
 
      @Override
      protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +73,7 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
           mToggle = new ActionBarDrawerToggle(this,drawerLayout,R.string.open,R.string.close);
           drawerLayout.setDrawerListener(mToggle);
           mToggle.syncState();
-          getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+          Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
           initComponent();
           getAllPostedJobFromServer();
      }
@@ -87,6 +97,7 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
           }
      }
 
+     //initialize component
      @Override
      public void initComponent()
      {
@@ -96,30 +107,48 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
           txtName = view.findViewById(R.id.txtName);
           txtPhone = view.findViewById(R.id.txtPhone);
           recyclerView = findViewById(R.id.jobList);
+          txtNumOfJobs = findViewById(R.id.txtNumberOfJob);
           layoutManager = new LinearLayoutManager(this);
+          emptyView = findViewById(R.id.emptyView);
+          progressBar = findViewById(R.id.progressBar);
+          txtNoResult = findViewById(R.id.txtNoResult);
+          txtNoResult.setVisibility(View.INVISIBLE);
+          SwipeRefreshLayout refreshLayout = findViewById(R.id.refresh);
+          refreshLayout.setColorSchemeResources(R.color.color1,R.color.color1,R.color.color1);
 
           sharedPreferencesData = new SharedPreferencesData(this);
           displayMessage = new DisplayMessage(this);
           backgroundTask = new PostInfoBackgroundTask(this,onResponseTask);
           internetConnection = new CheckInternetConnection(this);
+          methods = new RequireMethods(this);
+
+          methods.reloadPage(refreshLayout,JobPortal.class);//reload this current page
      }
 
+     //get all job and current user favourite jobs
      private void getAllPostedJobFromServer()
      {
           Map<String,String>maps = new HashMap<>();
           maps.put("option","allJobs");
+          maps.put("stdId",sharedPreferencesData.getStudentId());
           if(internetConnection.isOnline())
-               backgroundTask.InsertData(getString(R.string.getPostedJob),maps);
+               backgroundTask.InsertData(getString(R.string.readInfo),maps);
           else displayMessage.errorMessage(getString(R.string.noInternet));
      }
 
+     //use toolbar ,still this method is not use
      @Override
      public void setToolbar() {}
 
+     //process json data to view
      @Override
      public void processJsonData(String jsonData)
+     {}
+
+     //return list of information
+     public List<JobsModel> processJson(String jsonData)
      {
-          List<JobsModel>jobsModels = new ArrayList<>();
+          final List<JobsModel>jobsModels = new ArrayList<>();
 
           String name,title,description,education,deadLine,date,company,stdId,jobId;
           String requirement,type,category,salary,phone,email,experience;
@@ -131,16 +160,16 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
                int count=0;
                while(count<rootArray.length())
                {
-                    JSONObject dataObj = rootArray.getJSONObject(count);
-                    JSONArray dataArray = dataObj.getJSONArray("data");
-                    JSONObject userObj = dataArray.getJSONObject(0);
-                    JSONArray userArray = userObj.getJSONArray("person");
-                    JSONObject desObject = dataArray.getJSONObject(1);
-                    JSONArray desArray = desObject.getJSONArray("description");
-                    JSONObject contactObj = dataArray.getJSONObject(2);
-                    JSONArray contactArray = contactObj.getJSONArray("contact");
-                    JSONObject dateObj = dataArray.getJSONObject(3);
-                    JSONArray dateArray = dateObj.getJSONArray("date");
+                    JSONObject dataObj = rootArray.getJSONObject(count);//object for data
+                    JSONArray dataArray = dataObj.getJSONArray("data");//array for data
+                    JSONObject userObj = dataArray.getJSONObject(0);//object for user info
+                    JSONArray userArray = userObj.getJSONArray("person");//array for user info
+                    JSONObject desObject = dataArray.getJSONObject(1);//object for description info
+                    JSONArray desArray = desObject.getJSONArray("description");//array for job description info
+                    JSONObject contactObj = dataArray.getJSONObject(2);//object for contact info
+                    JSONArray contactArray = contactObj.getJSONArray("contact");//array for contact info
+                    JSONObject dateObj = dataArray.getJSONObject(3);//object for date info
+                    JSONArray dateArray = dateObj.getJSONArray("date");//array for date info
 
                     JSONObject object1 = userArray.getJSONObject(0);
                     JSONObject object2 = desArray.getJSONObject(0);
@@ -166,18 +195,65 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
                     date = object4.getString("postedDate");//job posted date
                     deadLine = object4.getString("deadLine");//dead line
 
-                    jobsModels.add(new JobsModel(name,stdId,jobId,title,description,education,experience,requirement,type,category,salary,company,phone,email,date,deadLine,flag));
-                    count++;
+                    jobsModels.add(new JobsModel(name,stdId,jobId,title,
+                         description,education,experience,
+                         requirement,type,category,salary,
+                         company,phone,email,date,deadLine,flag));
+
+                    count++;//increment
                }
           } catch (JSONException e) {
-               Log.d("json error1",e.toString());
-          }finally {
-               JobsAdapter adapter = new JobsAdapter(JobPortal.this, jobsModels);
-               recyclerView.setAdapter(adapter);
-               layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-               recyclerView.setLayoutManager(layoutManager);
-               recyclerView.setItemAnimator(new DefaultItemAnimator());
+               //displayMessage.errorMessage(e.toString());
+               Log.d("error",e.toString());
+               return null;
           }
+          return jobsModels;
+     }
+
+     //view all job information in UI
+     private void viewJobInfo(String json)
+     {
+          final List<JobsModel>jobsModels = processJson(json);
+
+          //add progress bar ...
+          final Timer timer = new Timer();
+          final Handler handler = new Handler();
+          final  Runnable runnable = new Runnable() {
+               @Override
+               public void run() {
+                   try {
+                        if(jobsModels.isEmpty())//if no jobs found
+                        {
+                             emptyView.setVisibility(View.VISIBLE);//empty view visible
+                             txtNoResult.setVisibility(View.VISIBLE);//no result text visible
+                             recyclerView.setVisibility(View.INVISIBLE);//list invisible
+                             txtNumOfJobs.setText("0");
+                        }
+                        else//if jobs found
+                        {
+                             emptyView.setVisibility(View.INVISIBLE);//empty view invisible
+                             recyclerView.setVisibility(View.VISIBLE);//no result text invisible
+                             JobsAdapter adapter = new JobsAdapter(JobPortal.this, jobsModels,"jobPortal");//create adapter
+                             recyclerView.setAdapter(adapter);//set adapter in recyler view
+                             layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                             recyclerView.setLayoutManager(layoutManager);
+                             recyclerView.setItemAnimator(new DefaultItemAnimator());
+                             txtNumOfJobs.setText(String.valueOf(jobsModels.size()));
+                        }
+                        progressBar.setVisibility(View.GONE);
+                        timer.cancel();
+                   }catch (NullPointerException e)
+                   {
+                        displayMessage.errorMessage(e.toString());
+                   }
+               }
+          };
+          timer.schedule(new TimerTask() {
+               @Override
+               public void run() {
+                    handler.post(runnable);
+               }
+          },2800);
      }
 
      @Override
@@ -190,8 +266,13 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
 
           switch (item.getItemId())
           {
+               case R.id.navProfile:
+                    Intent intent = new Intent(JobPortal.this,SetTabLayout.class);
+                    intent.putExtra("user",sharedPreferencesData.getStudentId());
+                    startActivity(intent);
+                    break;
                case R.id.navAlumni:
-                    Toast.makeText(JobPortal.this,"option 1",Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(JobPortal.this,AlumniMembers.class));
                     break;
                case R.id.navPost:
                     startActivity(new Intent(JobPortal.this,PostNewJob.class));
@@ -219,13 +300,14 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
           return true;
      }
 
+     //get json data from server
      OnResponseTask onResponseTask = new OnResponseTask() {
           @Override
           public void onResultSuccess(final String value) {
                runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                         processJsonData(value);
+                         viewJobInfo(value);
                     }
                });
           }

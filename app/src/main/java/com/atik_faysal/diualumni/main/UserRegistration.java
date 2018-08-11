@@ -103,6 +103,7 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
 
           setToolbar();
           userDataValidator();
+          userBatch();//select batch from spinner
      }
 
      //button click listener
@@ -111,9 +112,6 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
           switch (view.getId())
           {
                case R.id.bProceed:
-
-                    userBatch();//select batch from spinner
-
                     name = txtName.getText().toString();
                     email = txtEmail.getText().toString();
                     stdId = txtStdId.getText().toString();
@@ -353,7 +351,6 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
      //select your batch from spinner
      private void userBatch()
      {
-
           ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.batch,R.layout.support_simple_spinner_dropdown_item);
           adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
           spinner.setAdapter(adapter);
@@ -390,7 +387,7 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
           this.phone = phone;
 
           if(internetConnection.isOnline())
-               backgroundTask.InsertData(getString(R.string.insertUserInfo),map);
+               backgroundTask.InsertData(getString(R.string.insertOperation),map);
           else dialogClass.errorMessage(getString(R.string.noInternet));
      }
 

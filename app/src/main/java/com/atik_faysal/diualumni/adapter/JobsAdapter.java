@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.content.Context;
@@ -34,17 +34,22 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
      private List<JobsModel>jobsModels;
      private LayoutInflater inflater;
      private Activity activity;
+     private String callFrom;
 
      private CheckInternetConnection internetConnection;
      private PostInfoBackgroundTask backgroundTask;
      private DisplayMessage displayMessage;
      private SharedPreferencesData sharedPreferencesData;
-     public JobsAdapter(Context context,List<JobsModel>models)
+
+     private boolean temp;
+
+     public JobsAdapter(Context context,List<JobsModel>models,String callFrom)
      {
           this.jobsModels = models;
           this.context = context;
           this.inflater = LayoutInflater.from(context);
           this.activity = (Activity)context;
+          this.callFrom = callFrom;
      }
 
      @NonNull
@@ -70,14 +75,14 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
 
      public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
      {
-
           private TextView txtTitle,txtDate,txtDeadline,txtEdu,txtCompany,txtName,txtExp,txtSalary;
-          private ImageView imgSelect;
+          protected ImageView imgSelect;
           private int position;
           private JobsModel currentModel;
           private RelativeLayout relativeLayout;
           private CardView cardView;
 
+          //initialize component
           private ViewHolder(View view) {
                super(view);
                txtName = view.findViewById(R.id.txtUserName);
@@ -93,11 +98,11 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
                cardView = view.findViewById(R.id.cardView);
 
                internetConnection = new CheckInternetConnection(context);
-               backgroundTask = new PostInfoBackgroundTask(context,onResponseTask);
                displayMessage = new DisplayMessage(context);
                sharedPreferencesData = new SharedPreferencesData(context);
           }
 
+          //set data for each object
           private void setData(JobsModel model,int pos)
           {
                position = pos;
@@ -110,25 +115,49 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
                txtEdu.setText(model.getEducation());
                txtExp.setText(model.getExperience());
                txtSalary.setText(model.getSalary());
-               if(model.isFlag())
-                    imgSelect.setImageResource(R.drawable.icon_select2);
+               if(callFrom.equals("homeProfile"))
+               {
+                    imgSelect.setEnabled(false);
+                    imgSelect.setImageDrawable(null);
+               }
+               else
+               {
+                    if(model.isFlag())
+                         imgSelect.setImageResource(R.drawable.icon_select2);
+               }
           }
 
+          //on click listener
           private void setListener()
           {
-               imgSelect.setOnClickListener(this);
-               relativeLayout.setOnClickListener(this);
+               imgSelect.setOnClickListener(JobsAdapter.ViewHolder.this);
+               relativeLayout.setOnClickListener(JobsAdapter.ViewHolder.this);
           }
 
+          //on button click
           @Override
           public void onClick(View view) {
                switch (view.getId())
                {
                     case R.id.imgSelect:
-                         storeFavJob(currentModel.getJobId());
+                         if(currentModel.isFlag())
+                         {
+                              backgroundTask = new PostInfoBackgroundTask(context,onResponseTask);
+                              removeFavJob(currentModel.getJobId());//remove favourite job
+                              currentModel.setFlag(false);
+                              imgSelect.setImageResource(R.drawable.icon_select1);
+                              temp = false;//use for if failed to execution
+                         }else
+                         {
+                              backgroundTask = new PostInfoBackgroundTask(context,onResponseTask);
+                              storeFavJob(currentModel.getJobId());//store favourite job
+                              currentModel.setFlag(true);
+                              imgSelect.setImageResource(R.drawable.icon_select2);
+                              temp = true;//use for if failed to execution
+                         }
                          break;
                     case R.id.rLayout:
-                         Toast.makeText(context,"job details",Toast.LENGTH_SHORT).show();
+                         Toast.makeText(context,"job details for "+position,Toast.LENGTH_SHORT).show();
                          break;
                }
           }
@@ -142,7 +171,20 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
                maps.put("jobId",jobId);
 
                if(internetConnection.isOnline())
-                    backgroundTask.InsertData(activity.getString(R.string.insertUserInfo),maps);
+                    backgroundTask.InsertData(activity.getString(R.string.insertOperation),maps);
+               else displayMessage.errorMessage(activity.getString(R.string.noInternet));
+          }
+
+          //delete favourite job
+          private void removeFavJob(String jobId)
+          {
+               Map<String,String>maps = new HashMap<>();
+               maps.put("option","removeFavJob");
+               maps.put("stdId",sharedPreferencesData.getStudentId());
+               maps.put("jobId",jobId);
+
+               if(internetConnection.isOnline())
+                    backgroundTask.InsertData(activity.getString(R.string.deleteOperation),maps);
                else displayMessage.errorMessage(activity.getString(R.string.noInternet));
           }
 
@@ -153,13 +195,37 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
                     activity.runOnUiThread(new Runnable() {
                          @Override
                          public void run() {
-                              Log.d("error",value);
-                              if(value.equals("success"))
-                              {
-                                   Snackbar snackbar = Snackbar.make(cardView,"Job is added to favourite list",Snackbar.LENGTH_SHORT);
-                                   snackbar.show();
-                              }else
-                                   displayMessage.errorMessage(activity.getString(R.string.executionFailed));
+                              String msg;
+                              switch (value) {
+                                   case "success"://if execution success
+                                        if(temp)
+                                             msg = "Job is added to favourite list";
+                                        else
+                                             msg = "Job is removed to favourite list";
+
+                                        Snackbar snackbar = Snackbar.make(cardView, Html.fromHtml("<font color=\"#00C8F4\">"+msg+"</font>"),
+                                             Snackbar.LENGTH_SHORT);
+                                        snackbar.show();
+                                        break;
+                                   case "limit exceed"://if favourite job more than 10 jobs
+                                             imgSelect.setImageResource(R.drawable.icon_select1);
+                                             currentModel.setFlag(false);//set save job false
+                                             displayMessage.errorMessage(activity.getString(R.string.limitExceed));
+                                        break;
+                                   default:
+                                        if(temp)
+                                        {
+                                             imgSelect.setImageResource(R.drawable.icon_select1);
+                                             currentModel.setFlag(false);//set save job false
+                                        }
+                                        else
+                                        {
+                                             imgSelect.setImageResource(R.drawable.icon_select2);
+                                             currentModel.setFlag(true);//set save job true
+                                        }
+                                        displayMessage.errorMessage(activity.getString(R.string.executionFailed));
+                                        break;
+                              }
                          }
                     });
                }

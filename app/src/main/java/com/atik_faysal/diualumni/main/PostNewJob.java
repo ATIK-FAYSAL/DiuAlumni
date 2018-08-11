@@ -40,7 +40,7 @@ import java.util.Map;
 public class PostNewJob extends AppCompatActivity implements Methods,View.OnClickListener,DatePickerDialog.OnDateSetListener
 {
 
-     private EditText txtTitle,txtPhone,txtEmail,txtDes,txtEdu,txtReq,txtSalary,txtCompany;
+     private EditText txtTitle,txtPhone,txtEmail,txtDes,txtEdu,txtReq,txtSalary,txtCompany,txtExp;
      private Spinner sLocation,sCategory;
      private TextView txtDeadLine;
      private ProgressBar progressBar;
@@ -49,7 +49,7 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
      private Drawable iconInvalid;
 
      private int day,month,year;
-     private String title,description,education,requirement,division,jobType,category,deadLine,salary,company,email,phone;
+     private String title,description,education,requirement,division,jobType,category,deadLine,salary,company,email,phone,experience;
      private static final String INVALID_MSG = "Invalid input";
      private static final String VALID_MSG = "Valid";
 
@@ -85,6 +85,7 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
           Button bDone = findViewById(R.id.bDone);
           txtDeadLine = findViewById(R.id.txtDeadLine);
           progressBar = findViewById(R.id.progress);
+          txtExp = findViewById(R.id.txtExp);
 
           //set click listener
           bDone.setOnClickListener(this);
@@ -145,6 +146,7 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
                          infoMap.put("des",description);
                          infoMap.put("edu",education);
                          infoMap.put("req",requirement);
+                         infoMap.put("expe",experience);
                          infoMap.put("category",category);
                          infoMap.put("loc",division);
                          infoMap.put("company",company);
@@ -168,7 +170,6 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
           }
      }
 
-
      //if input is not valid ,it's shows an error
      private void textChangeListener()
      {
@@ -187,7 +188,7 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
                @Override
                public void afterTextChanged(Editable editable) {
                     String title = txtTitle.getText().toString();
-                    if(title.length()<15)
+                    if(title.length()<10)
                          txtTitle.setError(INVALID_MSG,iconInvalid);
                     else txtTitle.setError(VALID_MSG,iconValid);
                }
@@ -203,7 +204,7 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
                @Override
                public void afterTextChanged(Editable editable) {
                     String text = txtDes.getText().toString();
-                    if(text.length()<25)
+                    if(text.length()<15)
                          txtDes.setError(INVALID_MSG,iconInvalid);
                     else txtDes.setError(VALID_MSG,iconValid);
                }
@@ -219,11 +220,11 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
                @Override
                public void afterTextChanged(Editable editable) {
                     String text = txtEdu.getText().toString();
-                    if(text.length()<25)
+                    if(text.length()<15)
                          txtEdu.setError(INVALID_MSG,iconInvalid);
                     else txtEdu.setError(VALID_MSG,iconValid);
                }
-          });//check education,must be more than 25 characters
+          });//check education,must be more than 15 characters
 
           txtReq.addTextChangedListener(new TextWatcher() {
                @Override
@@ -235,7 +236,7 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
                @Override
                public void afterTextChanged(Editable editable) {
                     String text = txtReq.getText().toString();
-                    if(text.length()<25)
+                    if(text.length()<15)
                          txtReq.setError(INVALID_MSG,iconInvalid);
                     else txtReq.setError(VALID_MSG,iconValid);
                }
@@ -361,6 +362,22 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
                          txtCompany.setError(VALID_MSG,iconValid);
                }
           });//check text company
+
+          txtExp.addTextChangedListener(new TextWatcher() {
+               @Override
+               public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+               @Override
+               public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+               @Override
+               public void afterTextChanged(Editable editable) {
+                    String text = txtExp.getText().toString();
+                    if(text.length()<15)
+                         txtExp.setError(INVALID_MSG,iconInvalid);
+                    else txtExp.setError(VALID_MSG,iconValid);
+               }
+          });//check requirement,must be more than 25 characters
      }
 
      //job info validator
@@ -375,31 +392,40 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
           phone = txtPhone.getText().toString();
           salary = txtSalary.getText().toString();
           company = txtCompany.getText().toString();
+          experience = txtExp.getText().toString();
 
-          if(TextUtils.isEmpty(title)||(title.length()<15))
+          if(TextUtils.isEmpty(title)||(title.length()<10))
           {
                txtTitle.setError(INVALID_MSG,iconInvalid);
                txtTitle.setFocusable(true);
                return false;
           }
-          if(TextUtils.isEmpty(description)||(description.length()<25))
+          if(TextUtils.isEmpty(description)||(description.length()<15))
           {
                txtDes.setError(INVALID_MSG,iconInvalid);
                txtDes.setFocusable(true);
                return false;
           }
-          if(TextUtils.isEmpty(education)||(education.length()<25))
+          if(TextUtils.isEmpty(education)||(education.length()<15))
           {
                txtEdu.setError(INVALID_MSG,iconInvalid);
                txtEdu.setFocusable(true);
                return false;
           }
-          if(TextUtils.isEmpty(requirement)||(requirement.length()<25))
+          if(TextUtils.isEmpty(requirement)||(requirement.length()<15))
           {
                txtReq.setError(INVALID_MSG,iconInvalid);
                txtReq.setFocusable(true);
                return false;
           }
+
+          if(TextUtils.isEmpty(experience)||(experience.length()<15))
+          {
+               txtExp.setError(INVALID_MSG,iconInvalid);
+               txtExp.setFocusable(true);
+               return false;
+          }
+
           if(TextUtils.isEmpty(jobType))
           {
                Toast.makeText(PostNewJob.this,"Please choose job type",Toast.LENGTH_LONG).show();
@@ -511,10 +537,7 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
      }
 
      @Override
-     public void processJsonData(String jsonData)
-     {
-
-     }
+     public void processJsonData(String jsonData) {}
 
      //set job location in spinner
      private void spinnerLocation()

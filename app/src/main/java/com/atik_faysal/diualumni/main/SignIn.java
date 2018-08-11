@@ -171,7 +171,7 @@ public class SignIn extends AppCompatActivity implements Methods,View.OnClickLis
      @Override
      public void processJsonData(String jsonData)
      {
-          String stdId = null,email = null,phone = null,pass = null,type = null,name=null;
+          String email = null,phone = null,type = null,name=null;
 
           try {
                JSONObject jObject = new JSONObject(jsonData);
