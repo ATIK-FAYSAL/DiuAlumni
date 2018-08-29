@@ -44,6 +44,18 @@
             android:screenOrientation="portrait"
             android:label="Alumni members"/>
 
+        <activity android:name=".important.MyFabJob"
+            android:screenOrientation="portrait"
+            android:label="Favourite job"/>
+
+        <activity android:name=".others.AboutUs"
+            android:screenOrientation="portrait"
+            android:label="About us"/>
+
+        <activity android:name=".others.Feedback"
+            android:screenOrientation="portrait"
+            android:label="Feedback"/>
+
 
 
 

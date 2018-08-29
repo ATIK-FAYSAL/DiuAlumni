@@ -74,7 +74,7 @@ public class AlumniMembers extends AppCompatActivity implements Methods
 
           //calling method
           retrieveAlumnis();//get all alumni information
-          methods.reloadPage(refreshLayout,AlumniMembers.class);//reload this current page
+          methods.reloadPage(refreshLayout,AlumniMembers.class);
           setToolbar();
      }
 

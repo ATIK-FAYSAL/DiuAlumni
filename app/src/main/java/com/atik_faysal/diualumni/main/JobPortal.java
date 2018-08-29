@@ -28,10 +28,13 @@ import com.atik_faysal.diualumni.background.PostInfoBackgroundTask;
 import com.atik_faysal.diualumni.background.SharedPreferencesData;
 import com.atik_faysal.diualumni.important.CheckInternetConnection;
 import com.atik_faysal.diualumni.important.DisplayMessage;
+import com.atik_faysal.diualumni.important.MyFabJob;
 import com.atik_faysal.diualumni.important.RequireMethods;
 import com.atik_faysal.diualumni.interfaces.Methods;
 import com.atik_faysal.diualumni.interfaces.OnResponseTask;
 import com.atik_faysal.diualumni.models.JobsModel;
+import com.atik_faysal.diualumni.others.AboutUs;
+import com.atik_faysal.diualumni.others.Feedback;
 import com.atik_faysal.diualumni.others.SetTabLayout;
 
 import org.json.JSONArray;
@@ -281,16 +284,16 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
                     Toast.makeText(JobPortal.this,"option 3",Toast.LENGTH_LONG).show();
                     break;
                case R.id.navFabJob:
-                    Toast.makeText(JobPortal.this,"option 4",Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(JobPortal.this, MyFabJob.class));
                     break;
                case R.id.navSetting:
                     Toast.makeText(JobPortal.this,"option 5",Toast.LENGTH_LONG).show();
                     break;
                case R.id.navFeedback:
-                    Toast.makeText(JobPortal.this,"option 6",Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(JobPortal.this, Feedback.class));
                     break;
                case R.id.navAbout:
-                    Toast.makeText(JobPortal.this,"option 7",Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(JobPortal.this, AboutUs.class));
                     break;
                case R.id.navSignInOut:
                     startActivity(new Intent(JobPortal.this,SignIn.class));

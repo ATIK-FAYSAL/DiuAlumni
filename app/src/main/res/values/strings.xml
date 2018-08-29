@@ -104,5 +104,6 @@
     <string name="readInfo">http://192.168.56.1/diuAlumni/readInfo.php</string>
     <string name="deleteOperation">http://192.168.56.1/diuAlumni/deleteOperation.php</string>
     <string name="updateOperation">http://192.168.56.1/diuAlumni/updateOperation.php</string>
+    <string name="otherInsertion">http://192.168.56.1/diuAlumni/otherInsertion.php</string>
 
 </resources>
