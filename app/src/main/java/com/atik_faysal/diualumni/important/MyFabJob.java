@@ -1,5 +1,6 @@
 package com.atik_faysal.diualumni.important;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -19,8 +20,10 @@ import com.atik_faysal.diualumni.background.PostInfoBackgroundTask;
 import com.atik_faysal.diualumni.background.SharedPreferencesData;
 import com.atik_faysal.diualumni.interfaces.Methods;
 import com.atik_faysal.diualumni.interfaces.OnResponseTask;
+import com.atik_faysal.diualumni.main.AlumniMembers;
 import com.atik_faysal.diualumni.main.JobPortal;
 import com.atik_faysal.diualumni.models.JobsModel;
+import com.atik_faysal.diualumni.others.NoInternetConnection;
 
 import java.util.HashMap;
 import java.util.List;
@@ -51,6 +54,19 @@ public class MyFabJob extends AppCompatActivity implements Methods
           initComponent();
      }
 
+
+     @Override
+     protected void onStart() {
+          super.onStart();
+          if(!internetConnection.isOnline())//if internet is not connect go to no internet page ,
+          {
+               String className = MyFabJob.class.getName();
+               Intent intent = new Intent(MyFabJob.this,NoInternetConnection.class);
+               intent.putExtra("class",className);//send current class name to NoInternetConnection class
+               startActivity(intent);
+               finish();
+          }
+     }
 
      public void initComponent()
      {
@@ -104,10 +120,9 @@ public class MyFabJob extends AppCompatActivity implements Methods
      {
           Map<String,String> maps = new HashMap<>();
           maps.put("option","fabJob");
-          maps.put("stdId",sharedPreferencesData.getStudentId());
+          maps.put("stdId",sharedPreferencesData.getCurrentUserId());
           if(internetConnection.isOnline())
                backgroundTask.InsertData(getString(R.string.readInfo),maps);
-          else displayMessage.errorMessage(getString(R.string.noInternet));
      }
 
      //view all job information in UI

@@ -2,6 +2,7 @@ package com.atik_faysal.diualumni.main;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -32,6 +33,7 @@ import com.atik_faysal.diualumni.important.DisplayMessage;
 import com.atik_faysal.diualumni.important.RequireMethods;
 import com.atik_faysal.diualumni.interfaces.Methods;
 import com.atik_faysal.diualumni.interfaces.OnResponseTask;
+import com.atik_faysal.diualumni.others.NoInternetConnection;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -65,6 +67,19 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
           super.onCreate(savedInstanceState);
           setContentView(R.layout.layout_job);
           initComponent();
+     }
+
+     @Override
+     protected void onStart() {
+          super.onStart();
+          if(!internetConnection.isOnline())//if internet is not connect go to no internet page ,
+          {
+               String className = PostNewJob.class.getName();
+               Intent intent = new Intent(PostNewJob.this,NoInternetConnection.class);
+               intent.putExtra("class",className);//send current class name to NoInternetConnection class
+               startActivity(intent);
+               finish();
+          }
      }
 
      //initialize all component
@@ -138,7 +153,7 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
                     if(dataValidator())
                     {
                          Map<String,String> infoMap = new HashMap<>();
-                         infoMap.put("stdId",sharedPreferencesData.getStudentId());
+                         infoMap.put("stdId",sharedPreferencesData.getCurrentUserId());
                          infoMap.put("email",email);
                          infoMap.put("phone",phone);
                          infoMap.put("type",jobType);

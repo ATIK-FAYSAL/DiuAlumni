@@ -22,6 +22,7 @@ import com.atik_faysal.diualumni.background.SharedPreferencesData;
 import com.atik_faysal.diualumni.interfaces.OnResponseTask;
 import com.atik_faysal.diualumni.main.JobPortal;
 import com.atik_faysal.diualumni.models.JobsModel;
+import com.bumptech.glide.Glide;
 
 import java.util.HashMap;
 import java.util.List;
@@ -59,6 +60,17 @@ public class HomeProfile extends Fragment
           return view;
      }
 
+     @Override
+     public void onStart() {
+          super.onStart();
+          if(internetConnection.isOnline())
+          {
+               Glide.with(this).
+                    load("http://192.168.56.1/diuAlumni/images/"+sharedPreferencesData.getImageName()+".png").
+                    into(imgUser);
+          }
+     }
+
      //initialize component
      private void initComponent()
      {
@@ -85,6 +97,7 @@ public class HomeProfile extends Fragment
           getJobInformation();
      }
 
+     //get user posted job information
      private void getJobInformation()
      {
           Map<String,String>maps = new HashMap<>();
@@ -92,12 +105,6 @@ public class HomeProfile extends Fragment
           maps.put("stdId",USER);
           if(internetConnection.isOnline())
                backgroundTask.InsertData(getString(R.string.readInfo),maps);
-          else displayMessage.errorMessage(getString(R.string.noInternet));
-     }
-
-     private void currentUserInfo()
-     {
-          //txtStdId.setText(USER);
      }
 
      //view all job information in UI

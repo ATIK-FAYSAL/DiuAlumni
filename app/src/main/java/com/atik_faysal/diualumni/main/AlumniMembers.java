@@ -1,5 +1,6 @@
 package com.atik_faysal.diualumni.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -23,6 +24,7 @@ import com.atik_faysal.diualumni.important.RequireMethods;
 import com.atik_faysal.diualumni.interfaces.Methods;
 import com.atik_faysal.diualumni.interfaces.OnResponseTask;
 import com.atik_faysal.diualumni.models.AlumniModel;
+import com.atik_faysal.diualumni.others.NoInternetConnection;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -55,6 +57,20 @@ public class AlumniMembers extends AppCompatActivity implements Methods
           initComponent();
      }
 
+
+     @Override
+     protected void onStart() {
+          super.onStart();
+          if(!internetConnection.isOnline())//if internet is not connect go to no internet page ,
+          {
+               String className = AlumniMembers.class.getName();
+               Intent intent = new Intent(AlumniMembers.this,NoInternetConnection.class);
+               intent.putExtra("class",className);//send current class name to NoInternetConnection class
+               startActivity(intent);
+               finish();
+          }
+     }
+
      @Override
      public void initComponent() {
           numberOfResult = findViewById(R.id.txtNumberOfRResult);
@@ -85,7 +101,6 @@ public class AlumniMembers extends AppCompatActivity implements Methods
           maps.put("option","alumni");
           if(internetConnection.isOnline())
                backgroundTask.InsertData(getResources().getString(R.string.readInfo),maps);
-          else displayMessage.errorMessage(getResources().getString(R.string.noInternet));
      }
 
      @Override

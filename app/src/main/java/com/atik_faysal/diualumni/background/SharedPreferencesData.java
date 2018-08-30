@@ -17,6 +17,7 @@ public class SharedPreferencesData
      private static final String IS_LOGIN = "login";
      private static final String REMEMBER_ME = "remember";
      private static final String USER_INFO = "userInfo";
+     private static final String IMAGE_NAME = "imageName";
 
 
      public SharedPreferencesData(Context context)
@@ -56,6 +57,7 @@ public class SharedPreferencesData
      public void currentUserInfo() {
           sharedPreferences = context.getSharedPreferences(USER_INFO, Context.MODE_PRIVATE);
           editor = sharedPreferences.edit();
+          editor.putString("stdId",maps.get("stdId"));
           editor.putString("name",maps.get("name"));
           editor.putString("email", maps.get("email"));
           editor.putString("phone", maps.get("phone"));
@@ -70,6 +72,14 @@ public class SharedPreferencesData
           return sharedPreferences.getBoolean("check",false);
      }
 
+     public void userImageName(String imageName)
+     {
+          sharedPreferences = context.getSharedPreferences(IMAGE_NAME,Context.MODE_PRIVATE);
+          editor = sharedPreferences.edit();
+          editor.putString("imageName",imageName);
+          editor.apply();
+     }
+
      //get user log in status
      public boolean getIsUserLogin()
      {
@@ -82,6 +92,13 @@ public class SharedPreferencesData
      {
           sharedPreferences = context.getSharedPreferences(REMEMBER_ME,Context.MODE_PRIVATE);
           return sharedPreferences.getString("id","none");
+     }
+
+     //get current user id from SharedPreferences
+     public String getCurrentUserId()
+     {
+          sharedPreferences = context.getSharedPreferences(USER_INFO,Context.MODE_PRIVATE);
+          return sharedPreferences.getString("stdId","none");
      }
 
      //get user password
@@ -119,6 +136,22 @@ public class SharedPreferencesData
      {
           sharedPreferences = context.getSharedPreferences(USER_INFO,Context.MODE_PRIVATE);
           return sharedPreferences.getString("type","none");
+     }
+
+     public String getImageName()
+     {
+          sharedPreferences = context.getSharedPreferences(IMAGE_NAME,Context.MODE_PRIVATE);
+          return sharedPreferences.getString("imageName","none");
+     }
+
+     public void clearData()
+     {
+          String[] prefNames = new String[]{USER_INFO,IMAGE_NAME};
+          for(int i=0;i<prefNames.length-1;i++)
+          {
+               sharedPreferences = context.getSharedPreferences(prefNames[i],Context.MODE_PRIVATE);
+               sharedPreferences.edit().clear().apply();
+          }
      }
 
 }

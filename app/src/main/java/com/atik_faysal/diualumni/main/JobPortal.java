@@ -1,5 +1,7 @@
 package com.atik_faysal.diualumni.main;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,6 +19,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -35,7 +38,12 @@ import com.atik_faysal.diualumni.interfaces.OnResponseTask;
 import com.atik_faysal.diualumni.models.JobsModel;
 import com.atik_faysal.diualumni.others.AboutUs;
 import com.atik_faysal.diualumni.others.Feedback;
+import com.atik_faysal.diualumni.others.NoInternetConnection;
 import com.atik_faysal.diualumni.others.SetTabLayout;
+import com.bumptech.glide.Glide;
+import com.gdacciaro.iOSDialog.iOSDialog;
+import com.gdacciaro.iOSDialog.iOSDialogBuilder;
+import com.gdacciaro.iOSDialog.iOSDialogClickListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,6 +56,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class JobPortal extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,Methods
@@ -67,6 +77,7 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
      private TextView txtName,txtPhone,txtNoResult,txtNumOfJobs;
      private ProgressBar progressBar;
      private RelativeLayout emptyView;
+     private CircleImageView imgUser;
 
      @Override
      protected void onCreate(Bundle savedInstanceState) {
@@ -77,27 +88,80 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
           drawerLayout.setDrawerListener(mToggle);
           mToggle.syncState();
           Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-          initComponent();
-          getAllPostedJobFromServer();
+          //calling method
+          initComponent();//initialize component
+          getAllPostedJobFromServer();//get job from server
+          closeApp();//exit from app
      }
 
      @Override
      protected void onStart() {
           super.onStart();
+          if(!internetConnection.isOnline())//if internet is not connect go to no internet page ,
+          {
+               String className = JobPortal.class.getName();
+               Intent intent = new Intent(JobPortal.this,NoInternetConnection.class);
+               intent.putExtra("class",className);//send current class name to NoInternetConnection class
+               startActivity(intent);
+               finish();
+          }
+          Menu menu = navigationView.getMenu();
           if(sharedPreferencesData.getIsUserLogin())
           {
-               Menu menu = navigationView.getMenu();
                menu.findItem(R.id.navSignInOut).setTitle("Sign out");
-          }
-          if(sharedPreferencesData.checkBoxStatus())
-          {
                txtName.setText(sharedPreferencesData.getUserName());
                txtPhone.setText(sharedPreferencesData.getUserPhone());
-          }else
+               retrieveUserImage();//get image from server using glide and show
+          }
+          else
           {
+               menu.findItem(R.id.navSignInOut).setTitle("Sign in");
                txtPhone.setVisibility(View.INVISIBLE);
                txtName.setVisibility(View.INVISIBLE);
           }
+     }
+
+     private void retrieveUserImage()
+     {
+          Glide.with(this).
+               load("http://192.168.56.1/diuAlumni/images/"+sharedPreferencesData.getImageName()+".png").
+               into(imgUser);
+     }
+
+     //terminate app
+     @Override
+     public void onBackPressed() {
+          getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+          iOSDialogBuilder builder = new iOSDialogBuilder(JobPortal.this);
+
+          builder.setTitle("App termination")
+               .setSubtitle("Do you want to close app?")
+               .setBoldPositiveLabel(true)
+               .setCancelable(false)
+               .setPositiveListener("Close App",new iOSDialogClickListener() {
+                    @Override
+                    public void onClick(iOSDialog dialog) {
+                         Intent intent = new Intent(getApplicationContext(), JobPortal.class);
+                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                         intent.putExtra("flag",true);
+                         startActivity(intent);
+                         dialog.dismiss();
+
+                    }
+               })
+               .setNegativeListener("cancel", new iOSDialogClickListener() {
+                    @Override
+                    public void onClick(iOSDialog dialog) {
+                         dialog.dismiss();
+                    }
+               })
+               .build().show();
+     }
+
+     //exit from app
+     private void closeApp()
+     {
+          if(getIntent().getBooleanExtra("flag",false))finish();
      }
 
      //initialize component
@@ -116,6 +180,7 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
           progressBar = findViewById(R.id.progressBar);
           txtNoResult = findViewById(R.id.txtNoResult);
           txtNoResult.setVisibility(View.INVISIBLE);
+          imgUser = view.findViewById(R.id.imgUserImage);
           SwipeRefreshLayout refreshLayout = findViewById(R.id.refresh);
           refreshLayout.setColorSchemeResources(R.color.color1,R.color.color1,R.color.color1);
 
@@ -133,10 +198,9 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
      {
           Map<String,String>maps = new HashMap<>();
           maps.put("option","allJobs");
-          maps.put("stdId",sharedPreferencesData.getStudentId());
+          maps.put("stdId",sharedPreferencesData.getCurrentUserId());
           if(internetConnection.isOnline())
                backgroundTask.InsertData(getString(R.string.readInfo),maps);
-          else displayMessage.errorMessage(getString(R.string.noInternet));
      }
 
      //use toolbar ,still this method is not use
@@ -259,6 +323,31 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
           },2800);
      }
 
+     //sing out
+     private void userSignOut()
+     {
+          final ProgressDialog progressDialog = ProgressDialog.show(JobPortal.this, "Please wait", "User Sign out...", true);
+          progressDialog.setCancelable(true);
+          new Thread(new Runnable() {
+               @Override
+               public void run() {
+                    try {
+                         Thread.sleep(2500);
+                    } catch (Exception e) {
+                    }
+                    progressDialog.dismiss();
+               }
+          }).start();
+          progressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+               @Override
+               public void onDismiss(DialogInterface dialog) {
+                    sharedPreferencesData.clearData();
+                    sharedPreferencesData.isUserLogin(false);
+                    methods.closeActivity(JobPortal.this,JobPortal.class);
+               }
+          });
+     }
+
      @Override
      public boolean onOptionsItemSelected(MenuItem item) {
           return mToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
@@ -270,33 +359,55 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
           switch (item.getItemId())
           {
                case R.id.navProfile:
-                    Intent intent = new Intent(JobPortal.this,SetTabLayout.class);
-                    intent.putExtra("user",sharedPreferencesData.getStudentId());
-                    startActivity(intent);
+                    if(sharedPreferencesData.getIsUserLogin())
+                    {
+                         Intent intent = new Intent(JobPortal.this,SetTabLayout.class);
+                         intent.putExtra("user",sharedPreferencesData.getCurrentUserId());//send current user id to setTabLayout class
+                         startActivity(intent);
+                    }else
+                         startActivity(new Intent(JobPortal.this,SignIn.class));
                     break;
+
                case R.id.navAlumni:
                     startActivity(new Intent(JobPortal.this,AlumniMembers.class));
                     break;
+
                case R.id.navPost:
-                    startActivity(new Intent(JobPortal.this,PostNewJob.class));
+                    if(sharedPreferencesData.getIsUserLogin())
+                         startActivity(new Intent(JobPortal.this,PostNewJob.class));
+                    else startActivity(new Intent(JobPortal.this,SignIn.class));
                     break;
+
                case R.id.navUpload:
+
                     Toast.makeText(JobPortal.this,"option 3",Toast.LENGTH_LONG).show();
                     break;
+
                case R.id.navFabJob:
-                    startActivity(new Intent(JobPortal.this, MyFabJob.class));
+                    if(sharedPreferencesData.getIsUserLogin())
+                         startActivity(new Intent(JobPortal.this, MyFabJob.class));
+                    else startActivity(new Intent(JobPortal.this,SignIn.class));
                     break;
+
                case R.id.navSetting:
                     Toast.makeText(JobPortal.this,"option 5",Toast.LENGTH_LONG).show();
                     break;
+
                case R.id.navFeedback:
-                    startActivity(new Intent(JobPortal.this, Feedback.class));
+                    if(sharedPreferencesData.getIsUserLogin())
+                         startActivity(new Intent(JobPortal.this, Feedback.class));
+                    else startActivity(new Intent(JobPortal.this,SignIn.class));
                     break;
+
                case R.id.navAbout:
                     startActivity(new Intent(JobPortal.this, AboutUs.class));
                     break;
+
                case R.id.navSignInOut:
-                    startActivity(new Intent(JobPortal.this,SignIn.class));
+                    if(sharedPreferencesData.getIsUserLogin())
+                         userSignOut();
+                    else
+                         startActivity(new Intent(JobPortal.this,SignIn.class));
                     break;
           }
           drawerLayout.closeDrawer(GravityCompat.START);

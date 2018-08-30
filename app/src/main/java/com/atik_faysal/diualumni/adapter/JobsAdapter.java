@@ -167,7 +167,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
           {
                Map<String,String>maps = new HashMap<>();
                maps.put("option","fabJob");
-               maps.put("stdId",sharedPreferencesData.getStudentId());
+               maps.put("stdId",sharedPreferencesData.getCurrentUserId());
                maps.put("jobId",jobId);
 
                if(internetConnection.isOnline())
@@ -180,7 +180,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
           {
                Map<String,String>maps = new HashMap<>();
                maps.put("option","removeFavJob");
-               maps.put("stdId",sharedPreferencesData.getStudentId());
+               maps.put("stdId",sharedPreferencesData.getCurrentUserId());
                maps.put("jobId",jobId);
 
                if(internetConnection.isOnline())

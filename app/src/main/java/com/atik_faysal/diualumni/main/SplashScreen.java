@@ -55,6 +55,7 @@ public class SplashScreen extends AppCompatActivity {
                public void run() {
                     progressBar.setVisibility(View.INVISIBLE);
                     startActivity(new Intent(SplashScreen.this,JobPortal.class));
+                    finish();
                }
           };
           timer.schedule(new TimerTask() {
