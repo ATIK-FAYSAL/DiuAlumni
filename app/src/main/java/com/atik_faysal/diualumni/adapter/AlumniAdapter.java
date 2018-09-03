@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,11 @@ import com.atik_faysal.diualumni.R;
 import com.atik_faysal.diualumni.important.DisplayMessage;
 import com.atik_faysal.diualumni.models.AlumniModel;
 import com.atik_faysal.diualumni.others.SetTabLayout;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AlumniAdapter extends RecyclerView.Adapter<AlumniAdapter.ViewHolder>
 {
@@ -57,8 +61,9 @@ public class AlumniAdapter extends RecyclerView.Adapter<AlumniAdapter.ViewHolder
           private DisplayMessage displayMessage;
           private AlumniModel currentModel;
           private int position;
+          private CircleImageView imageView;
 
-          public ViewHolder(View view) {
+          private ViewHolder(View view) {
                super(view);
                txtPhone = view.findViewById(R.id.txtPhone);
                txtName = view.findViewById(R.id.txtName);
@@ -66,6 +71,7 @@ public class AlumniAdapter extends RecyclerView.Adapter<AlumniAdapter.ViewHolder
                txtId = view.findViewById(R.id.txtId);
                txtBatch = view.findViewById(R.id.txtBatch);
                txtGender = view.findViewById(R.id.txtGender);
+               imageView = view.findViewById(R.id.userImage);
                displayMessage = new DisplayMessage(context);
           }
 
@@ -78,6 +84,10 @@ public class AlumniAdapter extends RecyclerView.Adapter<AlumniAdapter.ViewHolder
                txtEmail.setText(model.getEmail());
                txtGender.setText(model.getGender());
                txtBatch.setText(model.getBatch());
+               if(!model.getImageName().equals("none"))
+                    Glide.with(context).
+                         load(context.getResources().getString(R.string.address)+model.getImageName()+".png").
+                         into(imageView);
           }
 
           private void setListener()

@@ -8,12 +8,14 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.atik_faysal.diualumni.R;
 import com.atik_faysal.diualumni.adapter.JobsAdapter;
@@ -44,7 +46,6 @@ public class HomeProfile extends Fragment
      private RelativeLayout emptyView;
 
 
-     private SharedPreferencesData sharedPreferencesData;
      private CheckInternetConnection internetConnection;
      private DisplayMessage displayMessage;
      private PostInfoBackgroundTask backgroundTask;
@@ -60,17 +61,6 @@ public class HomeProfile extends Fragment
           return view;
      }
 
-     @Override
-     public void onStart() {
-          super.onStart();
-          if(internetConnection.isOnline())
-          {
-               Glide.with(this).
-                    load("http://192.168.56.1/diuAlumni/images/"+sharedPreferencesData.getImageName()+".png").
-                    into(imgUser);
-          }
-     }
-
      //initialize component
      private void initComponent()
      {
@@ -83,8 +73,6 @@ public class HomeProfile extends Fragment
           progressBar = view.findViewById(R.id.progressBar);
           txtNoResult.setVisibility(View.INVISIBLE);
           txtStdId = view.findViewById(R.id.txtStdId);
-
-          sharedPreferencesData = new SharedPreferencesData(getContext());
           internetConnection = new CheckInternetConnection(getContext());
           displayMessage = new DisplayMessage(getContext());
           backgroundTask = new PostInfoBackgroundTask(getContext(),onResponseTask);
@@ -105,6 +93,12 @@ public class HomeProfile extends Fragment
           maps.put("stdId",USER);
           if(internetConnection.isOnline())
                backgroundTask.InsertData(getString(R.string.readInfo),maps);
+
+          PostInfoBackgroundTask backgroundTask1 = new PostInfoBackgroundTask(getContext(),responseTask);
+          Map<String,String>imgMap = new HashMap<>();
+          imgMap.put("option","imgName");
+          imgMap.put("stdId",USER);
+          backgroundTask1.InsertData(getResources().getString(R.string.readInfo),imgMap);
      }
 
      //view all job information in UI
@@ -118,27 +112,31 @@ public class HomeProfile extends Fragment
           final  Runnable runnable = new Runnable() {
                @Override
                public void run() {
-                    if(jobsModels.isEmpty())//if no jobs found
-                    {
-                         emptyView.setVisibility(View.VISIBLE);//empty view visible
-                         txtNoResult.setVisibility(View.VISIBLE);//no result text visible
-                         jobLists.setVisibility(View.INVISIBLE);//list invisible
-                    }
-                    else//if jobs found
-                    {
-                         emptyView.setVisibility(View.INVISIBLE);//empty view invisible
-                         jobLists.setVisibility(View.VISIBLE);//no result text invisible
-                         JobsAdapter adapter = new JobsAdapter(getContext(), jobsModels,"homeProfile");//create adapter
-                         jobLists.setAdapter(adapter);//set adapter in recycler view
-                         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                         jobLists.setLayoutManager(layoutManager);
-                         jobLists.setItemAnimator(new DefaultItemAnimator());
+                    try {
+                         if(jobsModels.isEmpty())//if no jobs found
+                         {
+                              emptyView.setVisibility(View.VISIBLE);//empty view visible
+                              txtNoResult.setVisibility(View.VISIBLE);//no result text visible
+                              jobLists.setVisibility(View.INVISIBLE);//list invisible
+                         }else//if jobs found
+                         {
+                              emptyView.setVisibility(View.INVISIBLE);//empty view invisible
+                              jobLists.setVisibility(View.VISIBLE);//no result text invisible
+                              JobsAdapter adapter = new JobsAdapter(getContext(), jobsModels,"homeProfile");//create adapter
+                              jobLists.setAdapter(adapter);//set adapter in recycler view
+                              layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                              jobLists.setLayoutManager(layoutManager);
+                              jobLists.setItemAnimator(new DefaultItemAnimator());
 
-                         txtName.setText(jobsModels.get(0).getUserName());//set user name
-                         txtStdId.setText(jobsModels.get(0).getStdId());
+                              txtName.setText(jobsModels.get(0).getUserName());//set user name
+                              txtStdId.setText(jobsModels.get(0).getStdId());
+                         }
+                         progressBar.setVisibility(View.GONE);
+                         timer.cancel();
+                    }catch (NullPointerException ex)
+                    {
+                         displayMessage.errorMessage(getResources().getString(R.string.nullPointer));
                     }
-                    progressBar.setVisibility(View.GONE);
-                    timer.cancel();
                }
           };
           timer.schedule(new TimerTask() {
@@ -159,6 +157,24 @@ public class HomeProfile extends Fragment
                         viewJobInfo(value);
                    }
               });
+          }
+     };
+
+
+     //get user image name response
+     OnResponseTask responseTask = new OnResponseTask() {
+          @Override
+          public void onResultSuccess(final String value) {
+               Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                         if(!value.equals("none"))
+                              Glide.with(HomeProfile.this).
+                                   load(getResources().getString(R.string.address)+value+".png").
+                                   into(imgUser);
+
+                    }
+               });
           }
      };
 

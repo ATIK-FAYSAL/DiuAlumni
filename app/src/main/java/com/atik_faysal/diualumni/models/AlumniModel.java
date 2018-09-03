@@ -4,9 +4,9 @@ import com.atik_faysal.diualumni.main.AlumniMembers;
 
 public class AlumniModel
 {
-     private String name,phone,email,gender,batch,stdId;
+     private String name,phone,email,gender,batch,stdId,imageName;
 
-     public AlumniModel(String name,String id,String gender,String batch,String phone,String email)
+     public AlumniModel(String name,String id,String gender,String batch,String phone,String email,String imageName)
      {
           this.batch = batch;
           this.email = email;
@@ -14,6 +14,15 @@ public class AlumniModel
           this.name = name;
           this.phone = phone;
           this.stdId = id;
+          this.imageName = imageName;
+     }
+
+     public String getImageName() {
+          return imageName;
+     }
+
+     public void setImageName(String imageName) {
+          this.imageName = imageName;
      }
 
      public String getName() {

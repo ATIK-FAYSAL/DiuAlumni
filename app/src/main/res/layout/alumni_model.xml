@@ -24,7 +24,7 @@
             android:gravity="center_vertical">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imgUser"
+                android:id="@+id/userImage"
                 android:layout_width="50dp"
                 android:layout_height="60dp"
                 android:src="@drawable/icon_user"
@@ -35,7 +35,7 @@
                 android:id="@+id/txtName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/imgUser"
+                android:layout_toRightOf="@id/userImage"
                 android:hint="Person name"
                 android:layout_marginLeft="20dp"
                 android:padding="5dp"
@@ -46,7 +46,7 @@
                 android:id="@+id/txtId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/imgUser"
+                android:layout_toRightOf="@id/userImage"
                 android:hint="Student id"
                 android:layout_marginLeft="20dp"
                 android:layout_below="@+id/txtName"

@@ -10,6 +10,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -122,7 +123,7 @@ public class AlumniMembers extends AppCompatActivity implements Methods
      @Override
      public void processJsonData(String jsonData)
      {
-          String name,id,phone,email,gender,batch;
+          String name,id,phone,email,gender,batch,imageName;
           final List<AlumniModel>modelList = new ArrayList<>();
 
           try {
@@ -138,11 +139,15 @@ public class AlumniMembers extends AppCompatActivity implements Methods
                     batch = object.getString("batch");
                     phone = object.getString("phone");
                     email = object.getString("email");
-                    modelList.add(new AlumniModel(name,id,gender,batch,phone,email));
+                    imageName = object.getString("imageName");
+                    modelList.add(new AlumniModel(name,id,gender,batch,phone,email,imageName));
                     count++;
                }
           } catch (JSONException e) {
                displayMessage.errorMessage(e.toString());
+          }catch (NullPointerException ex)
+          {
+               displayMessage.errorMessage(getResources().getString(R.string.address));
           }finally {
                final Timer timer = new Timer();
                final Handler handler = new Handler();

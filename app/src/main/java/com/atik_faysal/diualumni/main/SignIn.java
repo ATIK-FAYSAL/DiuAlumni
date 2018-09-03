@@ -171,7 +171,7 @@ public class SignIn extends AppCompatActivity implements Methods,View.OnClickLis
      @Override
      public void processJsonData(String jsonData)
      {
-          String email = null,phone = null,type = null,name=null;
+          String email = null,phone = null,type = null,name=null,imageName=null;
 
           try {
                JSONObject jObject = new JSONObject(jsonData);
@@ -184,6 +184,7 @@ public class SignIn extends AppCompatActivity implements Methods,View.OnClickLis
                     email = object.getString("email");
                     phone = object.getString("phone");
                     type = object.getString("type");
+                    imageName = object.getString("imageName");
                     count++;
                }
           } catch (JSONException e) {
@@ -199,6 +200,7 @@ public class SignIn extends AppCompatActivity implements Methods,View.OnClickLis
                sharedPreferencesData = new SharedPreferencesData(this,maps);//context and user info map
                sharedPreferencesData.currentUserInfo();//store current user information
                sharedPreferencesData.isUserLogin(true);//user log in status true
+               sharedPreferencesData.userImageName(imageName);//store user image name
 
 
                final ProgressDialog ringProgressDialog = ProgressDialog.show(this, "Authenticating.....","", true);

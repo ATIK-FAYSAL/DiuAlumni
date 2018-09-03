@@ -124,7 +124,7 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
      private void retrieveUserImage()
      {
           Glide.with(this).
-               load("http://192.168.56.1/diuAlumni/images/"+sharedPreferencesData.getImageName()+".png").
+               load(getResources().getString(R.string.address)+sharedPreferencesData.getImageName()+".png").
                into(imgUser);
      }
 
@@ -273,6 +273,9 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
                //displayMessage.errorMessage(e.toString());
                Log.d("error",e.toString());
                return null;
+          }catch (NullPointerException ex)
+          {
+               displayMessage.errorMessage(getResources().getString(R.string.nullPointer));
           }
           return jobsModels;
      }

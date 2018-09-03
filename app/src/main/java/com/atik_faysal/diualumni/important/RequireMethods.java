@@ -6,6 +6,9 @@ import android.content.Intent;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -16,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.atik_faysal.diualumni.R;
+import com.atik_faysal.diualumni.background.PostInfoBackgroundTask;
 
 public class RequireMethods extends AppCompatActivity
 {
@@ -43,36 +47,6 @@ public class RequireMethods extends AppCompatActivity
           Calendar calendar = Calendar.getInstance();
           SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMMM-dd");
           return dateFormat.format(calendar.getTime());
-     }
-
-
-     //facebook profile
-     public Intent getFbContent(String fbUrl)
-     {
-          try {
-               context.getPackageManager().getPackageInfo("com.facebook.katana",0);
-               String myFbProfile = "fb://profile/"+fbUrl;
-               return new Intent(Intent.ACTION_VIEW, Uri.parse(myFbProfile));
-          } catch (PackageManager.NameNotFoundException e) {
-               String facebookProfileUri = "https://www.facebook.com/" + fbUrl;
-               return new Intent(Intent.ACTION_VIEW, Uri.parse(facebookProfileUri));
-          }
-     }
-
-     //show my linkedin profile
-     public void openLinkedin(String myLinkedin)
-     {
-          Uri uri = Uri.parse(myLinkedin);
-          Intent intent  = new Intent(Intent.ACTION_VIEW,uri);
-          activity.startActivity(intent);
-     }
-
-     ////show my logo_github profile
-     public void openGithub(String myGithub)
-     {
-          Uri uri = Uri.parse(myGithub);
-          Intent intent  = new Intent(Intent.ACTION_VIEW,uri);
-          startActivity(intent);
      }
 
      //close top all activity and go to specific activity

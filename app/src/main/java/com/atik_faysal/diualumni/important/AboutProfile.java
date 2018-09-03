@@ -101,17 +101,6 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
           return view;
      }
 
-     @Override
-     public void onStart() {
-          super.onStart();
-          if(internetConnection.isOnline())
-          {
-               Glide.with(this).
-                    load("http://192.168.56.1/diuAlumni/images/"+sharedPreferencesData.getImageName()+".png").
-                    into(imgUser);
-          }
-     }
-
      //initialize component
      @Override
      public void initComponent() {
@@ -348,25 +337,26 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
                JSONObject rootObject = new JSONObject(jsonData);
                JSONArray rootArray = rootObject.optJSONArray("info");
                int count=0;
-               while(count<rootArray.length())
-               {
-                    JSONObject root = rootArray.getJSONObject(count);
+               JSONObject root = rootArray.getJSONObject(count);
 
-                    name = root.getString("name");
-                    stdId = root.getString("stdId");
-                    email = root.getString("email");
-                    phone = root.getString("phone");
-                    gender = root.getString("gender");
-                    batch = root.getString("batch");
-                    type = root.getString("type");
-                    address = root.getString("address");
-                    date = root.getString("date");
-                    status = root.getString("status");
-                    department = root.getString("department");
+               name = root.getString("name");
+               stdId = root.getString("stdId");
+               email = root.getString("email");
+               phone = root.getString("phone");
+               gender = root.getString("gender");
+               batch = root.getString("batch");
+               type = root.getString("type");
+               address = root.getString("address");
+               date = root.getString("date");
+               status = root.getString("status");
+               department = root.getString("department");
+               String imageName = root.getString("imageName");
+               if(!imageName.equals("none"))
+                    Glide.with(this).
+                         load(getResources().getString(R.string.address)+imageName+".png").
+                         into(imgUser);
 
-                    viewUserInfo();
-                    count++;
-               }
+               viewUserInfo();//show user info
           } catch (JSONException e) {
                displayMessage.errorMessage(e.toString());
           }
@@ -610,7 +600,6 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
                Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                         Log.d("error",value);
                          try {
                               JSONObject jsonObject = new JSONObject(value);
                               JSONArray jsonArray = jsonObject.optJSONArray("response");

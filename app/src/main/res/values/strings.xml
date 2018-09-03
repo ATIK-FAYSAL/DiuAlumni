@@ -96,8 +96,10 @@
     <string name="limitExceed">[Error-1004] Execution failed,Your favourite job limit is exceed</string>
     <string name="invalidDate">Invalid date.Please pick a valid date.</string>
     <string name="noResult">No Jobs found</string>
+    <string name="nullPointer">[Error-1005] No value found.please try again</string>
 
     //file location
+    <string name="address">http://192.168.56.1/diuAlumni/images/</string>
     <string name="insertOperation">http://192.168.56.1/diuAlumni/insertOperation.php</string>
     <string name="login">http://192.168.56.1/diuAlumni/verifyInfo.php</string>
     <string name="postJob">http://192.168.56.1/diuAlumni/newJob.php</string>
