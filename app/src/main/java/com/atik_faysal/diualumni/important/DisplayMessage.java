@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
@@ -21,7 +22,9 @@ import android.widget.Toast;
 import com.atik_faysal.diualumni.R;
 import com.atik_faysal.diualumni.background.PostInfoBackgroundTask;
 import com.atik_faysal.diualumni.background.SharedPreferencesData;
+import com.atik_faysal.diualumni.interfaces.BooleanResponse;
 import com.atik_faysal.diualumni.interfaces.OnResponseTask;
+import com.atik_faysal.diualumni.main.JobPortal;
 import com.gdacciaro.iOSDialog.iOSDialog;
 import com.gdacciaro.iOSDialog.iOSDialogBuilder;
 import com.gdacciaro.iOSDialog.iOSDialogClickListener;
@@ -33,12 +36,8 @@ import java.util.Objects;
 public class DisplayMessage extends AlertDialog
 {
      private Context context;
-     private AlertDialog.Builder builder;
-     private AlertDialog alertDialog;
      private RequireMethods methods;
-     private PostInfoBackgroundTask backgroundTask;
-     private SharedPreferencesData sharedPreferencesData;
-     private CheckInternetConnection internetConnection;
+     private BooleanResponse booleanResponse;
 
      private Activity activity;
 
@@ -48,11 +47,8 @@ public class DisplayMessage extends AlertDialog
      {
           super(context);
           this.context = context;
-          builder = new AlertDialog.Builder(context);
           activity = (Activity) context;
           methods = new RequireMethods(context);
-          sharedPreferencesData = new SharedPreferencesData(context);
-          internetConnection = new CheckInternetConnection(context);
      }
 
 
@@ -94,6 +90,39 @@ public class DisplayMessage extends AlertDialog
                     methods.closeActivity(activity,className);
                }
           });
+     }
+
+     public void onResultSuccess(BooleanResponse response)
+     {
+          this.booleanResponse = response;
+     }
+
+     //show alert box with confirmation
+     public void warning(String text)
+     {
+          Objects.requireNonNull(getWindow()).setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+          iOSDialogBuilder builder = new iOSDialogBuilder(context);
+
+          builder.setTitle("Warning!!!")
+               .setSubtitle(text)
+               .setBoldPositiveLabel(true)
+               .setCancelable(false)
+               .setPositiveListener("Yes",new iOSDialogClickListener() {
+                    @Override
+                    public void onClick(iOSDialog dialog) {
+                         booleanResponse.onCompleteResult(true);
+                         dialog.dismiss();
+
+                    }
+               })
+               .setNegativeListener("No", new iOSDialogClickListener() {
+                    @Override
+                    public void onClick(iOSDialog dialog) {
+                         booleanResponse.onCompleteResult(false);
+                         dialog.dismiss();
+                    }
+               })
+               .build().show();
      }
 
 }

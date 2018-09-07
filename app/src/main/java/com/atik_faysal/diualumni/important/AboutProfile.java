@@ -2,17 +2,13 @@ package com.atik_faysal.diualumni.important;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
+
 import android.content.CursorLoader;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,34 +17,29 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.atik_faysal.diualumni.R;
-import com.atik_faysal.diualumni.adapter.ViewPagerAdapter;
+import com.atik_faysal.diualumni.adapter.UrlsAdapter;
 import com.atik_faysal.diualumni.background.PostInfoBackgroundTask;
 import com.atik_faysal.diualumni.background.SharedPreferencesData;
 import com.atik_faysal.diualumni.interfaces.Methods;
 import com.atik_faysal.diualumni.interfaces.OnResponseTask;
 import com.atik_faysal.diualumni.main.JobPortal;
-import com.atik_faysal.diualumni.main.SignIn;
-import com.atik_faysal.diualumni.main.UserRegistration;
-import com.atik_faysal.diualumni.others.AboutUs;
-import com.atik_faysal.diualumni.others.SetTabLayout;
+import com.atik_faysal.diualumni.models.UrlsModel;
+import com.atik_faysal.diualumni.others.AdditionalInfo;
 import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
@@ -58,10 +49,12 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.security.Permission;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import android.content.Context;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -80,14 +73,14 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
      private RecyclerView recyclerView;
      private LinearLayoutManager layoutManager;
 
-     private CheckInternetConnection internetConnection;
+     protected CheckInternetConnection internetConnection;
      private DisplayMessage displayMessage;
-     private PostInfoBackgroundTask backgroundTask;
-     private SharedPreferencesData sharedPreferencesData;
+     protected PostInfoBackgroundTask backgroundTask;
+     protected SharedPreferencesData sharedPreferencesData;
      private RequireMethods methods;
-
-     private AlertDialog.Builder builder;
-     private AlertDialog alertDialog;
+     protected AlertDialog.Builder builder;
+     protected AlertDialog alertDialog;
+     protected Context context;
 
      private String name,stdId,email,phone,type,gender,batch,address,date,status,department,facebook,linkedin;
      private static String USER;
@@ -125,6 +118,7 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
           layoutManager = new LinearLayoutManager(getContext());
           bChanges.setBackgroundDrawable(getResources().getDrawable(R.drawable.disable_button));
           txtChoose = view.findViewById(R.id.txtChoose);
+          context = getContext();
 
           bChanges.setOnClickListener(AboutProfile.this);
           imgUser.setOnClickListener(AboutProfile.this);
@@ -137,10 +131,12 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
           displayMessage = new DisplayMessage(getContext());
           methods = new RequireMethods(getContext());
           sharedPreferencesData = new SharedPreferencesData(getContext());
+          USER = Objects.requireNonNull(Objects.requireNonNull(getActivity()).getIntent().getExtras()).getString("user");
 
           //calling method
           enableDisableField(false);//disable all editText
           retrieveUserInfo();//retrieve value from server
+          retrieveUserUrls();
      }
 
      //on button clicklistener
@@ -178,7 +174,9 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
                     openGallery();//open phone gallery and select image
                     break;
                case R.id.txtAddUrl:
-                    addNewUrl();//add new url
+                    AdditionalInfo additionalInfo = new AdditionalInfo(getContext());
+                    additionalInfo.onResultSuccess(task);
+                    additionalInfo.userUrls();
                     break;
           }
      }
@@ -197,12 +195,22 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
      //get user info from server
      private void retrieveUserInfo()
      {
-          USER = Objects.requireNonNull(Objects.requireNonNull(getActivity()).getIntent().getExtras()).getString("user");
           Map<String,String>maps = new HashMap<>();
           maps.put("option","userInfo");
           maps.put("stdId",USER);
           if(internetConnection.isOnline())
-               backgroundTask.InsertData(getActivity().getResources().getString(R.string.readInfo),maps);
+               backgroundTask.InsertData(Objects.requireNonNull(getActivity()).getResources().getString(R.string.readInfo),maps);
+     }
+
+     //get user's all urls from server
+     public void retrieveUserUrls()
+     {
+          backgroundTask = new PostInfoBackgroundTask(context,getRespTask);
+          Map<String,String>maps = new HashMap<>();
+          maps.put("option","userUrls");
+          maps.put("stdId",USER);
+          if(internetConnection.isOnline())
+               backgroundTask.InsertData(context.getResources().getString(R.string.readInfo),maps);
      }
 
      @Override
@@ -328,7 +336,7 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
                return true;
      }
 
-     //process json data to view format
+     //process user info json data to view format
      @SuppressLint("SetTextI18n")
      @Override
      public void processJsonData(String jsonData)
@@ -361,6 +369,33 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
                displayMessage.errorMessage(e.toString());
           }
 
+     }
+
+     //getting current user url and show in recylerview
+     public void processUserUrlJsonData(String jsonData)
+     {
+          List<UrlsModel>urlsModels = new ArrayList<>();
+          try {
+               JSONObject rootObj = new JSONObject(jsonData);
+               JSONArray rootArray = rootObj.optJSONArray("links");
+               int count=0;
+               while (count<rootArray.length())
+               {
+                    JSONObject object = rootArray.getJSONObject(count);
+                    String stdId = object.getString("stdId");
+                    String url = object.getString("url");
+                    String id = object.getString("id");
+                    urlsModels.add(new UrlsModel(stdId,id,url));
+                    count++;
+               }
+               UrlsAdapter adapter = new UrlsAdapter(getContext(), urlsModels);//create adapter
+               recyclerView.setAdapter(adapter);//set adapter in recyler view
+               layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+               recyclerView.setLayoutManager(layoutManager);
+               recyclerView.setItemAnimator(new DefaultItemAnimator());
+          } catch (JSONException e) {
+               e.printStackTrace();
+          }
      }
 
      //set user info in UI
@@ -399,55 +434,9 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
                imgEdit.setImageDrawable(null);
                imgEdit.setEnabled(false);
                bChanges.setVisibility(View.INVISIBLE);
+               txtAddUrl.setEnabled(false);
+               txtAddUrl.setText("URL");
           }
-     }
-
-     //add new URL alertBox.add url success,still incomplete show url,update url,and visit url.also incomplete add work
-     public void addNewUrl()
-     {
-          Button bAdd;
-          final EditText txtUrl;ImageView imgClear;
-          builder = new AlertDialog.Builder(getContext());
-          @SuppressLint("InflateParams")
-          View view = LayoutInflater.from(getContext()).inflate(R.layout.add_url,null);
-          bAdd = view.findViewById(R.id.bAdd);
-          txtUrl = view.findViewById(R.id.txtUrl);
-          imgClear = view.findViewById(R.id.imgClear);
-
-          builder.setView(view);
-          builder.setCancelable(false);
-          alertDialog = builder.create();
-          alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-          alertDialog.show();
-
-          imgClear.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View view) {
-                    alertDialog.dismiss();
-               }
-          });
-
-          bAdd.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View view) {
-                    String url = txtUrl.getText().toString();
-                    if(TextUtils.isEmpty(url)||url.length()<15)
-                         Toast.makeText(getContext(),"Invalid Url",Toast.LENGTH_LONG).show();
-                    else
-                    {
-                         backgroundTask = new PostInfoBackgroundTask(getContext(),responseTask);
-                         Map<String,String> maps = new HashMap<>();
-                         maps.put("option","putUrl");
-                         maps.put("stdId",sharedPreferencesData.getCurrentUserId());
-                         maps.put("url",url);
-                         if(internetConnection.isOnline())
-                              backgroundTask.InsertData(getActivity().getResources().getString(R.string.insertOperation),maps);
-                         else Toast.makeText(getContext(),getActivity().getResources().getString(R.string.noInternet),Toast.LENGTH_LONG).show();
-
-                         alertDialog.dismiss();
-                    }
-               }
-          });
      }
 
      //open galley and select image
@@ -594,6 +583,7 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
           }
      };
 
+     //getting imageName
      private OnResponseTask respTask = new OnResponseTask() {
           @Override
           public void onResultSuccess(final String value) {
@@ -619,21 +609,21 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
           }
      };
 
-     //insert url server resoponse
-     private OnResponseTask getOnResponseTask = new OnResponseTask() {
+     //getting url server response
+     private OnResponseTask getRespTask = new OnResponseTask() {
           @Override
-          public void onResultSuccess(final String value) {
-               getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                         if (value.equals("success"))
-                         {
-                              Toast.makeText(getContext(),"Url inserted",Toast.LENGTH_LONG).show();
-                         }
-
-                    }
-               });
+          public void onResultSuccess(String value) {
+               if(value!=null)
+                    processUserUrlJsonData(value);//getting user url
           }
      };
 
+     //if new url added then again call retrieveUserUrls to show new url in recylerView
+     private OnResponseTask task = new OnResponseTask() {
+          @Override
+          public void onResultSuccess(String value) {
+               if(value.equals("success"))
+                    retrieveUserUrls();
+          }
+     };
 }

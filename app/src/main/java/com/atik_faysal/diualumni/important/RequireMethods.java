@@ -21,6 +21,7 @@ import android.view.View;
 import com.atik_faysal.diualumni.R;
 import com.atik_faysal.diualumni.background.PostInfoBackgroundTask;
 
+@SuppressLint("Registered")
 public class RequireMethods extends AppCompatActivity
 {
      private Context context;
@@ -76,5 +77,4 @@ public class RequireMethods extends AppCompatActivity
                }
           });
      }
-
 }

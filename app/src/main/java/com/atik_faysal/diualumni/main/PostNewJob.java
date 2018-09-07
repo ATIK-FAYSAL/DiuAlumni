@@ -166,7 +166,7 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
                          infoMap.put("loc",division);
                          infoMap.put("company",company);
                          infoMap.put("deadLine",deadLine);
-                         infoMap.put("date",methods.getDate());
+                         infoMap.put("date",methods.getDateWithTime());
                          infoMap.put("salary",salary);
 
                          if(internetConnection.isOnline())

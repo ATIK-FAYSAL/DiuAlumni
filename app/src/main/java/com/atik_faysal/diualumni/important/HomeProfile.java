@@ -81,7 +81,6 @@ public class HomeProfile extends Fragment
           USER = Objects.requireNonNull(Objects.requireNonNull(getActivity()).getIntent().getExtras()).getString("user");
 
           //calling method
-          //currentUserInfo();
           getJobInformation();
      }
 

@@ -123,9 +123,10 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
 
      private void retrieveUserImage()
      {
-          Glide.with(this).
-               load(getResources().getString(R.string.address)+sharedPreferencesData.getImageName()+".png").
-               into(imgUser);
+          if(!sharedPreferencesData.getImageName().equals("none"))
+               Glide.with(this).
+                    load(getResources().getString(R.string.address)+sharedPreferencesData.getImageName()+".png").
+                    into(imgUser);
      }
 
      //terminate app
