@@ -1,5 +1,6 @@
 package com.atik_faysal.diualumni.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -57,7 +58,7 @@ public class AlumniAdapter extends RecyclerView.Adapter<AlumniAdapter.ViewHolder
 
      class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
      {
-          private TextView txtName,txtId,txtPhone,txtEmail,txtBatch,txtGender;
+          private TextView txtName,txtId,txtPhone,txtEmail,txtBatch,txtGender,txtWork,txtDept;
           private DisplayMessage displayMessage;
           private AlumniModel currentModel;
           private int position;
@@ -72,9 +73,12 @@ public class AlumniAdapter extends RecyclerView.Adapter<AlumniAdapter.ViewHolder
                txtBatch = view.findViewById(R.id.txtBatch);
                txtGender = view.findViewById(R.id.txtGender);
                imageView = view.findViewById(R.id.userImage);
+               txtDept = view.findViewById(R.id.txtDepartment);
+               txtWork = view.findViewById(R.id.txtWork);
                displayMessage = new DisplayMessage(context);
           }
 
+          @SuppressLint("SetTextI18n")
           private void setData(AlumniModel model, int pos)
           {
                currentModel = model;position = pos;
@@ -84,6 +88,10 @@ public class AlumniAdapter extends RecyclerView.Adapter<AlumniAdapter.ViewHolder
                txtEmail.setText(model.getEmail());
                txtGender.setText(model.getGender());
                txtBatch.setText(model.getBatch());
+               if(model.getCompany().equals("null")||model.getPosition().equals("null"))
+                    txtWork.setVisibility(View.GONE);
+               else txtWork.setText(model.getPosition()+" at "+model.getCompany());
+               txtDept.setText(model.getDepartment());
                if(!model.getImageName().equals("none"))
                     Glide.with(context).
                          load(context.getResources().getString(R.string.address)+model.getImageName()+".png").
