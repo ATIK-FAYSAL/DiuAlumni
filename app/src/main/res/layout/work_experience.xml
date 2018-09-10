@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="10dp"
+    android:elevation="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rLayout1">
+
+        <RelativeLayout
+            android:id="@+id/rLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp">
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Work Experience"
+                android:textSize="20dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginStart="10dp"
+                android:layout_centerVertical="true"
+                android:padding="5dp"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imgCancel"
+                android:src="@drawable/icon_clear"
+                android:layout_centerInParent="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@+id/text"
+                android:background="@color/iconColor"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rLayout3"
+            android:layout_below="@+id/rLayout2"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp">
+
+            <EditText
+                android:id="@+id/txtCompany"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Where did you work?"
+                android:textColor="@color/black"
+                android:textStyle="normal"
+                android:textSize="@dimen/sixteen"
+                android:background="@drawable/url_text_style"
+                android:padding="10dp" />
+
+            <EditText
+                android:id="@+id/txtPos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="What is your position?"
+                android:layout_below="@+id/txtCompany"
+                android:textColor="@color/black"
+                android:textStyle="normal"
+                android:textSize="@dimen/sixteen"
+                android:background="@drawable/url_text_style"
+                android:padding="10dp"
+                android:layout_marginTop="5dp" />
+
+            <Spinner
+                android:id="@+id/sCity"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/txtPos"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/url_text_style">
+            </Spinner>
+
+            <CheckBox
+                android:id="@+id/checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="I currently work here"
+                android:layout_below="@+id/sCity"
+                android:layout_marginTop="5dp"/>
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/checkBox"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:id="@+id/txtForm"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/url_text_style"
+                    android:hint="From"
+                    android:textSize="@dimen/sixteen"
+                    android:textColor="@color/color1"
+                    android:padding="10dp"
+                    android:layout_marginEnd="10dp"/>
+
+                <TextView
+                    android:id="@+id/txtTo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/url_text_style"
+                    android:hint="To"
+                    android:textSize="@dimen/sixteen"
+                    android:textColor="@color/color1"
+                    android:padding="10dp"
+                    android:layout_marginStart="10dp"/>
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/txtDes"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/linearLayout"
+                android:background="@drawable/url_text_style"
+                android:gravity="start"
+                android:hint="Description"
+                android:inputType="textMultiLine"
+                android:lines="15"
+                android:scrollbars="vertical"
+                android:textColor="@color/black"
+                android:textSize="13dp"
+                android:padding="10dp"
+                android:layout_marginBottom="@dimen/sixteen"/>
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/bSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:background="@drawable/button_done"
+            android:textColor="@color/white"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_below="@+id/rLayout3"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"/>
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
