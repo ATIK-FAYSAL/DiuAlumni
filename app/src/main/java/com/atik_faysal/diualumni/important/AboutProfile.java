@@ -22,6 +22,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,12 +33,14 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.atik_faysal.diualumni.R;
+import com.atik_faysal.diualumni.adapter.ExperienceAdapter;
 import com.atik_faysal.diualumni.adapter.UrlsAdapter;
 import com.atik_faysal.diualumni.background.PostInfoBackgroundTask;
 import com.atik_faysal.diualumni.background.SharedPreferencesData;
 import com.atik_faysal.diualumni.interfaces.Methods;
 import com.atik_faysal.diualumni.interfaces.OnResponseTask;
 import com.atik_faysal.diualumni.main.JobPortal;
+import com.atik_faysal.diualumni.models.ExperienceModel;
 import com.atik_faysal.diualumni.models.UrlsModel;
 import com.atik_faysal.diualumni.others.AdditionalInfo;
 import com.bumptech.glide.Glide;
@@ -55,6 +58,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import android.content.Context;
+import android.widget.Toast;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -64,14 +68,22 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
 {
 
      private View view;
-     private TextView txtId,txtStatus,txtWork,txtGender,txtBatch,txtDate,txtDept,txtAddUrl,txtChoose;
+     private TextView txtId;
+     private TextView txtStatus;
+     private TextView txtGender;
+     private TextView txtBatch;
+     private TextView txtDate;
+     private TextView txtDept;
+     private TextView txtAddUrl;
+     private TextView txtChoose,txtWork;
      private EditText txtEmail,txtAddress,txtPhone,txtName;
      private Button bChanges;
      private ImageView imgEdit;
      private CircleImageView imgUser;
      private RadioButton rStudent,rAlumni;
-     private RecyclerView recyclerView;
+     private RecyclerView recyclerView,expList;
      private LinearLayoutManager layoutManager;
+     private LinearLayoutManager manager;
 
      protected CheckInternetConnection internetConnection;
      private DisplayMessage displayMessage;
@@ -80,6 +92,7 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
      private RequireMethods methods;
      protected AlertDialog.Builder builder;
      protected AlertDialog alertDialog;
+     AdditionalInfo additionalInfo;
      protected Context context;
 
      private String name,stdId,email,phone,type,gender,batch,address,date,status,department,facebook,linkedin;
@@ -115,7 +128,9 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
           txtDept = view.findViewById(R.id.txtDept);
           txtAddUrl = view.findViewById(R.id.txtAddUrl);
           recyclerView = view.findViewById(R.id.urlList);
+          expList = view.findViewById(R.id.expList);
           layoutManager = new LinearLayoutManager(getContext());
+          manager = new LinearLayoutManager(getContext());
           bChanges.setBackgroundDrawable(getResources().getDrawable(R.drawable.disable_button));
           txtChoose = view.findViewById(R.id.txtChoose);
           context = getContext();
@@ -125,18 +140,21 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
           imgEdit.setOnClickListener(AboutProfile.this);
           txtAddUrl.setOnClickListener(AboutProfile.this);
           txtChoose.setOnClickListener(AboutProfile.this);
+          txtWork.setOnClickListener(AboutProfile.this);
 
           backgroundTask = new PostInfoBackgroundTask(getContext(),onResponseTask);
           internetConnection = new CheckInternetConnection(getContext());
           displayMessage = new DisplayMessage(getContext());
           methods = new RequireMethods(getContext());
           sharedPreferencesData = new SharedPreferencesData(getContext());
+          additionalInfo = new AdditionalInfo(getContext());
           USER = Objects.requireNonNull(Objects.requireNonNull(getActivity()).getIntent().getExtras()).getString("user");
 
           //calling method
           enableDisableField(false);//disable all editText
           retrieveUserInfo();//retrieve value from server
-          retrieveUserUrls();
+          retrieveUserUrls();//retrieve user urls
+          retrieveUserExperience();//retrieve user experience
      }
 
      //on button clicklistener
@@ -174,9 +192,12 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
                     openGallery();//open phone gallery and select image
                     break;
                case R.id.txtAddUrl:
-                    AdditionalInfo additionalInfo = new AdditionalInfo(getContext());
                     additionalInfo.onResultSuccess(task);
                     additionalInfo.userUrls();
+                    break;
+               case R.id.txtWork:
+                    additionalInfo.onResultSuccess(task);
+                    additionalInfo.workExperience();
                     break;
           }
      }
@@ -208,6 +229,17 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
           backgroundTask = new PostInfoBackgroundTask(context,getRespTask);
           Map<String,String>maps = new HashMap<>();
           maps.put("option","userUrls");
+          maps.put("stdId",USER);
+          if(internetConnection.isOnline())
+               backgroundTask.InsertData(context.getResources().getString(R.string.readInfo),maps);
+     }
+
+     //retrieve user experience
+     public void retrieveUserExperience()
+     {
+          backgroundTask = new PostInfoBackgroundTask(context,getTask);
+          Map<String,String>maps = new HashMap<>();
+          maps.put("option","experience");
           maps.put("stdId",USER);
           if(internetConnection.isOnline())
                backgroundTask.InsertData(context.getResources().getString(R.string.readInfo),maps);
@@ -398,6 +430,44 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
           }
      }
 
+     private void processJsonUserExperience(String jsonData)
+     {
+          List<ExperienceModel>modelList = new ArrayList<>();
+
+          try {
+               JSONObject jsonObject = new JSONObject(jsonData);
+               JSONArray jsonArray = jsonObject.getJSONArray("info");
+               int count=0;
+               while(count<jsonArray.length())
+               {
+                    JSONObject object = jsonArray.getJSONObject(count);
+                    String id = object.getString("id");
+                    String stdId = object.getString("stdId");
+                    String company = object.getString("company");
+                    String position = object.getString("position");
+                    String description = object.getString("description");
+                    String from = object.getString("from");
+                    String to = object.getString("to");
+                    String city = object.getString("city");
+
+                    modelList.add(new ExperienceModel(id,stdId,company,position,description,from,to,city));
+                    count++;
+               }
+
+               ExperienceAdapter adapter = new ExperienceAdapter(getContext(), modelList);//create adapter
+               expList.setAdapter(adapter);//set adapter in recyler view
+               layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+               expList.setLayoutManager(manager);
+               expList.setItemAnimator(new DefaultItemAnimator());
+          } catch (JSONException e) {
+               displayMessage.errorMessage(getResources().getString(R.string.jsonErr));
+          }catch (NullPointerException e)
+          {
+               displayMessage.errorMessage(getResources().getString(R.string.nullPointer));
+          }
+
+     }
+
      //set user info in UI
      @SuppressLint("SetTextI18n")
      private void viewUserInfo()
@@ -433,9 +503,10 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
           {
                imgEdit.setImageDrawable(null);
                imgEdit.setEnabled(false);
-               bChanges.setVisibility(View.INVISIBLE);
+               bChanges.setVisibility(View.GONE);
                txtAddUrl.setEnabled(false);
                txtAddUrl.setText("URL");
+               txtWork.setText("Work Experience");
           }
      }
 
@@ -565,6 +636,7 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
                          {
                               case "success":
                                    Map<String,String>maps = new HashMap<>();
+                                   maps.put("stdId",sharedPreferencesData.getStudentId());
                                    maps.put("name",name);
                                    maps.put("email",email);
                                    maps.put("phone",phone);
@@ -613,8 +685,8 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
      private OnResponseTask getRespTask = new OnResponseTask() {
           @Override
           public void onResultSuccess(String value) {
-               if(value!=null)
-                    processUserUrlJsonData(value);//getting user url
+               if(value!=null&&!value.equals("notArray"))
+                   processUserUrlJsonData(value);//getting user url
           }
      };
 
@@ -623,7 +695,18 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
           @Override
           public void onResultSuccess(String value) {
                if(value.equals("success"))
+               {
                     retrieveUserUrls();
+                    retrieveUserExperience();
+               }
+          }
+     };
+
+     private OnResponseTask getTask = new OnResponseTask() {
+          @Override
+          public void onResultSuccess(String value) {
+               if(value!=null&&!value.equals("notArray"))
+                    processJsonUserExperience(value);
           }
      };
 }
