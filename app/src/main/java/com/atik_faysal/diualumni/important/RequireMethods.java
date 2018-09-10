@@ -16,7 +16,9 @@ import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.atik_faysal.diualumni.R;
 import com.atik_faysal.diualumni.background.PostInfoBackgroundTask;
@@ -76,5 +78,25 @@ public class RequireMethods extends AppCompatActivity
                     },2500);
                }
           });
+     }
+
+     public int calculateDate(String date)
+     {
+          int totalDays=0,day,month,year;
+
+          try {
+               String value[];
+               value = date.split("-");
+               day = Integer.parseInt(value[0]);
+               month = Integer.parseInt(value[1]);
+               year = Integer.parseInt(value[2]);
+
+               totalDays = day+month*30+year*365;
+          }catch (NumberFormatException e)
+          {
+               Toast.makeText(context,"",Toast.LENGTH_LONG).show();
+          }
+
+          return totalDays;
      }
 }

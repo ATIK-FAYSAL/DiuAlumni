@@ -140,7 +140,10 @@ public class AlumniMembers extends AppCompatActivity implements Methods
                     phone = object.getString("phone");
                     email = object.getString("email");
                     imageName = object.getString("imageName");
-                    modelList.add(new AlumniModel(name,id,gender,batch,phone,email,imageName));
+                    String position = object.getString("position");
+                    String company = object.getString("company");
+                    String department = object.getString("department");
+                    modelList.add(new AlumniModel(name,id,gender,batch,phone,email,imageName,department,company,position));
                     count++;
                }
           } catch (JSONException e) {

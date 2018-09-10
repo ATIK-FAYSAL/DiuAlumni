@@ -20,7 +20,7 @@
         android:drawableLeft="@drawable/websit_icon"
         android:drawablePadding="6dp"
         android:gravity="center_vertical"
-        android:padding="3dp"/>
+        android:padding="5dp"/>
 
     <ImageView
         android:id="@+id/imgRmv"

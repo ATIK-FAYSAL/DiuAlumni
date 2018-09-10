@@ -229,8 +229,17 @@
                 android:layout_toEndOf="@+id/text3"
                 android:layout_marginStart="3dp"
                 android:hint="name"
-                android:textSize="15dp"
+                android:textSize="@dimen/sixteen"
                 android:textColor="@color/userName"/>
+
+            <ImageView
+                android:id="@+id/imgValid"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/icon_check"
+                android:layout_toRightOf="@+id/txtUserName"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="5dp"/>
 
             <ImageView
                 android:id="@+id/imgSelect"

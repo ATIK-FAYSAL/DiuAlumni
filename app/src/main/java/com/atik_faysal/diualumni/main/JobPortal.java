@@ -218,7 +218,7 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
      {
           final List<JobsModel>jobsModels = new ArrayList<>();
 
-          String name,title,description,education,deadLine,date,company,stdId,jobId;
+          String name,mType,title,description,education,deadLine,date,company,stdId,jobId;
           String requirement,type,category,salary,phone,email,experience;
           boolean flag;
           try {
@@ -247,6 +247,7 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
 
                     name = object1.getString("name");//person name
                     stdId = object1.getString("stdId");//person id
+                    mType = object1.getString("mtype");
                     jobId = object2.getString("jobId");//job id
                     title = object2.getString("title");//job title
                     description = object2.getString("description");//job description
@@ -263,7 +264,7 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
                     date = object4.getString("postedDate");//job posted date
                     deadLine = object4.getString("deadLine");//dead line
 
-                    jobsModels.add(new JobsModel(name,stdId,jobId,title,
+                    jobsModels.add(new JobsModel(name,stdId,mType,jobId,title,
                          description,education,experience,
                          requirement,type,category,salary,
                          company,phone,email,date,deadLine,flag));

@@ -1,12 +1,19 @@
 package com.atik_faysal.diualumni.models;
 
-import com.atik_faysal.diualumni.main.AlumniMembers;
 
 public class AlumniModel
 {
-     private String name,phone,email,gender,batch,stdId,imageName;
+     private String name,phone,email,gender,batch,stdId,imageName,company,position,department;
 
-     public AlumniModel(String name,String id,String gender,String batch,String phone,String email,String imageName)
+     public String getDepartment() {
+          return department;
+     }
+
+     public void setDepartment(String department) {
+          this.department = department;
+     }
+
+     public AlumniModel(String name, String id, String gender, String batch, String phone, String email, String imageName, String dept, String com, String pos)
      {
           this.batch = batch;
           this.email = email;
@@ -15,6 +22,25 @@ public class AlumniModel
           this.phone = phone;
           this.stdId = id;
           this.imageName = imageName;
+          this.company = com;
+          this.position = pos;
+          this.department = dept;
+     }
+
+     public String getCompany() {
+          return company;
+     }
+
+     public void setCompany(String company) {
+          this.company = company;
+     }
+
+     public String getPosition() {
+          return position;
+     }
+
+     public void setPosition(String position) {
+          this.position = position;
      }
 
      public String getImageName() {

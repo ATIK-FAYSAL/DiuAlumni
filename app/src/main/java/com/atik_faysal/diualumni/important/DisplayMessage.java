@@ -9,6 +9,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.design.widget.Snackbar;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -87,6 +89,7 @@ public class DisplayMessage extends AlertDialog
           ringProgressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                @Override
                public void onDismiss(DialogInterface dialog) {
+                    Toast.makeText(context,"Information's update successfully.",Toast.LENGTH_LONG).show();
                     methods.closeActivity(activity,className);
                }
           });

@@ -1,0 +1,95 @@
+[33mcommit 492a74dfd3900b5ea434f4e634919a0f7367fd52[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: ATIK_FAYSAL <atikfaysal1404@gmail.com>
+Date:   Mon Sep 10 17:13:45 2018 +0600
+
+    10-09-18 change model,add department and experience
+
+[33mcommit 5908a60c42d196fb392c5f8ba24f17b2de1988d8[m
+Author: ATIK_FAYSAL <atikfaysal1404@gmail.com>
+Date:   Mon Sep 10 17:11:53 2018 +0600
+
+    10-09-18 add icon_mail,icon_star,icon_phone
+
+[33mcommit 4eb4f181fcec2ee451299825e8811325079a7ed3[m
+Author: ATIK_FAYSAL <atikfaysal1404@gmail.com>
+Date:   Mon Sep 10 17:10:31 2018 +0600
+
+    10-09-18 add experience adapter,model.user can add,edit,remove their experiences
+
+[33mcommit d98ede9e3de6ecfe3fce6faff6d7538c43a9c4ef[m
+Author: ATIK_FAYSAL <atikfaysal1404@gmail.com>
+Date:   Sat Sep 8 00:05:51 2018 +0600
+
+    07-09-18 get user url from serverapp/src/main/java/com/atik_faysal/diualumni/important/AboutProfile.java
+
+[33mcommit 42ff9434833b9238b5b39b38c500358b7a9db692[m
+Author: ATIK_FAYSAL <atikfaysal1404@gmail.com>
+Date:   Mon Sep 3 23:09:22 2018 +0600
+
+    03-09-18 modified classes and method
+
+[33mcommit 71d913901f97d8fca67199910248f6d14561e7ab[m
+Author: ATIK_FAYSAL <atikfaysal1404@gmail.com>
+Date:   Fri Aug 31 01:13:41 2018 +0600
+
+    30-08-18 add no internet warning page,profile picture upload using volley and show using glide
+
+[33mcommit 38edcd0615ff3e3d6d9c635cb270ca349ebec5a5[m
+Author: ATIK_FAYSAL <atikfaysal1404@gmail.com>
+Date:   Wed Aug 29 18:53:31 2018 +0600
+
+    29-08-18 make some changes
+
+[33mcommit c2c53fd2d0b046fe0a89471db6f4ab21ec4c7697[m
+Author: ATIK_FAYSAL <atikfaysal1404@gmail.com>
+Date:   Wed Aug 29 18:53:05 2018 +0600
+
+    29-08-18 add myFabJob,aboutUs,Feedback
+
+[33mcommit 322aae5e55ad23310d6a5112c0be62884dd16853[m
+Author: ATIK_FAYSAL <atikfaysal1404@gmail.com>
+Date:   Sat Aug 11 15:33:50 2018 +0600
+
+    11-08-18 add icon and make some layout changes
+
+[33mcommit abb58c19ebb41cbd3dfd0a5a0ec79fa5741a0aa9[m
+Author: ATIK_FAYSAL <atikfaysal1404@gmail.com>
+Date:   Sat Aug 11 15:33:21 2018 +0600
+
+    11-08-18 add new dependency
+
+[33mcommit a31795bcef5c0ca8a3c6790e0b1eeae72440eec3[m
+Author: ATIK_FAYSAL <atikfaysal1404@gmail.com>
+Date:   Sat Aug 11 15:32:22 2018 +0600
+
+    11-08-18 make some changes,unecessary codes are removed
+
+[33mcommit 2d4277de989a9be8cfab4c7d314e1dc2e6e5f633[m
+Author: ATIK_FAYSAL <atikfaysal1404@gmail.com>
+Date:   Sat Aug 11 15:26:30 2018 +0600
+
+    11-08-18 add view pager with fragment
+
+[33mcommit a7c50e217c522be2750d23f465cb4c6ac7bb7900[m
+Author: ATIK_FAYSAL <atikfaysal1404@gmail.com>
+Date:   Sat Aug 11 15:24:02 2018 +0600
+
+    11-08-18 show all alumni member in recycler view,still user image is not complete
+
+[33mcommit d0ff6935062b6b7cd171661878c531d4405c44b3[m
+Author: ATIK_FAYSAL <atikfaysal1404@gmail.com>
+Date:   Sat Aug 4 13:40:03 2018 +0600
+
+    04-08-18 get all job and insert fab job done successfully
+
+[33mcommit eaa9e2b3d923de95c127cc2318b61545ec870977[m
+Author: ATIK_FAYSAL <atikfaysal1404@gmail.com>
+Date:   Sun Jul 29 00:59:14 2018 +0600
+
+    28-07-18 complete register user,log in,post job layout
+
+[33mcommit 914c697a4d3f099f38b131f872ebd4cae55cbb51[m
+Author: ATIK_FAYSAL <atikfaysal1404@gmail.com>
+Date:   Sat Jul 21 19:32:32 2018 +0600
+
+    21-07-18 start this project

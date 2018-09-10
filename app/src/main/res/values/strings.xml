@@ -86,6 +86,31 @@
 
     </string-array>
 
+    <string-array name="department">
+        <item>Software Engineering(SWE)</item>
+        <item>Computer Science and Engineering(CSE)</item>
+        <item>Multimedia and Creative Technology(MCT)</item>
+        <item>General Educational Development(GED)</item>
+        <item>Environmental Science and Disaster Management(ESDM)</item>
+        <item>Computing and Information System(CIS)</item>
+        <item>Electronics and Telecommunication Engineering(ETE)</item>
+        <item>Textile Engineering(TE)</item>
+        <item>Electrical and Electronic Engineering(EEE)</item>
+        <item>Department of Architecture</item>
+        <item>Civil Engineering(CE)</item>
+        <item>Department of Pharmacy</item>
+        <item>Nutrition and Food Engineering(NFE)</item>
+        <item>Department of Public Health</item>
+        <item>Department of English</item>
+        <item>Department of Law</item>
+        <item>Journalism and Mass Communication</item>
+        <item>Department of Development Studies</item>
+        <item>Business Administration(BBA)</item>
+        <item>Department of Commerce</item>
+        <item>Department of Real Estate</item>
+        <item>Tourism and Hospitality Management</item>
+        <item>Innovation and Entrepreneurship</item>
+    </string-array>
 
     //messages
     <string name="noInternet">Please check your internet connection</string>

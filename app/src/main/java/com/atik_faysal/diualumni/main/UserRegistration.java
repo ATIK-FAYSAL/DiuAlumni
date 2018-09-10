@@ -56,7 +56,7 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
 
 
      private EditText txtName,txtEmail,txtAddress,txtStdId,txtPass;
-     private Spinner spinner;private ProgressBar progressBar;
+     private Spinner spinner,sDepartment;private ProgressBar progressBar;
 
      private DataValidator validator;
      private CheckInternetConnection internetConnection;
@@ -67,7 +67,7 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
 
      private String memberType=null,phone;
      private String gender = null;
-     private String name,email,stdId,address,password,batch;
+     private String name,email,stdId,address,password,batch,department;
 
      @Override
      protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +86,7 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
           txtStdId = findViewById(R.id.txtStdId);
           txtPass = findViewById(R.id.txtPassword);
           spinner = findViewById(R.id.sBatch);
+          sDepartment = findViewById(R.id.sDepartment);
           TextView txtSignIn = findViewById(R.id.txtSignIn);
           Button bProceed = findViewById(R.id.bProceed);
           progressBar = findViewById(R.id.progress);
@@ -104,6 +105,7 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
           setToolbar();
           userDataValidator();
           userBatch();//select batch from spinner
+          selectDepartment();//select department from spinner
      }
 
      //button click listener
@@ -365,6 +367,23 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
           });
      }
 
+     //select your department from spinner
+     private void selectDepartment()
+     {
+          ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.department,R.layout.support_simple_spinner_dropdown_item);
+          adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+          sDepartment.setAdapter(adapter);
+          sDepartment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+               @Override
+               public void onItemSelected(AdapterView<?> parent, View view, int i, long l) {
+                    department = parent.getItemAtPosition(i).toString();
+               }
+
+               @Override
+               public void onNothingSelected(AdapterView<?> adapterView) {}
+          });
+     }
+
      //new user data inserting into server
      private void registerNewUser(String phone)
      {
@@ -375,6 +394,7 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
           map.put("stdId",stdId);
           map.put("phone",phone);
           map.put("address",address);
+          map.put("department",department);
           map.put("gender",gender);
           map.put("pass",encryptionAlgo.encryptPass(password));
           map.put("batch",batch);

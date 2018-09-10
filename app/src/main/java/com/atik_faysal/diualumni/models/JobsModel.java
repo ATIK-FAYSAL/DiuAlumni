@@ -3,17 +3,18 @@ package com.atik_faysal.diualumni.models;
 
 public class JobsModel
 {
-     private String userName,jobTitle,jobDes,education,deadLine,date,company,stdId,jobId;
+     private String userName,jobTitle,jobDes,mType,education,deadLine,date,company,stdId,jobId;
      private String requirement,type,category,salary,phone,email,experience;
      private boolean flag;
 
-     public JobsModel(String name,String stdId,
+     public JobsModel(String name,String stdId,String mtype,
                       String id,String title,String des,String education,String exp,
                       String req,String type,String category,String salary,
                       String com,String phone,String email,String date,String deadLine,boolean flag)
      {
           this.userName = name;
           this.jobId = id;
+          this.mType = mtype;
           this.jobTitle = title;
           this.deadLine = deadLine;
           this.jobDes = des;
@@ -29,6 +30,14 @@ public class JobsModel
           this.salary = salary;
           this.experience = exp;
           this.flag = flag;
+     }
+
+     public String getmType() {
+          return mType;
+     }
+
+     public void setmType(String mType) {
+          this.mType = mType;
      }
 
      public void setFlag(boolean flag) {

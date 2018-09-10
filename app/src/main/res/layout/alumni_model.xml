@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,7 +12,6 @@
     android:elevation="10dp">
 
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -20,46 +20,71 @@
             android:id="@+id/rLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="3dp"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:padding="3dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/userImage"
                 android:layout_width="50dp"
                 android:layout_height="60dp"
+                android:layout_marginStart="7dp"
                 android:src="@drawable/icon_user"
-                android:layout_marginLeft="7dp"/>
+                android:layout_marginBottom="5dp"/>
 
 
             <TextView
                 android:id="@+id/txtName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
                 android:layout_toRightOf="@id/userImage"
                 android:hint="Person name"
-                android:layout_marginLeft="20dp"
-                android:padding="5dp"
-                android:textSize="@dimen/sixteen"
-                android:textColor="@color/userName"/>
+                android:padding="2dp"
+                android:textColor="@color/userName"
+                android:textSize="@dimen/sixteen" />
 
             <TextView
                 android:id="@+id/txtId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/txtName"
+                android:layout_marginLeft="20dp"
                 android:layout_toRightOf="@id/userImage"
                 android:hint="Student id"
-                android:layout_marginLeft="20dp"
-                android:layout_below="@+id/txtName"
-                android:padding="5dp"
-                android:textSize="14dp"
-                android:textColor="@color/black"/>
+                android:padding="2dp"
+                android:textColor="@color/black"
+                android:textSize="14dp" />
 
             <View
-                android:layout_below="@+id/txtId"
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/iconColor"/>
+                android:layout_below="@+id/txtWork"
+                android:layout_marginTop="8dp"
+                android:background="@color/iconColor" />
+
+            <TextView
+                android:id="@+id/txtDepartment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/txtId"
+                android:layout_centerVertical="true"
+                android:layout_below="@+id/txtName"
+                android:hint="department"
+                android:padding="2dp"
+                android:layout_marginStart="20dp"
+                android:textColor="@color/url"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/txtWork"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/txtName"
+                android:layout_below="@+id/txtId"
+                android:hint="work at"
+                android:padding="3dp"
+                android:textColor="@color/colorAccent"
+                android:textSize="12dp" />
 
         </RelativeLayout>
 
@@ -67,104 +92,92 @@
             android:id="@+id/layoutPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_below="@+id/rLayout"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
-            android:layout_marginLeft="10dp"
-            android:layout_below="@+id/rLayout">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Phone"
-                android:textStyle="bold"
-                android:paddingLeft="5dp"
-                android:textSize="@dimen/sixteen"/>
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/txtPhone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/fifteen"
-                android:hint="01XXXXXXXXX"
-                android:textColor="@color/black"
+                android:layout_weight="1"
                 android:background="@color/white"
-                android:padding="5dp"
                 android:clickable="true"
-                android:inputType="phone" />
+                android:drawableLeft="@drawable/icon_phone"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:hint="01XXXXXXXXX"
+                android:inputType="phone"
+                android:padding="5dp"
+                android:textColor="@color/black"
+                android:textSize="13dp" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layoutEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="10dp"
-            android:layout_below="@+id/layoutPhone">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Email"
-                android:paddingLeft="5dp"
-                android:textStyle="bold"
-                android:textSize="@dimen/sixteen"/>
 
             <TextView
                 android:id="@+id/txtEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/fifteen"
-                android:hint="example@gmail.com"
-                android:textColor="@color/black"
+                android:layout_marginStart="5dp"
+                android:layout_weight="2"
                 android:background="@color/white"
-                android:padding="5dp"
                 android:clickable="true"
-                android:inputType="textEmailAddress" />
+                android:drawableLeft="@drawable/icon_mail"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:hint="example@gmail.com"
+                android:inputType="textEmailAddress"
+                android:padding="5dp"
+                android:textColor="@color/black"
+                android:textSize="13dp" />
 
         </LinearLayout>
 
+
         <LinearLayout
-            android:layout_below="@+id/layoutEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="5dp"
+            android:layout_below="@+id/layoutPhone"
+            android:layout_marginEnd="60dp"
+            android:layout_marginStart="7dp"
             android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp">
+            android:orientation="horizontal"
+            android:padding="5dp">
 
             <TextView
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
                 android:text="Gender"
                 android:textSize="@dimen/sixteen"
-                android:layout_marginLeft="5dp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
+
             <TextView
-                android:layout_weight="1"
                 android:id="@+id/txtGender"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:hint="Gender"
                 android:paddingLeft="3dp"
-                android:textColor="@color/colorAccent"/>
+                android:textColor="@color/colorAccent" />
 
             <TextView
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="Batch"
                 android:textSize="@dimen/sixteen"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
+
             <TextView
-                android:layout_weight="1"
                 android:id="@+id/txtBatch"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:hint="batch"
                 android:paddingLeft="3dp"
-                android:textColor="@color/colorAccent"/>
+                android:textColor="@color/colorAccent" />
 
         </LinearLayout>
 
