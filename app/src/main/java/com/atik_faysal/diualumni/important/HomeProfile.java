@@ -112,7 +112,7 @@ public class HomeProfile extends Fragment
                @Override
                public void run() {
                     try {
-                         if(jobsModels.isEmpty())//if no jobs found
+                         if(jobsModels.isEmpty()||jobsModels.get(0).getJobTitle().equals("null"))//if no jobs found
                          {
                               emptyView.setVisibility(View.VISIBLE);//empty view visible
                               txtNoResult.setVisibility(View.VISIBLE);//no result text visible
@@ -126,10 +126,9 @@ public class HomeProfile extends Fragment
                               layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                               jobLists.setLayoutManager(layoutManager);
                               jobLists.setItemAnimator(new DefaultItemAnimator());
-
-                              txtName.setText(jobsModels.get(0).getUserName());//set user name
-                              txtStdId.setText(jobsModels.get(0).getStdId());
                          }
+                         txtName.setText(jobsModels.get(0).getUserName());//set user name,get from list
+                         txtStdId.setText(jobsModels.get(0).getStdId());//set user id,get from list
                          progressBar.setVisibility(View.GONE);
                          timer.cancel();
                     }catch (NullPointerException ex)
