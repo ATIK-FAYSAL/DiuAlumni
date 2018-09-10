@@ -76,7 +76,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
      public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
      {
           private TextView txtTitle,txtDate,txtDeadline,txtEdu,txtCompany,txtName,txtExp,txtSalary;
-          protected ImageView imgSelect;
+          protected ImageView imgSelect,imgValid;
           private int position;
           private JobsModel currentModel;
           private RelativeLayout relativeLayout;
@@ -95,6 +95,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
                imgSelect = view.findViewById(R.id.imgSelect);
                relativeLayout = view.findViewById(R.id.rLayout);
                txtSalary = view.findViewById(R.id.txtSalary);
+               imgValid = view.findViewById(R.id.imgValid);
                cardView = view.findViewById(R.id.cardView);
 
                internetConnection = new CheckInternetConnection(context);
@@ -125,6 +126,11 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
                     if(model.isFlag())
                          imgSelect.setImageResource(R.drawable.icon_select2);
                }
+
+               if(!model.getmType().equals("alumni"))
+                    imgValid.setVisibility(View.GONE);
+               else
+                    imgValid.setVisibility(View.VISIBLE);
           }
 
           //on click listener
