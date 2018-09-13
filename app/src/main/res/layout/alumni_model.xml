@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@id/userImage"
+                android:layout_toRightOf="@+id/userImage"
                 android:hint="Person name"
                 android:padding="2dp"
                 android:textColor="@color/userName"
@@ -49,28 +49,21 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txtName"
                 android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@id/userImage"
+                android:layout_toRightOf="@+id/userImage"
                 android:hint="Student id"
                 android:padding="2dp"
                 android:textColor="@color/black"
                 android:textSize="14dp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@+id/txtWork"
-                android:layout_marginTop="8dp"
-                android:background="@color/iconColor" />
-
             <TextView
                 android:id="@+id/txtDepartment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/txtId"
-                android:layout_centerVertical="true"
-                android:layout_below="@+id/txtName"
+                android:layout_toRightOf="@+id/txtName"
                 android:hint="department"
                 android:padding="2dp"
+                android:gravity="center"
+                android:layout_marginTop="3dp"
                 android:layout_marginStart="20dp"
                 android:textColor="@color/url"
                 android:textSize="12dp" />
@@ -80,11 +73,44 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@+id/txtName"
-                android:layout_below="@+id/txtId"
+                android:layout_below="@+id/txtBatch"
                 android:hint="work at"
                 android:padding="3dp"
-                android:textColor="@color/colorAccent"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/color3"
                 android:textSize="12dp" />
+
+
+            <TextView
+                android:id="@+id/txtBatch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="batch"
+                android:paddingLeft="5dp"
+                android:textColor="@color/white"
+                android:background="@drawable/style1"
+                android:layout_toRightOf="@+id/txtId"
+                android:layout_below="@+id/txtDepartment"
+                android:layout_marginTop="3dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:paddingRight="5dp"
+                android:layout_alignStart="@+id/txtDepartment"/>
+
+            <TextView
+                android:id="@+id/txtGender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Gender"
+                android:gravity="center_vertical"
+                android:padding="3dp"
+                android:layout_toRightOf="@+id/txtBatch"
+                android:layout_below="@+id/txtDepartment"
+                android:textColor="@color/color9"
+                android:layout_marginTop="3dp"
+                android:layout_marginStart="10dp"
+                android:drawableLeft="@drawable/icon_bold"
+                android:drawablePadding="5dp"/>
 
         </RelativeLayout>
 
@@ -95,6 +121,7 @@
             android:layout_below="@+id/rLayout"
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:orientation="horizontal">
 
             <TextView
@@ -130,54 +157,6 @@
                 android:padding="5dp"
                 android:textColor="@color/black"
                 android:textSize="13dp" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/layoutPhone"
-            android:layout_marginEnd="60dp"
-            android:layout_marginStart="7dp"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal"
-            android:padding="5dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="1"
-                android:text="Gender"
-                android:textSize="@dimen/sixteen"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/txtGender"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:hint="Gender"
-                android:paddingLeft="3dp"
-                android:textColor="@color/colorAccent" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Batch"
-                android:textSize="@dimen/sixteen"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/txtBatch"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:hint="batch"
-                android:paddingLeft="3dp"
-                android:textColor="@color/colorAccent" />
 
         </LinearLayout>
 

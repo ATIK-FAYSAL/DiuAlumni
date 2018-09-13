@@ -42,24 +42,24 @@ import java.util.Map;
 public class PostNewJob extends AppCompatActivity implements Methods,View.OnClickListener,DatePickerDialog.OnDateSetListener
 {
 
-     private EditText txtTitle,txtPhone,txtEmail,txtDes,txtEdu,txtReq,txtSalary,txtCompany,txtExp;
-     private Spinner sLocation,sCategory;
-     private TextView txtDeadLine;
-     private ProgressBar progressBar;
+     protected EditText txtTitle,txtPhone,txtEmail,txtDes,txtEdu,txtReq,txtSalary,txtCompany,txtExp;
+     protected Spinner sLocation,sCategory;
+     protected TextView txtDeadLine;
+     protected ProgressBar progressBar;
 
-     private Drawable iconValid;
-     private Drawable iconInvalid;
+     protected Drawable iconValid;
+     protected Drawable iconInvalid;
 
-     private int day,month,year;
-     private String title,description,education,requirement,division,jobType,category,deadLine,salary,company,email,phone,experience;
-     private static final String INVALID_MSG = "Invalid input";
-     private static final String VALID_MSG = "Valid";
+     protected int day,month,year;
+     protected String title,description,education,requirement,division,jobType,category,deadLine,salary,company,email,phone,experience;
+     protected static final String INVALID_MSG = "Invalid input";
+     protected static final String VALID_MSG = "Valid";
 
-     private CheckInternetConnection internetConnection;
-     private DisplayMessage displayMessage;
-     private PostInfoBackgroundTask backgroundTask;
-     private SharedPreferencesData sharedPreferencesData;
-     private RequireMethods methods;
+     protected CheckInternetConnection internetConnection;
+     protected DisplayMessage displayMessage;
+     protected PostInfoBackgroundTask backgroundTask;
+     protected SharedPreferencesData sharedPreferencesData;
+     protected RequireMethods methods;
 
 
      @Override
@@ -150,30 +150,7 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
           switch (view.getId())
           {
                case R.id.bDone:
-                    if(dataValidator())
-                    {
-                         Map<String,String> infoMap = new HashMap<>();
-                         infoMap.put("stdId",sharedPreferencesData.getCurrentUserId());
-                         infoMap.put("email",email);
-                         infoMap.put("phone",phone);
-                         infoMap.put("type",jobType);
-                         infoMap.put("title",title);
-                         infoMap.put("des",description);
-                         infoMap.put("edu",education);
-                         infoMap.put("req",requirement);
-                         infoMap.put("expe",experience);
-                         infoMap.put("category",category);
-                         infoMap.put("loc",division);
-                         infoMap.put("company",company);
-                         infoMap.put("deadLine",deadLine);
-                         infoMap.put("date",methods.getDateWithTime());
-                         infoMap.put("salary",salary);
-
-                         if(internetConnection.isOnline())
-                              backgroundTask.InsertData(getString(R.string.postJob),infoMap);
-                         else displayMessage.errorMessage(getResources().getString(R.string.noInternet));
-                    }else displayMessage.errorMessage(getString(R.string.infoErr));
-
+                    postNewJob();
                     break;
                case R.id.txtLink:
                     break;
@@ -185,8 +162,37 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
           }
      }
 
+     //if all information are correct than insert into table
+     private void postNewJob()
+     {
+          if(dataValidator())
+          {
+               Map<String,String> infoMap = new HashMap<>();
+               infoMap.put("option","insert");
+               infoMap.put("stdId",sharedPreferencesData.getCurrentUserId());
+               infoMap.put("email",email);
+               infoMap.put("phone",phone);
+               infoMap.put("type",jobType);
+               infoMap.put("title",title);
+               infoMap.put("des",description);
+               infoMap.put("edu",education);
+               infoMap.put("req",requirement);
+               infoMap.put("expe",experience);
+               infoMap.put("category",category);
+               infoMap.put("loc",division);
+               infoMap.put("company",company);
+               infoMap.put("deadLine",deadLine);
+               infoMap.put("date",methods.getDateWithTime());
+               infoMap.put("salary",salary);
+
+               if(internetConnection.isOnline())
+                    backgroundTask.InsertData(getString(R.string.postJob),infoMap);
+               else displayMessage.errorMessage(getResources().getString(R.string.noInternet));
+          }else displayMessage.errorMessage(getString(R.string.infoErr));
+     }
+
      //if input is not valid ,it's shows an error
-     private void textChangeListener()
+     protected void textChangeListener()
      {
           iconValid = getResources().getDrawable(R.drawable.icon_check);//valid icon
           iconValid.setBounds(0,0,iconValid.getIntrinsicWidth(),iconValid.getIntrinsicHeight());
@@ -396,7 +402,7 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
      }
 
      //job info validator
-     private boolean dataValidator()
+     protected boolean dataValidator()
      {
           title = txtTitle.getText().toString();
           description = txtDes.getText().toString();
@@ -555,7 +561,7 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
      public void processJsonData(String jsonData) {}
 
      //set job location in spinner
-     private void spinnerLocation()
+     protected void spinnerLocation()
      {
           ArrayAdapter<CharSequence>adapter = ArrayAdapter.createFromResource(this,R.array.division,R.layout.support_simple_spinner_dropdown_item);
           adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
@@ -572,7 +578,7 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
      }
 
      //set job category in spinner
-     private void spinnerCategory()
+     protected void spinnerCategory()
      {
           ArrayAdapter<CharSequence>adapter = ArrayAdapter.createFromResource(this,R.array.category,R.layout.support_simple_spinner_dropdown_item);
           adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
@@ -591,7 +597,7 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
      }
 
      //define member type
-     public void chooseJobNature(View view)
+     protected void chooseJobNature(View view)
      {
           boolean checked = ((RadioButton)view).isChecked();
 
@@ -639,7 +645,6 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
                runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                         Log.d("error",value);
                          if(value.equals("success"))
                          {
                               progressBar.setVisibility(View.VISIBLE);

@@ -87,7 +87,7 @@ public class AlumniAdapter extends RecyclerView.Adapter<AlumniAdapter.ViewHolder
                txtPhone.setText(model.getPhone());
                txtEmail.setText(model.getEmail());
                txtGender.setText(model.getGender());
-               txtBatch.setText(model.getBatch());
+               txtBatch.setText(model.getBatch()+" Batch");
                if(model.getCompany().equals("null")||model.getPosition().equals("null"))
                     txtWork.setVisibility(View.GONE);
                else txtWork.setText(model.getPosition()+" at "+model.getCompany());

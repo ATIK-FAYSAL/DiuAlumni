@@ -219,7 +219,7 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
           final List<JobsModel>jobsModels = new ArrayList<>();
 
           String name,mType,title,description,education,deadLine,date,company,stdId,jobId;
-          String requirement,type,category,salary,phone,email,experience;
+          String requirement,type,category,salary,phone,email,experience,city;
           boolean flag;
           try {
                JSONObject rootObj = new JSONObject(jsonData);
@@ -255,6 +255,7 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
                     experience = object2.getString("experience");
                     requirement = object2.getString("requirement");//job requirement
                     type = object2.getString("type");//job type
+                    city = object2.getString("city");
                     category = object2.getString("category");//job category
                     salary = object2.getString("salary");//job salary
                     flag = object2.getBoolean("favJob");
@@ -265,7 +266,7 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
                     deadLine = object4.getString("deadLine");//dead line
 
                     jobsModels.add(new JobsModel(name,stdId,mType,jobId,title,
-                         description,education,experience,
+                         description,education,experience,city,
                          requirement,type,category,salary,
                          company,phone,email,date,deadLine,flag));
 
@@ -426,6 +427,7 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
                runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                         Log.d("job",value);
                          viewJobInfo(value);
                     }
                });

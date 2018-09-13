@@ -59,6 +59,10 @@
         <activity android:name=".others.NoInternetConnection"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".others.EditJobPost"
+            android:label="Edit post"
+            android:screenOrientation="portrait"/>
+
 
         <meta-data android:name="com.facebook.accountkit.ApplicationName"
             android:value="@string/app_name" />

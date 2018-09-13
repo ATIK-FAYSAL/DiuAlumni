@@ -304,6 +304,7 @@ public class AdditionalInfo extends AboutProfile implements DatePickerDialog.OnD
                switch (value) {
                     case "success":
                          alertDialog.dismiss();
+                         onResponseTask.onResultSuccess(value);
                          Toast.makeText(context, "Your work experience is added successfully.", Toast.LENGTH_LONG).show();
                          break;
                     case "overflow":
