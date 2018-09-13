@@ -4,11 +4,11 @@ package com.atik_faysal.diualumni.models;
 public class JobsModel
 {
      private String userName,jobTitle,jobDes,mType,education,deadLine,date,company,stdId,jobId;
-     private String requirement,type,category,salary,phone,email,experience;
+     private String requirement,type,category,salary,phone,email,experience,city;
      private boolean flag;
 
      public JobsModel(String name,String stdId,String mtype,
-                      String id,String title,String des,String education,String exp,
+                      String id,String title,String des,String education,String exp,String city,
                       String req,String type,String category,String salary,
                       String com,String phone,String email,String date,String deadLine,boolean flag)
      {
@@ -30,6 +30,15 @@ public class JobsModel
           this.salary = salary;
           this.experience = exp;
           this.flag = flag;
+          this.city = city;
+     }
+
+     public String getCity() {
+          return city;
+     }
+
+     public void setCity(String city) {
+          this.city = city;
      }
 
      public String getmType() {
