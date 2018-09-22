@@ -21,7 +21,7 @@
         <item
             android:id="@+id/navUpload"
             android:icon="@drawable/icon_upload"
-            android:title="Upload CV" />
+            android:title="My Resume" />
         <item
             android:id="@+id/navFabJob"
             android:icon="@drawable/icon_fav"

@@ -7,7 +7,6 @@ import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,7 +28,6 @@ import com.atik_faysal.diualumni.important.AboutProfile;
 import com.atik_faysal.diualumni.important.CheckInternetConnection;
 import com.atik_faysal.diualumni.important.RequireMethods;
 import com.atik_faysal.diualumni.interfaces.OnResponseTask;
-import com.atik_faysal.diualumni.main.PostNewJob;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -77,7 +75,7 @@ public class AdditionalInfo extends AboutProfile implements DatePickerDialog.OnD
           Button bAdd;
           final EditText txtUrl;ImageView imgClear;
           @SuppressLint("InflateParams")
-          View view = LayoutInflater.from(context).inflate(R.layout.add_url,null);
+          View view = LayoutInflater.from(context).inflate(R.layout.dialog_add_url,null);
           bAdd = view.findViewById(R.id.bAdd);
           txtUrl = view.findViewById(R.id.txtUrl);
           imgClear = view.findViewById(R.id.imgClear);

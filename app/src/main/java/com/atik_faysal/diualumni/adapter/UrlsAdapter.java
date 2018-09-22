@@ -144,7 +144,7 @@ public class UrlsAdapter extends RecyclerView.Adapter<UrlsAdapter.ViewHolder>
                Button bAdd;
                final EditText txtUrl;ImageView imgClear;
                @SuppressLint("InflateParams")
-               View view = LayoutInflater.from(context).inflate(R.layout.add_url,null);
+               View view = LayoutInflater.from(context).inflate(R.layout.dialog_add_url,null);
                bAdd = view.findViewById(R.id.bAdd);
                txtUrl = view.findViewById(R.id.txtUrl);
                txtUrl.setText(currentModel.getUrl());

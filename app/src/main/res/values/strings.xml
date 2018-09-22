@@ -133,5 +133,6 @@
     <string name="updateOperation">http://192.168.56.1/diuAlumni/updateOperation.php</string>
     <string name="otherInsertion">http://192.168.56.1/diuAlumni/otherInsertion.php</string>
     <string name="uploadImage">http://192.168.56.1/diuAlumni/uploadImage.php</string>
+    <string name="uploadCv">http://192.168.56.1/diuAlumni/uploadCv.php</string>
 
 </resources>

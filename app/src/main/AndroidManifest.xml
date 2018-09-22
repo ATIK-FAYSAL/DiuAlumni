@@ -63,6 +63,14 @@
             android:label="Edit post"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".main.MyCv"
+            android:label="My CV"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".others.CvViewer"
+            android:screenOrientation="portrait"
+            android:label="My Resume"/>
+
 
         <meta-data android:name="com.facebook.accountkit.ApplicationName"
             android:value="@string/app_name" />

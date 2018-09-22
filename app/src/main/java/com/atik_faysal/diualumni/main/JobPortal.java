@@ -385,8 +385,9 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
                     break;
 
                case R.id.navUpload:
-
-                    Toast.makeText(JobPortal.this,"option 3",Toast.LENGTH_LONG).show();
+                    if(sharedPreferencesData.getIsUserLogin())
+                         startActivity(new Intent(JobPortal.this,MyCv.class));
+                    else startActivity(new Intent(JobPortal.this,SignIn.class));
                     break;
 
                case R.id.navFabJob:
@@ -427,7 +428,6 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
                runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                         Log.d("job",value);
                          viewJobInfo(value);
                     }
                });
