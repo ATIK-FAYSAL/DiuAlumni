@@ -240,6 +240,9 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
                                    infoMap.put("deadLine",currentModel.getDeadLine());
                                    infoMap.put("salary",currentModel.getSalary());
                                    infoMap.put("city",currentModel.getCity());
+                                   infoMap.put("vacancy",currentModel.getVacancy());
+                                   infoMap.put("comUrl",currentModel.getComUrl());
+                                   infoMap.put("comAddress",currentModel.getComAddress());
                                    intent.putExtra("maps", (Serializable) infoMap);
                                    context.startActivity(intent);
                                    break;

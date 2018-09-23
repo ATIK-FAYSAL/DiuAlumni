@@ -58,6 +58,11 @@ public class EditJobPost extends PostNewJob
           txtDeadLine = findViewById(R.id.txtDeadLine);
           progressBar = findViewById(R.id.progress);
           txtExp = findViewById(R.id.txtExp);
+          txtComUrl = findViewById(R.id.txtComUrl);
+          txtComAddress = findViewById(R.id.txtComAddress);
+          txtVacancy = findViewById(R.id.txtVacancy);
+          imgRmv = findViewById(R.id.imgRmv);
+          imgAdd = findViewById(R.id.imgAdd);
           RadioButton rContact = findViewById(R.id.rContract);
           RadioButton rOthers = findViewById(R.id.rOther);
           RadioButton rFullTime = findViewById(R.id.rFullTime);
@@ -75,6 +80,9 @@ public class EditJobPost extends PostNewJob
           txtCompany.setText(infoMap.get("company"));
           txtPhone.setText(infoMap.get("phone"));
           txtEmail.setText(infoMap.get("email"));
+          txtVacancy.setText(infoMap.get("vacancy"));
+          txtComAddress.setText(infoMap.get("comAddress"));
+          txtComUrl.setText(infoMap.get("comUrl"));
           switch (infoMap.get("type")) {
                case "full time":
                     rFullTime.setChecked(true);
@@ -113,6 +121,8 @@ public class EditJobPost extends PostNewJob
                     updatePost();
                }
           });
+          imgAdd.setOnClickListener(this);
+          imgRmv.setOnClickListener(this);
           txtLink.setOnClickListener(this);
           txtDeadLine.setOnClickListener(this);
           bDone.setText("Save changes");//change text for update
@@ -156,6 +166,9 @@ public class EditJobPost extends PostNewJob
                maps.put("company",company);
                maps.put("deadLine",deadLine);
                maps.put("salary",salary);
+               maps.put("comUrl",comUrl);
+               maps.put("comAddress",comAddress);
+               maps.put("vacancy",vacancy);
 
                if(internetConnection.isOnline())
                     backgroundTask.InsertData(getString(R.string.postJob),maps);
@@ -234,6 +247,7 @@ public class EditJobPost extends PostNewJob
                runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                         Log.d("error",value);
                          if(value.equals("success"))
                          {
                               progressBar.setVisibility(View.VISIBLE);

@@ -219,7 +219,7 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
           final List<JobsModel>jobsModels = new ArrayList<>();
 
           String name,mType,title,description,education,deadLine,date,company,stdId,jobId;
-          String requirement,type,category,salary,phone,email,experience,city;
+          String requirement,type,category,salary,phone,email,experience,city,vacacncy,comUrl,comAddress;
           boolean flag;
           try {
                JSONObject rootObj = new JSONObject(jsonData);
@@ -258,17 +258,20 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
                     city = object2.getString("city");
                     category = object2.getString("category");//job category
                     salary = object2.getString("salary");//job salary
+                    vacacncy = object2.getString("vacancy");//number of vacancy
                     flag = object2.getBoolean("favJob");
                     company = object3.getString("company");//job company
                     phone = object3.getString("phone");//phone number
                     email = object3.getString("email");//email
+                    comAddress = object3.getString("comAddress");//company address
+                    comUrl = object3.getString("comUrl");//company url
                     date = object4.getString("postedDate");//job posted date
                     deadLine = object4.getString("deadLine");//dead line
 
                     jobsModels.add(new JobsModel(name,stdId,mType,jobId,title,
                          description,education,experience,city,
-                         requirement,type,category,salary,
-                         company,phone,email,date,deadLine,flag));
+                         requirement,type,category,salary,vacacncy,
+                         company,comUrl,comAddress,phone,email,date,deadLine,flag));
 
                     count++;//increment
                }

@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -42,18 +43,21 @@ import java.util.Map;
 public class PostNewJob extends AppCompatActivity implements Methods,View.OnClickListener,DatePickerDialog.OnDateSetListener
 {
 
-     protected EditText txtTitle,txtPhone,txtEmail,txtDes,txtEdu,txtReq,txtSalary,txtCompany,txtExp;
+     protected EditText txtTitle,txtPhone,txtEmail,txtDes,txtEdu,txtReq,txtSalary,txtCompany,txtExp,txtComUrl,txtComAddress;
      protected Spinner sLocation,sCategory;
-     protected TextView txtDeadLine;
+     protected TextView txtDeadLine,txtVacancy;
      protected ProgressBar progressBar;
+     protected ImageView imgAdd,imgRmv;
 
      protected Drawable iconValid;
      protected Drawable iconInvalid;
 
      protected int day,month,year;
-     protected String title,description,education,requirement,division,jobType,category,deadLine,salary,company,email,phone,experience;
+     protected String title,description,education,requirement,division,jobType,
+          category,deadLine,salary,company,email,phone,experience,comUrl,comAddress,vacancy;
      protected static final String INVALID_MSG = "Invalid input";
      protected static final String VALID_MSG = "Valid";
+     protected int numOfVacancy;
 
      protected CheckInternetConnection internetConnection;
      protected DisplayMessage displayMessage;
@@ -101,10 +105,17 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
           txtDeadLine = findViewById(R.id.txtDeadLine);
           progressBar = findViewById(R.id.progress);
           txtExp = findViewById(R.id.txtExp);
+          imgAdd = findViewById(R.id.imgAdd);
+          imgRmv = findViewById(R.id.imgRmv);
+          txtComAddress = findViewById(R.id.txtComAddress);
+          txtComUrl = findViewById(R.id.txtComUrl);
+          txtVacancy = findViewById(R.id.txtVacancy);
 
           //set click listener
           bDone.setOnClickListener(this);
           txtLink.setOnClickListener(this);
+          imgAdd.setOnClickListener(this);
+          imgRmv.setOnClickListener(this);
           txtDeadLine.setOnClickListener(this);
 
           displayMessage = new DisplayMessage(this);
@@ -159,6 +170,42 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
                     datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
                     datePickerDialog.show();
                     break;
+               case R.id.imgAdd:
+
+                    if(!txtVacancy.getText().toString().equals(""))
+                    {
+                         numOfVacancy = Integer.parseInt(txtVacancy.getText().toString());
+                         numOfVacancy++;
+                         txtVacancy.setText(String.valueOf(numOfVacancy));
+                         imgAdd.setVisibility(View.VISIBLE);
+                         imgRmv.setVisibility(View.VISIBLE);
+                         imgRmv.setEnabled(true);
+                         if(txtVacancy.getText().toString().equals("10"))
+                         {
+                              imgAdd.setVisibility(View.INVISIBLE);
+                              imgAdd.setEnabled(false);
+                         }
+                    }
+                    else txtVacancy.setText("1");
+                    break;
+               case R.id.imgRmv:
+                    if(txtVacancy.getText().toString().equals(""))
+                         txtVacancy.setText("0");
+                    else
+                    {
+                         numOfVacancy = Integer.parseInt(txtVacancy.getText().toString());
+                         numOfVacancy--;
+                         txtVacancy.setText(String.valueOf(numOfVacancy));
+                         imgRmv.setVisibility(View.VISIBLE);
+                         imgAdd.setVisibility(View.VISIBLE);
+                         imgAdd.setEnabled(true);
+                         if(txtVacancy.getText().toString().equals("0"))
+                         {
+                              imgRmv.setVisibility(View.INVISIBLE);
+                              imgRmv.setEnabled(false);
+                         }
+                    }
+                    break;
           }
      }
 
@@ -184,6 +231,9 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
                infoMap.put("deadLine",deadLine);
                infoMap.put("date",methods.getDateWithTime());
                infoMap.put("salary",salary);
+               infoMap.put("comUrl",comUrl);
+               infoMap.put("comAddress",comAddress);
+               infoMap.put("vacancy",vacancy);
 
                if(internetConnection.isOnline())
                     backgroundTask.InsertData(getString(R.string.postJob),infoMap);
@@ -365,7 +415,7 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
                          txtSalary.setError(INVALID_MSG,iconInvalid);
                     else txtSalary.setError(VALID_MSG,iconValid);
                }
-          });//check sallary
+          });//check salary
 
           txtCompany.addTextChangedListener(new TextWatcher() {
                @Override
@@ -398,7 +448,39 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
                          txtExp.setError(INVALID_MSG,iconInvalid);
                     else txtExp.setError(VALID_MSG,iconValid);
                }
-          });//check requirement,must be more than 25 characters
+          });//check requirement,must be more than 15 characters
+
+          txtComUrl.addTextChangedListener(new TextWatcher() {
+               @Override
+               public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+               @Override
+               public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+               @Override
+               public void afterTextChanged(Editable editable) {
+                    String text = txtComUrl.getText().toString();
+                    if(text.length()<10)
+                         txtComUrl.setError(INVALID_MSG,iconInvalid);
+                    else txtComUrl.setError(VALID_MSG,iconValid);
+               }
+          });//check company url,must be more than 10 characters
+
+          txtComAddress.addTextChangedListener(new TextWatcher() {
+               @Override
+               public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+               @Override
+               public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+               @Override
+               public void afterTextChanged(Editable editable) {
+                    String text = txtComAddress.getText().toString();
+                    if(text.length()<15)
+                         txtComAddress.setError(INVALID_MSG,iconInvalid);
+                    else txtComAddress.setError(VALID_MSG,iconValid);
+               }
+          });//check company address,must be more than 15 characters
      }
 
      //job info validator
@@ -414,6 +496,9 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
           salary = txtSalary.getText().toString();
           company = txtCompany.getText().toString();
           experience = txtExp.getText().toString();
+          comAddress = txtComAddress.getText().toString();
+          comUrl = txtComUrl.getText().toString();
+          vacancy = txtVacancy.getText().toString();
 
           if(TextUtils.isEmpty(title)||(title.length()<10))
           {
@@ -440,6 +525,11 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
                return false;
           }
 
+          if(TextUtils.isEmpty(vacancy)||vacancy.equals("0"))
+          {
+               Toast.makeText(this,"Please input number of vacancy",Toast.LENGTH_LONG).show();
+               return false;
+          }
           if(TextUtils.isEmpty(experience)||(experience.length()<15))
           {
                txtExp.setError(INVALID_MSG,iconInvalid);
@@ -486,12 +576,25 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
                txtEmail.setFocusable(true);
                return false;
           }
+          if(TextUtils.isEmpty(comAddress)||comAddress.length()<15)
+          {
+               txtComAddress.setError(INVALID_MSG,iconInvalid);
+               txtComAddress.setFocusable(true);
+               return false;
+          }
+          if(TextUtils.isEmpty(comUrl)||comUrl.length()<10)
+          {
+               txtComUrl.setError(INVALID_MSG,iconInvalid);
+               txtComUrl.setFocusable(true);
+               return false;
+          }
           if(TextUtils.isEmpty(phone))
           {
                txtPhone.setError(INVALID_MSG,iconInvalid);
                txtPhone.setFocusable(true);
                return false;
           }
+
           if(phone.length()>6) {
                if (phone.substring(0, 3).equals("+88")) {
                     if (phone.length() != 14)
@@ -645,6 +748,7 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
                runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                         Log.d("error",value);
                          if(value.equals("success"))
                          {
                               progressBar.setVisibility(View.VISIBLE);
