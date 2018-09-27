@@ -26,6 +26,7 @@ import com.atik_faysal.diualumni.important.CheckInternetConnection;
 import com.atik_faysal.diualumni.important.DisplayMessage;
 import com.atik_faysal.diualumni.interfaces.BooleanResponse;
 import com.atik_faysal.diualumni.interfaces.OnResponseTask;
+import com.atik_faysal.diualumni.main.ApplyForJob;
 import com.atik_faysal.diualumni.models.JobsModel;
 import com.atik_faysal.diualumni.others.EditJobPost;
 
@@ -128,6 +129,27 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
                txtEdu.setText(model.getEducation());
                txtExp.setText(model.getExperience());
                txtSalary.setText(model.getSalary());
+
+               infoMap.put("id",currentModel.getJobId());
+               infoMap.put("email",currentModel.getEmail());
+               infoMap.put("phone",currentModel.getPhone());
+               infoMap.put("type",currentModel.getType());
+               infoMap.put("title",currentModel.getJobTitle());
+               infoMap.put("des",currentModel.getJobDes());
+               infoMap.put("edu",currentModel.getEducation());
+               infoMap.put("req",currentModel.getRequirement());
+               infoMap.put("expe",currentModel.getExperience());
+               infoMap.put("category",currentModel.getCategory());
+               infoMap.put("company",currentModel.getCompany());
+               infoMap.put("deadLine",currentModel.getDeadLine());
+               infoMap.put("salary",currentModel.getSalary());
+               infoMap.put("city",currentModel.getCity());
+               infoMap.put("vacancy",currentModel.getVacancy());
+               infoMap.put("comUrl",currentModel.getComUrl());
+               infoMap.put("comAddress",currentModel.getComAddress());
+               infoMap.put("date",currentModel.getDate());
+               infoMap.put("name",currentModel.getUserName());
+
                if(callFrom.equals("homeProfile"))
                {
                     imgSelect.setEnabled(false);
@@ -180,7 +202,9 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
                          }
                          break;
                     case R.id.rLayout:
-                         Toast.makeText(context,"detail",Toast.LENGTH_LONG).show();
+                         Intent intent = new Intent(context,ApplyForJob.class);
+                         intent.putExtra("maps", (Serializable) infoMap);
+                         context.startActivity(intent);
                          break;
                     case R.id.imgOpt:
                          showPopup();
@@ -226,23 +250,6 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
                          {
                               case R.id.mEdit:
                                    Intent intent = new Intent(context,EditJobPost.class);
-                                   infoMap.put("id",currentModel.getJobId());
-                                   infoMap.put("email",currentModel.getEmail());
-                                   infoMap.put("phone",currentModel.getPhone());
-                                   infoMap.put("type",currentModel.getType());
-                                   infoMap.put("title",currentModel.getJobTitle());
-                                   infoMap.put("des",currentModel.getJobDes());
-                                   infoMap.put("edu",currentModel.getEducation());
-                                   infoMap.put("req",currentModel.getRequirement());
-                                   infoMap.put("expe",currentModel.getExperience());
-                                   infoMap.put("category",currentModel.getCategory());
-                                   infoMap.put("company",currentModel.getCompany());
-                                   infoMap.put("deadLine",currentModel.getDeadLine());
-                                   infoMap.put("salary",currentModel.getSalary());
-                                   infoMap.put("city",currentModel.getCity());
-                                   infoMap.put("vacancy",currentModel.getVacancy());
-                                   infoMap.put("comUrl",currentModel.getComUrl());
-                                   infoMap.put("comAddress",currentModel.getComAddress());
                                    intent.putExtra("maps", (Serializable) infoMap);
                                    context.startActivity(intent);
                                    break;

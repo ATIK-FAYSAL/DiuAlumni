@@ -13,4 +13,5 @@
     <dimen name="eighteen">18dp</dimen>
     <dimen name="fifteendp">15dp</dimen>
     <dimen name="sixteen">16dp</dimen>
+    <dimen name="thirteen">13dp</dimen>
 </resources>

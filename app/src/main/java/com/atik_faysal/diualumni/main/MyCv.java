@@ -92,7 +92,7 @@ public class MyCv extends AppCompatActivity implements Methods
           imgDoc.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View view) {
-                    showPopup();
+                         showPopup();
                }
           });
           
