@@ -6,33 +6,27 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.design.widget.Snackbar;
-import android.text.Html;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.atik_faysal.diualumni.R;
 import com.atik_faysal.diualumni.background.PostInfoBackgroundTask;
-import com.atik_faysal.diualumni.background.SharedPreferencesData;
 import com.atik_faysal.diualumni.interfaces.BooleanResponse;
-import com.atik_faysal.diualumni.interfaces.OnResponseTask;
 import com.atik_faysal.diualumni.main.JobPortal;
+import com.atik_faysal.diualumni.main.UserRegistration;
 import com.gdacciaro.iOSDialog.iOSDialog;
 import com.gdacciaro.iOSDialog.iOSDialogBuilder;
 import com.gdacciaro.iOSDialog.iOSDialogClickListener;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class DisplayMessage extends AlertDialog
@@ -126,6 +120,31 @@ public class DisplayMessage extends AlertDialog
                     }
                })
                .build().show();
+     }
+
+     public void congratesMessage(String text)
+     {
+          AlertDialog.Builder builder;
+          final AlertDialog alertDialog;
+          @SuppressLint("InflateParams")
+          View view = LayoutInflater.from(context).inflate(R.layout.congrates_layout,null);
+          Button bGo = view.findViewById(R.id.bGo);
+          TextView textView = view.findViewById(R.id.text1);
+          textView.setText(text);
+          builder = new AlertDialog.Builder(context);
+          builder.setView(view);
+          builder.setCancelable(false);
+          alertDialog = builder.create();
+          Objects.requireNonNull(alertDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+          alertDialog.show();
+
+          bGo.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View view) {
+                    methods.closeActivity((Activity) context,JobPortal.class);
+                    alertDialog.dismiss();
+               }
+          });
      }
 
 }
