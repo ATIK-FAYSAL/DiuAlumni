@@ -160,8 +160,8 @@ public class ApplyForJob extends AppCompatActivity implements Methods,View.OnCli
                     if(progressDialog.isShowing())
                     {
                          progressDialog.dismiss();
-                         Toast.makeText(ApplyForJob.this,"Your Resume is send successfully",Toast.LENGTH_SHORT).show();
-                         requireMethods.closeActivity(ApplyForJob.this,JobPortal.class);
+                         //Toast.makeText(ApplyForJob.this,"Your Resume is send successfully",Toast.LENGTH_SHORT).show();
+                         displayMessage.congratesMessage("Your Resume is send successfully");
                     }
                }
           }

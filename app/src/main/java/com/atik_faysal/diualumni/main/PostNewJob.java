@@ -748,7 +748,6 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
                runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                         Log.d("error",value);
                          if(value.equals("success"))
                          {
                               progressBar.setVisibility(View.VISIBLE);
@@ -758,7 +757,13 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
                                         try
                                         {
                                              Thread.sleep(2500);
-                                             methods.closeActivity(PostNewJob.this,JobPortal.class);
+                                             runOnUiThread(new Runnable() {
+                                                  @Override
+                                                  public void run() {
+                                                       progressBar.setVisibility(View.INVISIBLE);
+                                                       displayMessage.congratesMessage("Your post has been posted successfully");
+                                                  }
+                                             });
                                         }catch (InterruptedException e)
                                         {
                                              e.printStackTrace();

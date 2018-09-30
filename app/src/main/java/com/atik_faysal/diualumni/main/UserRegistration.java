@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -434,8 +435,16 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
                                              maps.put("phone",phone);
                                              maps.put("type",memberType);
                                              SharedPreferencesData sharedPreferencesData = new SharedPreferencesData(UserRegistration.this,maps);
+                                             //sharedPreferencesData.clearData();//clear all previous data
                                              sharedPreferencesData.currentUserInfo();//store current user information
-                                             requireMethods.closeActivity(UserRegistration.this,JobPortal.class);
+                                             sharedPreferencesData.isUserLogin(true);//set user as log in true
+                                             runOnUiThread(new Runnable() {
+                                                  @Override
+                                                  public void run() {
+                                                       progressBar.setVisibility(View.INVISIBLE);
+                                                       dialogClass.congratesMessage("Your account has been created successfully");
+                                                  }
+                                             });
                                         }catch (InterruptedException e)
                                         {
                                              e.printStackTrace();
