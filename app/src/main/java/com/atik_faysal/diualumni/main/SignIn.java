@@ -203,7 +203,7 @@ public class SignIn extends AppCompatActivity implements Methods,View.OnClickLis
                sharedPreferencesData.userImageName(imageName);//store user image name
 
 
-               final ProgressDialog ringProgressDialog = ProgressDialog.show(this, "Authenticating.....","", true);
+               final ProgressDialog ringProgressDialog = ProgressDialog.show(this, "Please wait","Authenticating", true);
                ringProgressDialog.setCancelable(true);
                new Thread(new Runnable() {
                     @Override
