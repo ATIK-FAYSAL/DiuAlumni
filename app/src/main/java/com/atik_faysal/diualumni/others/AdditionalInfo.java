@@ -165,7 +165,7 @@ public class AdditionalInfo extends AboutProfile implements DatePickerDialog.OnD
                     if(!company.isEmpty()&&!position.isEmpty())
                     {
                          maps.put("option","experience");
-                         maps.put("stdId",sharedPreferencesData.getStudentId());
+                         maps.put("stdId",sharedPreferencesData.getCurrentUserId());
                          maps.put("company",company);
                          maps.put("position",position);
                          maps.put("city",city);

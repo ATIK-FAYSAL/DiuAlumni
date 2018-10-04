@@ -106,7 +106,7 @@ public class MyCv extends AppCompatActivity implements Methods
      {
           Map<String,String> map = new HashMap<>();
           map.put("option","resume");
-          map.put("stdId",sharedPreferencesData.getStudentId());
+          map.put("stdId",sharedPreferencesData.getCurrentUserId());
           if(internetConnection.isOnline())
           {
                backgroundTask = new PostInfoBackgroundTask(this,responseTask);
@@ -192,7 +192,7 @@ public class MyCv extends AppCompatActivity implements Methods
                @Override
                public void onClick(DialogInterface dialogInterface, int i) {
                     Map<String,String> maps = new HashMap<>();
-                    maps.put("stdId",sharedPreferencesData.getStudentId());//pass current user student id
+                    maps.put("stdId",sharedPreferencesData.getCurrentUserId());//pass current user student id
                     maps.put("file",getBytes(uri));//pass file
                     if (fileName.endsWith(".pdf"))
                          maps.put("type","pdf");
@@ -219,7 +219,7 @@ public class MyCv extends AppCompatActivity implements Methods
      {
           Map<String,String> map = new HashMap<>();
           map.put("option","resume");
-          map.put("stdId",sharedPreferencesData.getStudentId());
+          map.put("stdId",sharedPreferencesData.getCurrentUserId());
           if(internetConnection.isOnline())
           {
                backgroundTask = new PostInfoBackgroundTask(this,getOnResponseTask);

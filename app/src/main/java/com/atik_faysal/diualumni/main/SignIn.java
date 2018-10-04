@@ -21,6 +21,7 @@ import com.atik_faysal.diualumni.background.SharedPreferencesData;
 import com.atik_faysal.diualumni.important.DisplayMessage;
 import com.atik_faysal.diualumni.important.CheckInternetConnection;
 import com.atik_faysal.diualumni.important.DesEncryptionAlgo;
+import com.atik_faysal.diualumni.important.ForgotPassword;
 import com.atik_faysal.diualumni.important.RequireMethods;
 import com.atik_faysal.diualumni.interfaces.Methods;
 import com.atik_faysal.diualumni.interfaces.OnResponseTask;
@@ -121,7 +122,7 @@ public class SignIn extends AppCompatActivity implements Methods,View.OnClickLis
                     }
                     break;
                case R.id.txtForgotPass:
-                    Toast.makeText(this,"Forgot password",Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(SignIn.this,ForgotPassword.class));
                     break;
                case R.id.txtSignUp:
                     startActivity(new Intent(SignIn.this,UserRegistration.class));//go to registration page

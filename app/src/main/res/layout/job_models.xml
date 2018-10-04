@@ -240,6 +240,7 @@
                 android:layout_toEndOf="@+id/text3"
                 android:layout_marginStart="3dp"
                 android:hint="name"
+                android:clickable="true"
                 android:textSize="@dimen/sixteen"
                 android:textColor="@color/userName"/>
 

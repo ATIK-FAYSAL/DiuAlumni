@@ -636,7 +636,7 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
                          {
                               case "success":
                                    Map<String,String>maps = new HashMap<>();
-                                   maps.put("stdId",sharedPreferencesData.getStudentId());
+                                   maps.put("stdId",sharedPreferencesData.getCurrentUserId());
                                    maps.put("name",name);
                                    maps.put("email",email);
                                    maps.put("phone",phone);

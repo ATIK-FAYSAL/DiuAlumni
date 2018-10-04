@@ -33,7 +33,6 @@ public class ApplyForJob extends AppCompatActivity implements Methods,View.OnCli
      private DisplayMessage displayMessage;
      private CheckInternetConnection internetConnection;
      private ProgressDialog progressDialog;
-     private RequireMethods requireMethods;
      private String toEmail;
 
      @Override
@@ -99,7 +98,6 @@ public class ApplyForJob extends AppCompatActivity implements Methods,View.OnCli
           internetConnection = new CheckInternetConnection(this);
           displayMessage = new DisplayMessage(this);
           progressDialog = new ProgressDialog(this);
-          requireMethods = new RequireMethods(this);
 
           //calling method
           setToolbar();
@@ -128,21 +126,24 @@ public class ApplyForJob extends AppCompatActivity implements Methods,View.OnCli
           switch (view.getId())
           {
                case R.id.bApply:
-                    Map<String,String> map = new HashMap<>();
-                    map.put("name",sharedPreferencesData.getUserName());
-                    map.put("stdId",sharedPreferencesData.getCurrentUserId());
-                    map.put("phone",sharedPreferencesData.getUserPhone());
-                    map.put("email",sharedPreferencesData.getUserEmail());
-                    map.put("toEmail",toEmail);
-                    if(internetConnection.isOnline())
+                    if(sharedPreferencesData.getIsUserLogin())
                     {
-                         PostInfoBackgroundTask backgroundTask = new PostInfoBackgroundTask(this,responseTask);
-                         backgroundTask.InsertData(getResources().getString(R.string.sendResume),map);
-                         progressDialog.setCancelable(false);
-                         progressDialog.setTitle("Please wait");
-                         progressDialog.setMessage("Sending your resume");
-                         progressDialog.show();
-                    }else displayMessage.errorMessage(getResources().getString(R.string.noInternet));
+                         Map<String,String> map = new HashMap<>();
+                         map.put("name",sharedPreferencesData.getUserName());
+                         map.put("stdId",sharedPreferencesData.getCurrentUserId());
+                         map.put("phone",sharedPreferencesData.getUserPhone());
+                         map.put("email",sharedPreferencesData.getUserEmail());
+                         map.put("toEmail",toEmail);
+                         if(internetConnection.isOnline())
+                         {
+                              PostInfoBackgroundTask backgroundTask = new PostInfoBackgroundTask(this,responseTask);
+                              backgroundTask.InsertData(getResources().getString(R.string.sendResume),map);
+                              progressDialog.setCancelable(false);
+                              progressDialog.setTitle("Please wait");
+                              progressDialog.setMessage("Sending your resume");
+                              progressDialog.show();
+                         }else displayMessage.errorMessage(getResources().getString(R.string.noInternet));
+                    }else Toast.makeText(this,"Please sign in first and retry",Toast.LENGTH_LONG).show();
                     break;
                case R.id.txtComUrl:
                     break;

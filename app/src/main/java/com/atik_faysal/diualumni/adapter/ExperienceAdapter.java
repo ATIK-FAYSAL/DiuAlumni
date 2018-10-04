@@ -122,7 +122,7 @@ public class ExperienceAdapter extends RecyclerView.Adapter<ExperienceAdapter.Vi
                currentModel = model;
                position = pos;
                txtTitle.setText(model.getPosition()+" at "+model.getCompany());
-               if(!model.getStdId().equals(sharedPreferencesData.getStudentId()))
+               if(!model.getStdId().equals(sharedPreferencesData.getCurrentUserId()))
                     imgRmv.setVisibility(View.GONE);
           }
 
@@ -172,7 +172,7 @@ public class ExperienceAdapter extends RecyclerView.Adapter<ExperienceAdapter.Vi
                imgCancel = view.findViewById(R.id.imgCancel);
                bSave.setText("Change");
 
-               if(!currentModel.getStdId().equals(sharedPreferencesData.getStudentId()))
+               if(!currentModel.getStdId().equals(sharedPreferencesData.getCurrentUserId()))
                {
                     txtCompany.setEnabled(false);
                     txtPosition.setEnabled(false);

@@ -103,7 +103,7 @@ public class UrlsAdapter extends RecyclerView.Adapter<UrlsAdapter.ViewHolder>
                txtUrl.setText(model.getUrl());
                position = pos;
 
-               if(!sharedPreferencesData.getStudentId().equals(currentModel.getStdId()))
+               if(!sharedPreferencesData.getCurrentUserId().equals(currentModel.getStdId()))
                {
                     imgRmv.setEnabled(false);
                     imgRmv.setImageDrawable(null);
@@ -121,7 +121,7 @@ public class UrlsAdapter extends RecyclerView.Adapter<UrlsAdapter.ViewHolder>
                switch (view.getId())
                {
                     case R.id.txtUrls:
-                         if(!sharedPreferencesData.getStudentId().equals(currentModel.getStdId()))
+                         if(!sharedPreferencesData.getCurrentUserId().equals(currentModel.getStdId()))
                          {
                               Uri uri = Uri.parse(currentModel.getUrl());
                               Intent intent  = new Intent(Intent.ACTION_VIEW,uri);

@@ -399,8 +399,12 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
                     else startActivity(new Intent(JobPortal.this,SignIn.class));
                     break;
 
-               case R.id.navSetting:
-                    Toast.makeText(JobPortal.this,"option 5",Toast.LENGTH_LONG).show();
+               case R.id.navChangePass:
+                    methods.changePassword();//change password
+                    break;
+
+               case R.id.navStopNotification:
+                    Toast.makeText(JobPortal.this,"stop notification",Toast.LENGTH_LONG).show();
                     break;
 
                case R.id.navFeedback:

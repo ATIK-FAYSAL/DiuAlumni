@@ -29,6 +29,7 @@ import com.atik_faysal.diualumni.interfaces.OnResponseTask;
 import com.atik_faysal.diualumni.main.ApplyForJob;
 import com.atik_faysal.diualumni.models.JobsModel;
 import com.atik_faysal.diualumni.others.EditJobPost;
+import com.atik_faysal.diualumni.others.SetTabLayout;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -46,7 +47,6 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
 
      private CheckInternetConnection internetConnection;
      private PostInfoBackgroundTask backgroundTask;
-     private DisplayMessage displayMessage;
      private SharedPreferencesData sharedPreferencesData;
 
      private boolean temp;
@@ -59,7 +59,6 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
           this.activity = (Activity)context;
           this.callFrom = callFrom;
           internetConnection = new CheckInternetConnection(context);
-          displayMessage = new DisplayMessage(context);
           sharedPreferencesData = new SharedPreferencesData(context);
      }
 
@@ -166,7 +165,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
                else
                     imgValid.setVisibility(View.VISIBLE);
 
-               if(!model.getStdId().equals(sharedPreferencesData.getStudentId()))
+               if(!model.getStdId().equals(sharedPreferencesData.getCurrentUserId()))
                     imgOpt.setVisibility(View.GONE);
                else imgOpt.setVisibility(View.VISIBLE);
           }
@@ -177,6 +176,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
                imgSelect.setOnClickListener(JobsAdapter.ViewHolder.this);
                relativeLayout.setOnClickListener(JobsAdapter.ViewHolder.this);
                imgOpt.setOnClickListener(JobsAdapter.ViewHolder.this);
+               txtName.setOnClickListener(JobsAdapter.ViewHolder.this);
           }
 
           //on button click
@@ -185,21 +185,24 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
                switch (view.getId())
                {
                     case R.id.imgSelect:
-                         if(currentModel.isFlag())
+                         if(sharedPreferencesData.getIsUserLogin())
                          {
-                              backgroundTask = new PostInfoBackgroundTask(context,onResponseTask);
-                              removeFavJob(currentModel.getJobId());//remove favourite job
-                              currentModel.setFlag(false);
-                              imgSelect.setImageResource(R.drawable.icon_select1);
-                              temp = false;//use for if failed to execution
-                         }else
-                         {
-                              backgroundTask = new PostInfoBackgroundTask(context,onResponseTask);
-                              storeFavJob(currentModel.getJobId());//store favourite job
-                              currentModel.setFlag(true);
-                              imgSelect.setImageResource(R.drawable.icon_select2);
-                              temp = true;//use for if failed to execution
-                         }
+                              if(currentModel.isFlag())
+                              {
+                                   backgroundTask = new PostInfoBackgroundTask(context,onResponseTask);
+                                   removeFavJob(currentModel.getJobId());//remove favourite job
+                                   currentModel.setFlag(false);
+                                   imgSelect.setImageResource(R.drawable.icon_select1);
+                                   temp = false;//use for if failed to execution
+                              }else
+                              {
+                                   backgroundTask = new PostInfoBackgroundTask(context,onResponseTask);
+                                   storeFavJob(currentModel.getJobId());//store favourite job
+                                   currentModel.setFlag(true);
+                                   imgSelect.setImageResource(R.drawable.icon_select2);
+                                   temp = true;//use for if failed to execution
+                              }
+                         }else Toast.makeText(context,"Please sign in first and retry",Toast.LENGTH_LONG).show();
                          break;
                     case R.id.rLayout:
                          Intent intent = new Intent(context,ApplyForJob.class);
@@ -208,6 +211,12 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
                          break;
                     case R.id.imgOpt:
                          showPopup();
+                         break;
+                    case R.id.txtUserName:
+                         Toast.makeText(context,"click",Toast.LENGTH_LONG).show();
+                         Intent page = new Intent(context, SetTabLayout.class);
+                         page.putExtra("user",currentModel.getStdId());
+                         activity.startActivity(page);
                          break;
                }
           }
