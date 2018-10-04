@@ -74,6 +74,10 @@
             android:screenOrientation="portrait"
             android:label="Apply Job"/>
 
+        <activity android:name=".important.ForgotPassword"
+            android:screenOrientation="portrait"
+            android:label="Recover your password"/>
+
 
         <meta-data android:name="com.facebook.accountkit.ApplicationName"
             android:value="@string/app_name" />

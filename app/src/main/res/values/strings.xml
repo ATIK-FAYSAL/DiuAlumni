@@ -116,7 +116,7 @@
     <string name="noInternet">Please check your internet connection</string>
     <string name="executionFailed">[Error-1001] Execution failed,please try again latter</string>
     <string name="jsonErr">[Error-1002] Execution failed,please try again latter</string>
-    <string name="infoErr">[Error-1003] Informations are not valid,please input valid information</string>
+    <string name="infoErr">[Error-1003] Information are not valid,please input valid information</string>
     <string name="updateFailed">[Error-1004] Update failed,please try again latter</string>
     <string name="limitExceed">[Error-1004] Execution failed,Your favourite job limit is exceed</string>
     <string name="invalidDate">Invalid date.Please pick a valid date.</string>
@@ -135,5 +135,6 @@
     <string name="uploadImage">http://192.168.56.1/diuAlumni/uploadImage.php</string>
     <string name="uploadCv">http://192.168.56.1/diuAlumni/uploadCv.php</string>
     <string name="sendResume">http://192.168.56.1/diuAlumni/sendResume.php</string>
+    <string name="forgotPass">http://192.168.56.1/diuAlumni/forgotPass.php</string>
 
 </resources>

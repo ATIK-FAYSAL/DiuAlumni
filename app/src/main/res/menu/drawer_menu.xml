@@ -26,10 +26,7 @@
             android:id="@+id/navFabJob"
             android:icon="@drawable/icon_fav"
             android:title="Favourite jobs" />
-        <item
-            android:id="@+id/navSetting"
-            android:icon="@drawable/icon_setting"
-            android:title="Settings" />
+
         <item
             android:id="@+id/navFeedback"
             android:icon="@drawable/icon_feedback"
@@ -45,6 +42,21 @@
             android:title="Sign in" />
 
     </group>
+
+    <item android:title="Settings">
+
+        <menu>
+            <item
+                android:id="@+id/navChangePass"
+                android:icon="@drawable/icon_pass"
+                android:title="Change password" />
+            <item
+                android:id="@+id/navStopNotification"
+                android:icon="@drawable/icon_notification_off"
+                android:title="Enable notification" />
+        </menu>
+
+    </item>
 
 
 </menu>
