@@ -159,7 +159,9 @@ public class MyFabJob extends AppCompatActivity implements Methods
                          timer.cancel();
                     }catch (NullPointerException e)
                     {
-                         displayMessage.errorMessage(e.toString());
+                         txtNoresult.setVisibility(View.VISIBLE);
+                         txtNoresult.setText(getResources().getString(R.string.noResult));
+                         progressBar.setVisibility(View.GONE);
                     }
                }
           };
