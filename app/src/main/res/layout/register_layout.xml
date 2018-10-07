@@ -231,7 +231,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:paddingLeft="20dp"
-                        android:background="@drawable/style_text_reg"
+                        style="@style/spinner_theme"
                         android:layout_margin="5dp"
                         android:layout_below="@+id/rLayout1">
 
@@ -242,7 +242,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:paddingLeft="20dp"
-                        android:background="@drawable/style_text_reg"
+                        style="@style/spinner_theme"
                         android:layout_margin="5dp"
                         android:layout_below="@+id/sBatch">
 

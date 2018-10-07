@@ -109,7 +109,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:layout_marginTop="5dp"
-                        android:background="@drawable/job_text_style"
+                        style="@style/spinner_theme"
                         android:paddingLeft="15dp"
                         android:paddingRight="15dp"
                         android:layout_marginEnd="@dimen/twenty"
@@ -264,7 +264,7 @@
                         android:layout_height="45dp"
                         android:layout_weight="1"
                         android:layout_marginRight="5dp"
-                        android:background="@drawable/job_text_style"
+                        style="@style/spinner_theme"
                         android:paddingLeft="15dp"
                         android:paddingRight="15dp">
                     </Spinner>

@@ -19,4 +19,8 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="spinner_theme" parent="android:Widget.Spinner">
+        <item name="android:background">@drawable/spinner_style</item>
+    </style>
+
 </resources>

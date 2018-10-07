@@ -120,8 +120,9 @@
     <string name="updateFailed">[Error-1004] Update failed,please try again latter</string>
     <string name="limitExceed">[Error-1004] Execution failed,Your favourite job limit is exceed</string>
     <string name="invalidDate">Invalid date.Please pick a valid date.</string>
-    <string name="noResult">No Jobs found</string>
+    <string name="noResult">No result found</string>
     <string name="nullPointer">[Error-1005] No value found.please try again</string>
+    <string name="invalidError">Oops ! Something is wrong,please try again</string>
 
     //file location
     <string name="address">http://192.168.56.1/diuAlumni/images/</string>
