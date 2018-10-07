@@ -1,5 +1,6 @@
 package com.atik_faysal.diualumni.main;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,7 +16,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,7 +30,6 @@ import com.atik_faysal.diualumni.adapter.JobsAdapter;
 import com.atik_faysal.diualumni.background.PostInfoBackgroundTask;
 import com.atik_faysal.diualumni.background.SharedPreferencesData;
 import com.atik_faysal.diualumni.important.CheckInternetConnection;
-import com.atik_faysal.diualumni.important.DisplayMessage;
 import com.atik_faysal.diualumni.important.MyFabJob;
 import com.atik_faysal.diualumni.important.RequireMethods;
 import com.atik_faysal.diualumni.interfaces.Methods;
@@ -38,6 +37,7 @@ import com.atik_faysal.diualumni.interfaces.OnResponseTask;
 import com.atik_faysal.diualumni.models.JobsModel;
 import com.atik_faysal.diualumni.others.AboutUs;
 import com.atik_faysal.diualumni.others.Feedback;
+import com.atik_faysal.diualumni.others.FilterResult;
 import com.atik_faysal.diualumni.others.NoInternetConnection;
 import com.atik_faysal.diualumni.others.SetTabLayout;
 import com.bumptech.glide.Glide;
@@ -66,15 +66,19 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
      private DrawerLayout drawerLayout;
      private ActionBarDrawerToggle mToggle;
      private SharedPreferencesData sharedPreferencesData;
-     private DisplayMessage displayMessage;
      private NavigationView navigationView;
      private RecyclerView recyclerView;
      private LinearLayoutManager layoutManager;
      private PostInfoBackgroundTask backgroundTask;
      private CheckInternetConnection internetConnection;
      private RequireMethods methods;
+     private FilterResult filterResult;
+     private ProgressDialog progressDialog;
 
-     private TextView txtName,txtPhone,txtNoResult,txtNumOfJobs;
+     private TextView txtName;
+     private TextView txtPhone;
+     private TextView txtNoResult;
+     private TextView txtNumOfJobs;
      private ProgressBar progressBar;
      private RelativeLayout emptyView;
      private CircleImageView imgUser;
@@ -182,16 +186,29 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
           txtNoResult = findViewById(R.id.txtNoResult);
           txtNoResult.setVisibility(View.INVISIBLE);
           imgUser = view.findViewById(R.id.imgUserImage);
+          TextView txtFilter = findViewById(R.id.txtFilter);
+          progressDialog = new ProgressDialog(this);
+          progressDialog.setTitle("Please wait");
+          progressDialog.setMessage("Searching data");
           SwipeRefreshLayout refreshLayout = findViewById(R.id.refresh);
           refreshLayout.setColorSchemeResources(R.color.color1,R.color.color1,R.color.color1);
 
           sharedPreferencesData = new SharedPreferencesData(this);
-          displayMessage = new DisplayMessage(this);
           backgroundTask = new PostInfoBackgroundTask(this,onResponseTask);
           internetConnection = new CheckInternetConnection(this);
           methods = new RequireMethods(this);
+          filterResult = new FilterResult(this);
 
           methods.reloadPage(refreshLayout,JobPortal.class);//reload this current page
+
+
+          txtFilter.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View view) {
+                    filterResult.onSuccessListener(responseTask);
+                    filterResult.filterJob();
+               }
+          });
      }
 
      //get all job and current user favourite jobs
@@ -275,13 +292,8 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
 
                     count++;//increment
                }
-          } catch (JSONException e) {
-               //displayMessage.errorMessage(e.toString());
-               Log.d("error",e.toString());
+          } catch (JSONException | NullPointerException e) {
                return null;
-          }catch (NullPointerException ex)
-          {
-               displayMessage.errorMessage(getResources().getString(R.string.nullPointer));
           }
           return jobsModels;
      }
@@ -295,6 +307,7 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
           final Timer timer = new Timer();
           final Handler handler = new Handler();
           final  Runnable runnable = new Runnable() {
+               @SuppressLint("SetTextI18n")
                @Override
                public void run() {
                    try {
@@ -317,10 +330,13 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
                              txtNumOfJobs.setText(String.valueOf(jobsModels.size()));
                         }
                         progressBar.setVisibility(View.GONE);
+                        progressDialog.dismiss();
                         timer.cancel();
                    }catch (NullPointerException e)
                    {
-                        displayMessage.errorMessage(e.toString());
+                        txtNoResult.setVisibility(View.VISIBLE);
+                        txtNoResult.setText(getResources().getString(R.string.noResult));
+                        progressBar.setVisibility(View.GONE);
                    }
                }
           };
@@ -329,7 +345,7 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
                public void run() {
                     handler.post(runnable);
                }
-          },2800);
+          },2000);
      }
 
      //sing out
@@ -438,6 +454,18 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
                          viewJobInfo(value);
                     }
                });
+          }
+     };
+
+     //filter job response
+     private OnResponseTask responseTask = new OnResponseTask() {
+          @Override
+          public void onResultSuccess(String value) {
+               if(value!=null)
+               {
+                    progressDialog.show();
+                    viewJobInfo(value);
+               }
           }
      };
 }

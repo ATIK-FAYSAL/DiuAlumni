@@ -1,5 +1,7 @@
 package com.atik_faysal.diualumni.main;
 
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,7 +12,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -25,6 +27,7 @@ import com.atik_faysal.diualumni.important.RequireMethods;
 import com.atik_faysal.diualumni.interfaces.Methods;
 import com.atik_faysal.diualumni.interfaces.OnResponseTask;
 import com.atik_faysal.diualumni.models.AlumniModel;
+import com.atik_faysal.diualumni.others.FilterResult;
 import com.atik_faysal.diualumni.others.NoInternetConnection;
 
 import org.json.JSONArray;
@@ -35,6 +38,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -45,11 +50,11 @@ public class AlumniMembers extends AppCompatActivity implements Methods
      private LinearLayoutManager layoutManager;
      private ProgressBar progressBar;
      private RelativeLayout emptyView;
+     private ProgressDialog progressDialog;
 
-     private DisplayMessage displayMessage;
      private CheckInternetConnection internetConnection;
-     private RequireMethods methods;
      private PostInfoBackgroundTask backgroundTask;
+     private FilterResult filterResult;
 
      @Override
      protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,23 +85,35 @@ public class AlumniMembers extends AppCompatActivity implements Methods
           txtNoResult = findViewById(R.id.txtNoResult);
           txtNoResult.setVisibility(View.INVISIBLE);
           emptyView = findViewById(R.id.emptyView);
+          progressDialog = new ProgressDialog(this);
+          progressDialog.setTitle("Please wait");
+          progressDialog.setMessage("Searching data");
+          TextView txtFilter = findViewById(R.id.txtFilter);
           SwipeRefreshLayout refreshLayout = findViewById(R.id.refresh);
           refreshLayout.setColorSchemeResources(R.color.color1,R.color.color1,R.color.color1);
 
           layoutManager = new LinearLayoutManager(this);
-          displayMessage = new DisplayMessage(this);
           internetConnection = new CheckInternetConnection(this);
-          methods = new RequireMethods(this);
+          RequireMethods methods = new RequireMethods(this);
           backgroundTask = new PostInfoBackgroundTask(this,onResponseTask);
+          filterResult = new FilterResult(this);
+
+          txtFilter.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View view) {
+                    filterResult.filterAlumni();
+                    filterResult.onSuccessListener(responseTask);
+               }
+          });
 
           //calling method
-          retrieveAlumnis();//get all alumni information
+          retrieveAlumni();//get all alumni information
           methods.reloadPage(refreshLayout,AlumniMembers.class);
           setToolbar();
      }
 
      //get member list from server
-     private void retrieveAlumnis()
+     private void retrieveAlumni()
      {
           Map<String,String>maps = new HashMap<>();
           maps.put("option","alumni");
@@ -108,7 +125,7 @@ public class AlumniMembers extends AppCompatActivity implements Methods
      public void setToolbar() {
           Toolbar toolbar = findViewById(R.id.toolbar);
           setSupportActionBar(toolbar);toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-          getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+          Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
           getSupportActionBar().setDisplayShowHomeEnabled(true);
           toolbar.setNavigationIcon(R.drawable.icon_back);
           toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -122,6 +139,9 @@ public class AlumniMembers extends AppCompatActivity implements Methods
 
      @Override
      public void processJsonData(String jsonData)
+     {}
+
+     private List<AlumniModel> jsonDataProcess(String jsonData)
      {
           String name,id,phone,email,gender,batch,imageName;
           final List<AlumniModel>modelList = new ArrayList<>();
@@ -146,49 +166,61 @@ public class AlumniMembers extends AppCompatActivity implements Methods
                     modelList.add(new AlumniModel(name,id,gender,batch,phone,email,imageName,department,company,position));
                     count++;
                }
-          } catch (JSONException e) {
-               displayMessage.errorMessage(e.toString());
-          }catch (NullPointerException ex)
-          {
-               displayMessage.errorMessage(getResources().getString(R.string.address));
-          }finally {
-               final Timer timer = new Timer();
-               final Handler handler = new Handler();
-               final Runnable runnable = new Runnable() {
-                    @Override
-                    public void run() {
-                         try {
-                              if (modelList.isEmpty())//if no jobs found
-                              {
-                                   emptyView.setVisibility(View.VISIBLE);//empty view visible
-                                   txtNoResult.setVisibility(View.VISIBLE);//no result text visible
-                                   recyclerView.setVisibility(View.INVISIBLE);//list invisible
-                                   numberOfResult.setText("0");
-                              } else//if jobs found
-                              {
-                                   emptyView.setVisibility(View.INVISIBLE);//empty view invisible
-                                   recyclerView.setVisibility(View.VISIBLE);//no result text invisible
-                                   AlumniAdapter adapter = new AlumniAdapter(AlumniMembers.this, modelList);//create adapter
-                                   recyclerView.setAdapter(adapter);//set adapter in recyler view
-                                   layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                                   recyclerView.setLayoutManager(layoutManager);
-                                   recyclerView.setItemAnimator(new DefaultItemAnimator());
-                                   numberOfResult.setText(String.valueOf(modelList.size()));
-                              }
-                              progressBar.setVisibility(View.GONE);
-                              timer.cancel();
-                         } catch (NullPointerException e) {
-                              displayMessage.errorMessage(e.toString());
-                         }
-                    }
-               };
-               timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                         handler.post(runnable);
-                    }
-               },2500);
+          } catch (JSONException | NullPointerException e) {
+              return null;
           }
+
+          return modelList;
+     }
+
+     //view all job information in UI
+     private void viewResultInUi(String json)
+     {
+          final List<AlumniModel>modelList = jsonDataProcess(json);
+
+          //add progress bar ...
+          final Timer timer = new Timer();
+          final Handler handler = new Handler();
+          final  Runnable runnable = new Runnable() {
+               @SuppressLint("SetTextI18n")
+               @Override
+               public void run() {
+                    try {
+                         if (modelList==null)//if no results found
+                         {
+                              emptyView.setVisibility(View.VISIBLE);//empty view visible
+                              txtNoResult.setVisibility(View.VISIBLE);//no result text visible
+                              recyclerView.setVisibility(View.INVISIBLE);//list invisible
+                              numberOfResult.setText("0");
+                         } else//if result found
+                         {
+                              emptyView.setVisibility(View.INVISIBLE);//empty view invisible
+                              recyclerView.setVisibility(View.VISIBLE);//no result text invisible
+                              AlumniAdapter adapter = new AlumniAdapter(AlumniMembers.this, modelList);//create adapter
+                              recyclerView.setAdapter(adapter);//set adapter in recyler view
+                              layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                              recyclerView.setLayoutManager(layoutManager);
+                              recyclerView.setItemAnimator(new DefaultItemAnimator());
+                              numberOfResult.setText(String.valueOf(modelList.size()));
+                         }
+                         progressBar.setVisibility(View.GONE);
+                         progressDialog.dismiss();
+                         timer.cancel();
+
+                    }catch (NullPointerException e)
+                    {
+                         txtNoResult.setVisibility(View.VISIBLE);
+                         txtNoResult.setText(getResources().getString(R.string.noResult));
+                         progressBar.setVisibility(View.GONE);
+                    }
+               }
+          };
+          timer.schedule(new TimerTask() {
+               @Override
+               public void run() {
+                    handler.post(runnable);
+               }
+          },2000);
      }
 
      OnResponseTask onResponseTask = new OnResponseTask() {
@@ -197,10 +229,17 @@ public class AlumniMembers extends AppCompatActivity implements Methods
                runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                         if(value!=null)
-                              processJsonData(value);
+                         viewResultInUi(value);
                     }
                });
+          }
+     };
+
+     OnResponseTask responseTask = new OnResponseTask() {
+          @Override
+          public void onResultSuccess(String value) {
+               progressDialog.show();
+               viewResultInUi(value);
           }
      };
 }
