@@ -50,6 +50,22 @@
                 android:textSize="@dimen/fifteen"
                 android:textColor="@color/black" />
 
+            <TextView
+                android:id="@+id/txtFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="10dp"
+                android:text="Filter"
+                android:textStyle="normal"
+                android:padding="3dp"
+                android:clickable="true"
+                android:drawableRight="@drawable/icon_filter"
+                android:drawablePadding="5dp"
+                android:textSize="@dimen/fifteen"
+                android:textColor="@color/black" />
+
         </RelativeLayout>
 
         <RelativeLayout
