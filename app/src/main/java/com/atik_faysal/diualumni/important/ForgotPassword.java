@@ -442,7 +442,6 @@ public class ForgotPassword extends AppCompatActivity implements Methods
      private OnResponseTask getResponseTask = new OnResponseTask() {
           @Override
           public void onResultSuccess(String value) {
-               Log.d("error",value);
                if(value.equals("success"))
                {
                     Toast.makeText(ForgotPassword.this,"Your password has been updated",Toast.LENGTH_LONG).show();
