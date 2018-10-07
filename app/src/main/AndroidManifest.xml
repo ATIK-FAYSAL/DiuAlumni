@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.atik_faysal.diualumni">
 
 
@@ -14,7 +15,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".main.SplashScreen"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -36,44 +38,34 @@
         <activity android:name=".main.PostNewJob"
             android:screenOrientation="portrait"
             android:label="New Job"/>
-
         <activity android:name=".others.SetTabLayout"
             android:screenOrientation="portrait"/>
-
         <activity android:name=".main.AlumniMembers"
             android:screenOrientation="portrait"
             android:label="Alumni members"/>
-
         <activity android:name=".important.MyFabJob"
             android:screenOrientation="portrait"
             android:label="Favourite job"/>
-
         <activity android:name=".others.AboutUs"
             android:screenOrientation="portrait"
             android:label="About us"/>
-
         <activity android:name=".others.Feedback"
             android:screenOrientation="portrait"
             android:label="Feedback"/>
         <activity android:name=".others.NoInternetConnection"
             android:screenOrientation="portrait"/>
-
         <activity android:name=".others.EditJobPost"
             android:label="Edit post"
             android:screenOrientation="portrait"/>
-
         <activity android:name=".main.MyCv"
             android:label="My CV"
             android:screenOrientation="portrait"/>
-
         <activity android:name=".others.CvViewer"
             android:screenOrientation="portrait"
             android:label="My Resume"/>
-
         <activity android:name=".main.ApplyForJob"
             android:screenOrientation="portrait"
             android:label="Apply Job"/>
-
         <activity android:name=".important.ForgotPassword"
             android:screenOrientation="portrait"
             android:label="Recover your password"/>
