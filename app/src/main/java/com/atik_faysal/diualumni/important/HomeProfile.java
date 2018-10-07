@@ -133,7 +133,9 @@ public class HomeProfile extends Fragment
                          timer.cancel();
                     }catch (NullPointerException ex)
                     {
-                         displayMessage.errorMessage(getResources().getString(R.string.nullPointer));
+                         txtNoResult.setVisibility(View.VISIBLE);
+                         txtNoResult.setText(getResources().getString(R.string.noResult));
+                         progressBar.setVisibility(View.GONE);
                     }
                }
           };
