@@ -15,48 +15,48 @@ import com.atik_faysal.diualumni.interfaces.OnResponseTask;
 
 public class PostInfoBackgroundTask
 {
-     private Context context;
-     private CheckInternetConnection internetIsOn;
-     private RequestQueue requestQueue;
-     private OnResponseTask onResponseTask;
+    private Context context;
+    private CheckInternetConnection internetIsOn;
+    private RequestQueue requestQueue;
+    private OnResponseTask onResponseTask;
 
-     //constructor
-     public PostInfoBackgroundTask(Context context,OnResponseTask task)
-     {
-          this.context = context;
-          internetIsOn = new CheckInternetConnection(context);
-          requestQueue = Volley.newRequestQueue(context);
-          this.onResponseTask = task;
-     }
+    //constructor
+    public PostInfoBackgroundTask(Context context,OnResponseTask task)
+    {
+        this.context = context;
+        internetIsOn = new CheckInternetConnection(context);
+        requestQueue = Volley.newRequestQueue(context);
+        this.onResponseTask = task;
+    }
 
-     public void InsertData(final String serverUrl, final Map<String,String> dataMap){
+    public void InsertData(final String serverUrl, final Map<String,String> dataMap){
 
-          if(internetIsOn.isOnline())
-          {
-               StringRequest stringRequest = new StringRequest(Request.Method.POST, serverUrl,
-                    new Response.Listener<String>() {
-                         @Override
-                         public void onResponse(String ServerResponse) {
-                              onResponseTask.onResultSuccess(ServerResponse.trim());
-                         }
-                    },
-                    new Response.ErrorListener() {
-                         @Override
-                         public void onErrorResponse(VolleyError volleyError) {
-                              onResponseTask.onResultSuccess(volleyError.toString());
-                         }
-                    }) {
-                    @Override
-                    protected Map<String, String> getParams() {
+        if(internetIsOn.isOnline())
+        {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, serverUrl,
+                 new Response.Listener<String>() {
+                     @Override
+                     public void onResponse(String ServerResponse) {
+                         onResponseTask.onResultSuccess(ServerResponse.trim());
+                     }
+                 },
+                 new Response.ErrorListener() {
+                     @Override
+                     public void onErrorResponse(VolleyError volleyError) {
+                         onResponseTask.onResultSuccess(volleyError.toString());
+                     }
+                 }) {
+                @Override
+                protected Map<String, String> getParams() {
 
-                         // Creating Map String Params.
-                         Map<String, String> params;
-                         params = dataMap;
+                    // Creating Map String Params.
+                    Map<String, String> params;
+                    params = dataMap;
 
-                         return params;
-                    }
-               };
-               requestQueue.add(stringRequest);
-          }
-     }
+                    return params;
+                }
+            };
+            requestQueue.add(stringRequest);
+        }
+    }
 }

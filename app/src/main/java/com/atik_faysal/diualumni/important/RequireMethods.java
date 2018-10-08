@@ -44,6 +44,7 @@ public class RequireMethods extends AppCompatActivity
      private DisplayMessage displayMessage;
      private DesEncryptionAlgo desEncryptionAlgo;
      private String newPass;
+     private AlertDialog alertDialog;
 
 
      public RequireMethods(Context context)
@@ -129,7 +130,6 @@ public class RequireMethods extends AppCompatActivity
           final EditText txtOldPass,txtNewPass,txtConPass;
           Button bChange;
           final CheckBox cRemember;
-          AlertDialog alertDialog;
           AlertDialog.Builder builder;
           @SuppressLint("InflateParams")
           View view = LayoutInflater.from(context).inflate(R.layout.dialog_change_pass,null);
@@ -181,8 +181,6 @@ public class RequireMethods extends AppCompatActivity
                     flag = cRemember.isChecked();
                }
           });
-
-          alertDialog.dismiss();
      }
 
      private OnResponseTask onResponseTask = new OnResponseTask() {
@@ -190,6 +188,7 @@ public class RequireMethods extends AppCompatActivity
           public void onResultSuccess(String value) {
                switch (value) {
                     case "success":
+                         alertDialog.dismiss();
                          if (flag)
                               sharedPreferencesData.rememberMe(sharedPreferencesData.getCurrentUserId(),newPass,sharedPreferencesData.checkBoxStatus());
                          break;
