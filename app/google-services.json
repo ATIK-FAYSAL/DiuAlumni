@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "707173567681",
+    "firebase_url": "https://diualumni-1255d.firebaseio.com",
+    "project_id": "diualumni-1255d",
+    "storage_bucket": "diualumni-1255d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:707173567681:android:7a7b3263331ffb47",
+        "android_client_info": {
+          "package_name": "com.atik_faysal.diualumni"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "707173567681-bi912v7k33b6gusopc5inip3fiqnefi4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.atik_faysal.diualumni",
+            "certificate_hash": "43a35c88320d80150770b3c536066fe3ae4e9728"
+          }
+        },
+        {
+          "client_id": "707173567681-c4jo6ridb5dbdfbc6nv023gf37tc7omu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArWeZ75aXlp-2gAGut2J4AIk5zfjfPxWY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "707173567681-c4jo6ridb5dbdfbc6nv023gf37tc7omu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
