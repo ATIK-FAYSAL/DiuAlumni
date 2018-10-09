@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.atik_faysal.diualumni.R;
 import com.atik_faysal.diualumni.adapter.JobsAdapter;
 import com.atik_faysal.diualumni.background.PostInfoBackgroundTask;
+import com.atik_faysal.diualumni.background.RegisterDeviceToken;
 import com.atik_faysal.diualumni.background.SharedPreferencesData;
 import com.atik_faysal.diualumni.important.CheckInternetConnection;
 import com.atik_faysal.diualumni.important.MyFabJob;
@@ -44,6 +45,9 @@ import com.bumptech.glide.Glide;
 import com.gdacciaro.iOSDialog.iOSDialog;
 import com.gdacciaro.iOSDialog.iOSDialogBuilder;
 import com.gdacciaro.iOSDialog.iOSDialogClickListener;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -87,6 +91,7 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
      protected void onCreate(Bundle savedInstanceState) {
           super.onCreate(savedInstanceState);
           setContentView(R.layout.job_portal);
+          FirebaseApp.initializeApp(JobPortal.this);
           drawerLayout = findViewById(R.id.drawer);
           mToggle = new ActionBarDrawerToggle(this,drawerLayout,R.string.open,R.string.close);
           drawerLayout.setDrawerListener(mToggle);
@@ -200,6 +205,13 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
           filterResult = new FilterResult(this);
 
           methods.reloadPage(refreshLayout,JobPortal.class);//reload this current page
+
+          if(sharedPreferencesData.getIsUserLogin())
+          {
+               FirebaseMessaging.getInstance().subscribeToTopic("DiuAlumni");
+               String token = FirebaseInstanceId.getInstance().getToken();
+               RegisterDeviceToken.registerToken(token,sharedPreferencesData.getCurrentUserId(),"enable");
+          }
 
 
           txtFilter.setOnClickListener(new View.OnClickListener() {
