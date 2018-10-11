@@ -13,9 +13,9 @@ public class FirebaseInstanceIdServices extends FirebaseInstanceIdService
      public void onTokenRefresh() {
           String token = FirebaseInstanceId.getInstance().getToken();
 
-          SharedPreferencesData sharedPreferenceData = new SharedPreferencesData(this);
+          //SharedPreferencesData sharedPreferenceData = new SharedPreferencesData(this);
 
-          RegisterDeviceToken.registerToken(token,sharedPreferenceData.getCurrentUserId(),"enable");
+          //RegisterDeviceToken.registerToken(token,sharedPreferenceData.getCurrentUserId(),"enable");
      }
 
 }
