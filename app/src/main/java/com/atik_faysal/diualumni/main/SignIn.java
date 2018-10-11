@@ -172,9 +172,9 @@ public class SignIn extends AppCompatActivity implements Methods,View.OnClickLis
      @Override
      public void processJsonData(String jsonData)
      {
-          String email = null,phone = null,type = null,name=null,imageName=null;
-
           try {
+               String email = null,phone = null,type = null,name=null,imageName=null,msgStatus=null,notification = null;
+
                JSONObject jObject = new JSONObject(jsonData);
                JSONArray jArray = jObject.optJSONArray("info");
                int count=0;
@@ -186,12 +186,11 @@ public class SignIn extends AppCompatActivity implements Methods,View.OnClickLis
                     phone = object.getString("phone");
                     type = object.getString("type");
                     imageName = object.getString("imageName");
+                    msgStatus = object.getString("msgStatus");
+                    notification = object.getString("notification");
                     count++;
                }
-          } catch (JSONException e) {
-               dialogClass.errorMessage(getString(R.string.jsonErr));
-          }finally
-          {
+
                Map<String,String>maps = new HashMap<>();
                maps.put("stdId",studentId);
                maps.put("name",name);
@@ -202,6 +201,11 @@ public class SignIn extends AppCompatActivity implements Methods,View.OnClickLis
                sharedPreferencesData.currentUserInfo();//store current user information
                sharedPreferencesData.isUserLogin(true);//user log in status true
                sharedPreferencesData.userImageName(imageName);//store user image name
+               assert msgStatus != null;
+               if(msgStatus.equals("enable")||msgStatus.equals("disable"))
+                    sharedPreferencesData.setMessageSetting(msgStatus);//store user message setting
+               if(notification.equals("enable")||notification.equals("disable"))
+                    sharedPreferencesData.setNotificationSettings(notification);//store user message setting
 
 
                final ProgressDialog ringProgressDialog = ProgressDialog.show(this, "Please wait","Authenticating", true);
@@ -212,6 +216,7 @@ public class SignIn extends AppCompatActivity implements Methods,View.OnClickLis
                          try {
                               Thread.sleep(2500);
                          } catch (Exception e) {
+                              Log.d("error",e.toString());
                          }
                          ringProgressDialog.dismiss();
                     }
@@ -223,8 +228,13 @@ public class SignIn extends AppCompatActivity implements Methods,View.OnClickLis
                     }
                });
 
+          } catch (JSONException e) {
+               dialogClass.errorMessage(getString(R.string.jsonErr));
           }
      }
+
+
+
 
      //check user log in is success
      OnResponseTask responseTask = new OnResponseTask() {
