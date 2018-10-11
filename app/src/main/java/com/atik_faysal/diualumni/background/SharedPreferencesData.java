@@ -19,6 +19,7 @@ public class SharedPreferencesData
     private static final String USER_INFO = "userInfo";
     private static final String IMAGE_NAME = "imageName";
     private static final String NOTIFICATION_SETTINGS = "notification";
+    private static final String MESSAGE_SETTING = "message";
 
     public SharedPreferencesData(Context context)
     {
@@ -52,12 +53,22 @@ public class SharedPreferencesData
         editor.apply();
     }
 
+    //store user notification setting disable or enable
     public void setNotificationSettings(String option)
     {
          sharedPreferences = context.getSharedPreferences(NOTIFICATION_SETTINGS,Context.MODE_PRIVATE);
          editor = sharedPreferences.edit();
          editor.putString("option",option);
          editor.apply();
+    }
+
+    //store user message option setting
+    public void setMessageSetting(String option)
+    {
+        sharedPreferences = context.getSharedPreferences(MESSAGE_SETTING,Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        editor.putString("setting",option);
+        editor.apply();
     }
 
     //save current user info
@@ -80,6 +91,7 @@ public class SharedPreferencesData
         return sharedPreferences.getBoolean("check",false);
     }
 
+    //store user user image unique name
     public void userImageName(String imageName)
     {
         sharedPreferences = context.getSharedPreferences(IMAGE_NAME,Context.MODE_PRIVATE);
@@ -146,22 +158,32 @@ public class SharedPreferencesData
         return sharedPreferences.getString("type","none");
     }
 
+    //get user image name
     public String getImageName()
     {
         sharedPreferences = context.getSharedPreferences(IMAGE_NAME,Context.MODE_PRIVATE);
         return sharedPreferences.getString("imageName","none");
     }
 
-     //get student id from SharedPreferences
-     public String getNotificationSettings()
-     {
-          sharedPreferences = context.getSharedPreferences(NOTIFICATION_SETTINGS,Context.MODE_PRIVATE);
-          return sharedPreferences.getString("option","disable");
-     }
+    //get user notification setting
+    public String getNotificationSettings()
+    {
+        sharedPreferences = context.getSharedPreferences(NOTIFICATION_SETTINGS,Context.MODE_PRIVATE);
+        return sharedPreferences.getString("option","disable");
+    }
 
+
+    //get user message setting
+    public String getMessageSettings()
+    {
+        sharedPreferences = context.getSharedPreferences(MESSAGE_SETTING,Context.MODE_PRIVATE);
+        return sharedPreferences.getString("setting","disable");
+    }
+
+     //clear all stored data when user log out
     public void clearData()
     {
-        String[] prefNames = new String[]{USER_INFO,IMAGE_NAME};
+        String[] prefNames = new String[]{USER_INFO,IMAGE_NAME,NOTIFICATION_SETTINGS,MESSAGE_SETTING};
         for(int i=0;i<prefNames.length-1;i++)
         {
             sharedPreferences = context.getSharedPreferences(prefNames[i],Context.MODE_PRIVATE);
