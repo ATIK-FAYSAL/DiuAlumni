@@ -18,7 +18,7 @@ public class SharedPreferencesData
     private static final String REMEMBER_ME = "remember";
     private static final String USER_INFO = "userInfo";
     private static final String IMAGE_NAME = "imageName";
-
+    private static final String NOTIFICATION_SETTINGS = "notification";
 
     public SharedPreferencesData(Context context)
     {
@@ -50,6 +50,14 @@ public class SharedPreferencesData
         editor = sharedPreferences.edit();
         editor.putBoolean("login",flag);
         editor.apply();
+    }
+
+    public void setNotificationSettings(String option)
+    {
+         sharedPreferences = context.getSharedPreferences(NOTIFICATION_SETTINGS,Context.MODE_PRIVATE);
+         editor = sharedPreferences.edit();
+         editor.putString("option",option);
+         editor.apply();
     }
 
     //save current user info
@@ -143,6 +151,13 @@ public class SharedPreferencesData
         sharedPreferences = context.getSharedPreferences(IMAGE_NAME,Context.MODE_PRIVATE);
         return sharedPreferences.getString("imageName","none");
     }
+
+     //get student id from SharedPreferences
+     public String getNotificationSettings()
+     {
+          sharedPreferences = context.getSharedPreferences(NOTIFICATION_SETTINGS,Context.MODE_PRIVATE);
+          return sharedPreferences.getString("option","disable");
+     }
 
     public void clearData()
     {

@@ -23,7 +23,6 @@
         <item>4rd</item>
         <item>5th</item>
         <item>6th</item>
-        <item>6th</item>
         <item>7th</item>
         <item>8th</item>
         <item>9th</item>
@@ -56,21 +55,20 @@
 
         <item>Select a category</item>
         <item>IT and Telecommunication</item>
-        <item> Education/Training</item>
+        <item>Education/Training</item>
         <item>Engineer/Architects</item>
-        <item> Garments/Textile</item>
+        <item>Garments/Textile</item>
         <item>Design/Creative</item>
-        <item> Marketing/Sales</item>
-        <item> Customer Support/Call Centre</item>
-        <item> Media/Ad./Event Mgt</item>
-        <item>Medical/Pharma</item>
+        <item>Marketing/Sales</item>
+        <item>Customer Support/Call Centre</item>
+        <item>Media/Ad./Event Mgt</item>
+        <item>Medical/Pharmacy</item>
         <item>Research/Consultancy</item>
         <item>Data Entry/Operator/BPO</item>
         <item>Security/Support Service</item>
-        <item> Law/Legal</item>
-        <item> Others</item>
-        <item> Bank/Non-Bank Fin.Institution</item>
-        <item> Logistics/Transportation</item>
+        <item>Law/Legal</item>
+        <item>Bank/Non-Bank Fin.Institution</item>
+        <item>Logistics/Transportation</item>
         <item>Others</item>
     </string-array>
 

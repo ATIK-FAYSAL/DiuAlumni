@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,12 +17,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SwitchCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +34,7 @@ import com.atik_faysal.diualumni.background.PostInfoBackgroundTask;
 import com.atik_faysal.diualumni.background.RegisterDeviceToken;
 import com.atik_faysal.diualumni.background.SharedPreferencesData;
 import com.atik_faysal.diualumni.important.CheckInternetConnection;
+import com.atik_faysal.diualumni.important.DisplayMessage;
 import com.atik_faysal.diualumni.important.MyFabJob;
 import com.atik_faysal.diualumni.important.RequireMethods;
 import com.atik_faysal.diualumni.interfaces.Methods;
@@ -78,6 +82,7 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
      private RequireMethods methods;
      private FilterResult filterResult;
      private ProgressDialog progressDialog;
+     private DisplayMessage displayMessage;
 
      private TextView txtName;
      private TextView txtPhone;
@@ -86,6 +91,8 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
      private ProgressBar progressBar;
      private RelativeLayout emptyView;
      private CircleImageView imgUser;
+     private SwitchCompat switchCompat;
+     private Menu menu;
 
      @Override
      protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +127,16 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
                menu.findItem(R.id.navSignInOut).setTitle("Sign out");
                txtName.setText(sharedPreferencesData.getUserName());
                txtPhone.setText(sharedPreferencesData.getUserPhone());
+               if(sharedPreferencesData.getNotificationSettings().equals("enable"))
+               {
+                    switchCompat.setChecked(true);
+                    menu.findItem(R.id.navStopNotification).setTitle("Disable notification");
+                    menu.findItem(R.id.navStopNotification).setIcon(R.drawable.icon_notification_off);
+               }else{
+                    switchCompat.setChecked(false);
+                    menu.findItem(R.id.navStopNotification).setTitle("Enable notification");
+                    menu.findItem(R.id.navStopNotification).setIcon(R.drawable.icon_notification_on);
+               }
                retrieveUserImage();//get image from server using glide and show
           }
           else
@@ -178,11 +195,16 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
      @Override
      public void initComponent()
      {
+
           navigationView = findViewById(R.id.nav_view);
           navigationView.setNavigationItemSelectedListener(this);
           View view = navigationView.inflateHeaderView(R.layout.nav_header);
+          menu = navigationView.getMenu();
+          MenuItem menuItem = menu.findItem(R.id.navStopNotification);
+          View actionView = MenuItemCompat.getActionView(menuItem);
           txtName = view.findViewById(R.id.txtName);
           txtPhone = view.findViewById(R.id.txtPhone);
+          switchCompat = actionView.findViewById(R.id.drawer_switch);
           recyclerView = findViewById(R.id.jobList);
           txtNumOfJobs = findViewById(R.id.txtNumberOfJob);
           layoutManager = new LinearLayoutManager(this);
@@ -203,6 +225,7 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
           internetConnection = new CheckInternetConnection(this);
           methods = new RequireMethods(this);
           filterResult = new FilterResult(this);
+          displayMessage = new DisplayMessage(this);
 
           methods.reloadPage(refreshLayout,JobPortal.class);//reload this current page
 
@@ -213,6 +236,25 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
                RegisterDeviceToken.registerToken(token,sharedPreferencesData.getCurrentUserId(),"enable");
           }
 
+          switchCompat.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View view) {
+                    String setting ;
+                    Map<String,String>map = new HashMap<>();
+                    map.put("option","notification");
+                    map.put("stdId",sharedPreferencesData.getCurrentUserId());
+
+                    if(sharedPreferencesData.getNotificationSettings().equals("enable"))
+                         setting = "disable";
+                    else setting = "enable";
+                    map.put("setting",setting);
+                    if(internetConnection.isOnline())
+                    {
+                         backgroundTask = new PostInfoBackgroundTask(JobPortal.this,task);
+                         backgroundTask.InsertData(getResources().getString(R.string.updateOperation),map);
+                    }
+               }
+          });
 
           txtFilter.setOnClickListener(new View.OnClickListener() {
                @Override
@@ -431,9 +473,22 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
                     methods.changePassword();//change password
                     break;
 
-               case R.id.navStopNotification:
-                    Toast.makeText(JobPortal.this,"stop notification",Toast.LENGTH_LONG).show();
-                    break;
+//               case R.id.navStopNotification:
+//                    if(switchCompat.isChecked())
+//                    {
+//                         switchCompat.setChecked(false);
+//                         sharedPreferencesData.setNotificationSettings("disable");
+//                         menu.findItem(R.id.navStopNotification).setTitle("Disable notification");
+//                         menu.findItem(R.id.navStopNotification).setIcon(R.drawable.icon_notification_off);
+//                    }
+//                    else{
+//                         switchCompat.setChecked(true);
+//                         sharedPreferencesData.setNotificationSettings("enable");
+//                         menu.findItem(R.id.navStopNotification).setTitle("Enable notification");
+//                         menu.findItem(R.id.navStopNotification).setIcon(R.drawable.icon_notification_on);
+//                    }
+//
+//                    break;
 
                case R.id.navFeedback:
                     if(sharedPreferencesData.getIsUserLogin())
@@ -477,6 +532,30 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
                {
                     progressDialog.show();
                     viewJobInfo(value);
+               }
+          }
+     };
+
+
+     private OnResponseTask task = new OnResponseTask() {
+          @Override
+          public void onResultSuccess(String value) {
+               if(!value.equals("success"))
+                    displayMessage.errorMessage(getResources().getString(R.string.executionFailed));
+               else {
+                    if(switchCompat.isChecked())
+                    {
+                         switchCompat.setChecked(true);
+                         sharedPreferencesData.setNotificationSettings("enable");
+                         menu.findItem(R.id.navStopNotification).setTitle("Disable notification");
+                         menu.findItem(R.id.navStopNotification).setIcon(R.drawable.icon_notification_on);
+                    }
+                    else{
+                         switchCompat.setChecked(false);
+                         sharedPreferencesData.setNotificationSettings("disable");
+                         menu.findItem(R.id.navStopNotification).setTitle("Enable notification");
+                         menu.findItem(R.id.navStopNotification).setIcon(R.drawable.icon_notification_off);
+                    }
                }
           }
      };
