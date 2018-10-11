@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -84,14 +85,12 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
      private ProgressDialog progressDialog;
      private DisplayMessage displayMessage;
 
-     private TextView txtName;
-     private TextView txtPhone;
-     private TextView txtNoResult;
-     private TextView txtNumOfJobs;
+     private TextView txtName,txtPhone,txtNoResult,txtNumOfJobs;
      private ProgressBar progressBar;
      private RelativeLayout emptyView;
      private CircleImageView imgUser;
      private SwitchCompat switchCompat;
+     private FloatingActionButton fab;
      private Menu menu;
 
      @Override
@@ -138,12 +137,15 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
                     menu.findItem(R.id.navStopNotification).setIcon(R.drawable.icon_notification_on);
                }
                retrieveUserImage();//get image from server using glide and show
-          }
-          else
+
+               if(sharedPreferencesData.getMessageSettings().equals("disable"))
+                    fab.setVisibility(View.GONE);
+          }else
           {
                menu.findItem(R.id.navSignInOut).setTitle("Sign in");
                txtPhone.setVisibility(View.INVISIBLE);
                txtName.setVisibility(View.INVISIBLE);
+               fab.setVisibility(View.GONE);
           }
      }
 
@@ -151,38 +153,38 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
      {
           if(!sharedPreferencesData.getImageName().equals("none"))
                Glide.with(this).
-                    load(getResources().getString(R.string.address)+sharedPreferencesData.getImageName()+".png").
-                    into(imgUser);
+                       load(getResources().getString(R.string.address)+sharedPreferencesData.getImageName()+".png").
+                       into(imgUser);
      }
 
-     //terminate app
+     //when user click on back button,terminate app
      @Override
      public void onBackPressed() {
           getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
           iOSDialogBuilder builder = new iOSDialogBuilder(JobPortal.this);
 
           builder.setTitle("App termination")
-               .setSubtitle("Do you want to close app?")
-               .setBoldPositiveLabel(true)
-               .setCancelable(false)
-               .setPositiveListener("Close App",new iOSDialogClickListener() {
-                    @Override
-                    public void onClick(iOSDialog dialog) {
-                         Intent intent = new Intent(getApplicationContext(), JobPortal.class);
-                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                         intent.putExtra("flag",true);
-                         startActivity(intent);
-                         dialog.dismiss();
+                  .setSubtitle("Do you want to close app?")
+                  .setBoldPositiveLabel(true)
+                  .setCancelable(false)
+                  .setPositiveListener("Close App",new iOSDialogClickListener() {
+                       @Override
+                       public void onClick(iOSDialog dialog) {
+                            Intent intent = new Intent(getApplicationContext(), JobPortal.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            intent.putExtra("flag",true);
+                            startActivity(intent);
+                            dialog.dismiss();
 
-                    }
-               })
-               .setNegativeListener("cancel", new iOSDialogClickListener() {
-                    @Override
-                    public void onClick(iOSDialog dialog) {
-                         dialog.dismiss();
-                    }
-               })
-               .build().show();
+                       }
+                  })
+                  .setNegativeListener("cancel", new iOSDialogClickListener() {
+                       @Override
+                       public void onClick(iOSDialog dialog) {
+                            dialog.dismiss();
+                       }
+                  })
+                  .build().show();
      }
 
      //exit from app
@@ -214,6 +216,7 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
           txtNoResult.setVisibility(View.INVISIBLE);
           imgUser = view.findViewById(R.id.imgUserImage);
           TextView txtFilter = findViewById(R.id.txtFilter);
+          fab = findViewById(R.id.fab);
           progressDialog = new ProgressDialog(this);
           progressDialog.setTitle("Please wait");
           progressDialog.setMessage("Searching data");
@@ -233,9 +236,11 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
           {
                FirebaseMessaging.getInstance().subscribeToTopic("DiuAlumni");
                String token = FirebaseInstanceId.getInstance().getToken();
-               RegisterDeviceToken.registerToken(token,sharedPreferencesData.getCurrentUserId(),"enable");
+               RegisterDeviceToken.registerToken(token,sharedPreferencesData.getCurrentUserId(),
+                       sharedPreferencesData.getNotificationSettings());
           }
 
+          //switch button,user can disable or enable by this button
           switchCompat.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View view) {
@@ -256,11 +261,20 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
                }
           });
 
+          //filter/search job by deadline,location,category
           txtFilter.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View view) {
                     filterResult.onSuccessListener(responseTask);
                     filterResult.filterJob();
+               }
+          });
+
+          //fab button,message option,
+          fab.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View view) {
+                    Toast.makeText(JobPortal.this,"message option start",Toast.LENGTH_LONG).show();
                }
           });
      }
@@ -340,9 +354,9 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
                     deadLine = object4.getString("deadLine");//dead line
 
                     jobsModels.add(new JobsModel(name,stdId,mType,jobId,title,
-                         description,education,experience,city,
-                         requirement,type,category,salary,vacacncy,
-                         company,comUrl,comAddress,phone,email,date,deadLine,flag));
+                            description,education,experience,city,
+                            requirement,type,category,salary,vacacncy,
+                            company,comUrl,comAddress,phone,email,date,deadLine,flag));
 
                     count++;//increment
                }
@@ -364,34 +378,34 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
                @SuppressLint("SetTextI18n")
                @Override
                public void run() {
-                   try {
-                        if(jobsModels.isEmpty())//if no jobs found
-                        {
-                             emptyView.setVisibility(View.VISIBLE);//empty view visible
-                             txtNoResult.setVisibility(View.VISIBLE);//no result text visible
-                             recyclerView.setVisibility(View.INVISIBLE);//list invisible
-                             txtNumOfJobs.setText("0");
-                        }
-                        else//if jobs found
-                        {
-                             emptyView.setVisibility(View.INVISIBLE);//empty view invisible
-                             recyclerView.setVisibility(View.VISIBLE);//no result text invisible
-                             JobsAdapter adapter = new JobsAdapter(JobPortal.this, jobsModels,"jobPortal");//create adapter
-                             recyclerView.setAdapter(adapter);//set adapter in recyler view
-                             layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                             recyclerView.setLayoutManager(layoutManager);
-                             recyclerView.setItemAnimator(new DefaultItemAnimator());
-                             txtNumOfJobs.setText(String.valueOf(jobsModels.size()));
-                        }
-                        progressBar.setVisibility(View.GONE);
-                        progressDialog.dismiss();
-                        timer.cancel();
-                   }catch (NullPointerException e)
-                   {
-                        txtNoResult.setVisibility(View.VISIBLE);
-                        txtNoResult.setText(getResources().getString(R.string.noResult));
-                        progressBar.setVisibility(View.GONE);
-                   }
+                    try {
+                         if(jobsModels.isEmpty())//if no jobs found
+                         {
+                              emptyView.setVisibility(View.VISIBLE);//empty view visible
+                              txtNoResult.setVisibility(View.VISIBLE);//no result text visible
+                              recyclerView.setVisibility(View.INVISIBLE);//list invisible
+                              txtNumOfJobs.setText("0");
+                         }
+                         else//if jobs found
+                         {
+                              emptyView.setVisibility(View.INVISIBLE);//empty view invisible
+                              recyclerView.setVisibility(View.VISIBLE);//no result text invisible
+                              JobsAdapter adapter = new JobsAdapter(JobPortal.this, jobsModels,"jobPortal");//create adapter
+                              recyclerView.setAdapter(adapter);//set adapter in recyler view
+                              layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                              recyclerView.setLayoutManager(layoutManager);
+                              recyclerView.setItemAnimator(new DefaultItemAnimator());
+                              txtNumOfJobs.setText(String.valueOf(jobsModels.size()));
+                         }
+                         progressBar.setVisibility(View.GONE);
+                         progressDialog.dismiss();
+                         timer.cancel();
+                    }catch (NullPointerException e)
+                    {
+                         txtNoResult.setVisibility(View.VISIBLE);
+                         txtNoResult.setText(getResources().getString(R.string.noResult));
+                         progressBar.setVisibility(View.GONE);
+                    }
                }
           };
           timer.schedule(new TimerTask() {
