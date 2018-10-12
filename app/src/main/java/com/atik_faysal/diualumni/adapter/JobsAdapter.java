@@ -213,7 +213,6 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
                          showPopup();
                          break;
                     case R.id.txtUserName:
-                         Toast.makeText(context,"click",Toast.LENGTH_LONG).show();
                          Intent page = new Intent(context, SetTabLayout.class);
                          page.putExtra("user",currentModel.getStdId());
                          activity.startActivity(page);
