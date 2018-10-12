@@ -11,7 +11,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -69,6 +69,14 @@
         <activity android:name=".important.ForgotPassword"
             android:screenOrientation="portrait"
             android:label="Recover your password"/>
+
+        <activity android:name=".messages.AllMessages"
+            android:label="Messages"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".messages.PersonMessage"
+            android:label="Receiver name"
+            android:screenOrientation="portrait"/>
 
 
         <service android:name=".services.FirebaseMessagingService">
