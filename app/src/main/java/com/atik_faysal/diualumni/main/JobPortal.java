@@ -40,6 +40,8 @@ import com.atik_faysal.diualumni.important.MyFabJob;
 import com.atik_faysal.diualumni.important.RequireMethods;
 import com.atik_faysal.diualumni.interfaces.Methods;
 import com.atik_faysal.diualumni.interfaces.OnResponseTask;
+import com.atik_faysal.diualumni.messages.AllMessages;
+import com.atik_faysal.diualumni.messages.PersonMessage;
 import com.atik_faysal.diualumni.models.JobsModel;
 import com.atik_faysal.diualumni.others.AboutUs;
 import com.atik_faysal.diualumni.others.Feedback;
@@ -274,7 +276,8 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
           fab.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View view) {
-                    Toast.makeText(JobPortal.this,"message option start",Toast.LENGTH_LONG).show();
+                    //startActivity(new Intent(JobPortal.this,AllMessages.class));
+                    startActivity(new Intent(JobPortal.this,PersonMessage.class));
                }
           });
      }
