@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/layout1">
+
+            <TextView
+                android:id="@+id/msgReceive"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:padding="7dp"
+                android:hint="received message"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textSize="@dimen/twelve"
+                android:textStyle="normal"
+                android:text="How are you ??"
+                android:background="@drawable/style_rcv_msg"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"/>
+
+
+            <TextView
+                android:id="@+id/rcvMsgDate"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:textSize="10dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/iconColor"
+                android:hint="Receive message date"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="10dp"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/layout2"
+            android:layout_below="@+id/layout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/sendMsgDate"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:textSize="10dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/iconColor"
+                android:hint="send message date"
+                android:layout_marginStart="10dp"
+                android:layout_gravity="center_vertical"/>
+
+            <TextView
+                android:id="@+id/msgSend"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:padding="7dp"
+                android:hint="received message"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textSize="@dimen/twelve"
+                android:text="I'm fine"
+                android:textStyle="normal"
+                android:background="@drawable/style_send_msg"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_below="@+id/msgReceive"
+                android:layout_alignParentEnd="true"/>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</LinearLayout>
