@@ -21,4 +21,6 @@
     <color name="url">#2c7cf5</color>
     <color name="color8">#01FCAC</color>
     <color name="color9">#089498</color>
+    <color name="rcvMsgColor">#FECBCCCE</color>
+    <color name="sendMsgColor">#fe74b5ff</color>
 </resources>
