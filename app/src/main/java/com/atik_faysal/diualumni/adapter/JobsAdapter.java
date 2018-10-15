@@ -7,7 +7,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -99,7 +98,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
           private ViewHolder(View view) {
                super(view);
                txtName = view.findViewById(R.id.txtUserName);
-               txtExp = view.findViewById(R.id.txtExp);
+               //txtExp = view.findViewById(R.id.txtExp);
                txtTitle = view.findViewById(R.id.txtTitle);
                txtEdu = view.findViewById(R.id.txtEdu);
                txtCompany = view.findViewById(R.id.txtCompany);
@@ -126,7 +125,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
                txtCompany.setText(model.getCompany());
                txtDate.setText(model.getDate());
                txtEdu.setText(model.getEducation());
-               txtExp.setText(model.getExperience());
+               //txtExp.setText(model.getExperience());
                txtSalary.setText(model.getSalary());
 
                infoMap.put("id",currentModel.getJobId());
@@ -229,7 +228,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
                maps.put("jobId",jobId);
 
                if(internetConnection.isOnline())
-                    backgroundTask.InsertData(activity.getString(R.string.insertOperation),maps);
+                    backgroundTask.insertData(activity.getString(R.string.insertOperation),maps);
                else displayMessage.errorMessage(activity.getString(R.string.noInternet));
           }
 
@@ -242,7 +241,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
                maps.put("jobId",jobId);
 
                if(internetConnection.isOnline())
-                    backgroundTask.InsertData(activity.getString(R.string.deleteOperation),maps);
+                    backgroundTask.insertData(activity.getString(R.string.deleteOperation),maps);
                else displayMessage.errorMessage(activity.getString(R.string.noInternet));
           }
 
@@ -281,7 +280,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
                maps.put("option","jobRmv");
                maps.put("jobId",currentModel.getJobId());
                if(internetConnection.isOnline())
-                    backgroundTask.InsertData(context.getResources().getString(R.string.deleteOperation),maps);
+                    backgroundTask.insertData(context.getResources().getString(R.string.deleteOperation),maps);
                else Toast.makeText(context,context.getResources().getString(R.string.noInternet),Toast.LENGTH_LONG).show();
           }
 
