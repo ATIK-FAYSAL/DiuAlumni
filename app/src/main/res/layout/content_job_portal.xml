@@ -14,7 +14,8 @@
             android:id="@+id/rLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:layout_margin="5dp"
+            android:padding="5dp">
 
             <TextView
                 android:id="@+id/txtNumberOfJob"
@@ -54,9 +55,16 @@
                 android:layout_marginEnd="10dp"
                 android:text="Filter"
                 android:textStyle="normal"
-                android:padding="3dp"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:background="@drawable/filter_style"
+                android:elevation="10dp"
+                android:paddingEnd="15dp"
+                android:paddingStart="5dp"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
                 android:clickable="true"
-                android:drawableRight="@drawable/icon_filter"
+                android:drawableLeft="@drawable/icon_filter"
                 android:drawablePadding="5dp"
                 android:textSize="@dimen/fifteen"
                 android:textColor="@color/black" />
@@ -68,14 +76,15 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rLayout">
+            android:layout_below="@+id/rLayout"
+            android:layout_marginTop="5dp"
+            android:background="@color/listBackground">
 
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/jobList"
-                android:background="@color/listBackground"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="3dp">
 
             </android.support.v7.widget.RecyclerView>
 
@@ -93,8 +102,8 @@
             android:layout_alignParentEnd="true"
             android:layout_marginBottom="13dp"
             android:layout_marginEnd="25dp"
-            app:backgroundTint="@color/color1"
-            android:src="@drawable/icon_mail"
+            app:backgroundTint="@color/white"
+            android:src="@drawable/icon_send"
             app:fabSize="normal" />
 
 

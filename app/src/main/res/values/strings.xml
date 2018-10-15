@@ -134,6 +134,7 @@
     <string name="uploadImage">http://192.168.56.1/diuAlumni/uploadImage.php</string>
     <string name="uploadCv">http://192.168.56.1/diuAlumni/uploadCv.php</string>
     <string name="sendResume">http://192.168.56.1/diuAlumni/sendResume.php</string>
-    <string name="forgotPass">http://192.168.56.1/diuAlumni/forgotPass.php</string>
+    <string name="forgotPassword">http://192.168.56.1/diuAlumni/forgotPass.php</string>
+    <string name="chatMessages">http://192.168.56.1/diuAlumni/chatMessages.php</string>
 
 </resources>

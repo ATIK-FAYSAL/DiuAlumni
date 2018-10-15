@@ -39,15 +39,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
-                    android:gravity="center"
                     android:padding="10dp">
+
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/imgUser"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
                         android:src="@drawable/icon_user"
-                        android:clickable="true"/>
+                        android:clickable="true"
+                        android:layout_centerHorizontal="true"/>
+
 
                     <TextView
                         android:id="@+id/txtChoose"
@@ -55,10 +57,12 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/imgUser"
                         android:text="Choose image"
-                        android:visibility="invisible"
+                        android:visibility="gone"
+                        android:layout_centerHorizontal="true"
                         android:layout_marginTop="2dp"
                         android:textColor="@color/black"
                         android:clickable="true"/>
+
 
                     <EditText
                         android:id="@+id/txtName"
@@ -69,19 +73,25 @@
                         android:hint="Person name"
                         android:inputType="textPersonName"
                         android:padding="3dp"
+                        android:gravity="center"
                         android:textSize="@dimen/fifteen"
                         android:textColor="@color/userName"
+                        android:layout_centerHorizontal="true"
                         android:background="@color/white"/>
+
 
                     <TextView
                         android:id="@+id/txtStdId"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/txtName"
-                        android:layout_marginTop="5dp"
                         android:hint="Student id"
+                        android:gravity="center"
+                        android:layout_centerHorizontal="true"
                         android:textColor="@color/black"
                         android:paddingLeft="3dp"/>
+
+
 
                     <TextView
                         android:id="@+id/txtStatus"
@@ -89,28 +99,48 @@
                         android:layout_height="wrap_content"
                         android:text="Still your request is pending"
                         android:textSize="@dimen/twelve"
-                        android:layout_below="@+id/txtStdId"
+                        android:layout_below="@+id/imgMessage"
                         android:layout_marginTop="5dp"
                         android:paddingLeft="3dp"
+                        android:gravity="center"
+                        android:layout_centerHorizontal="true"
                         android:textColor="@color/color6"
-                        android:visibility="invisible"/>
+                        android:visibility="gone"/>
 
-                    <ImageView
+
+                    <TextView
                         android:id="@+id/imgEdit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignEnd="@+id/txtStatus"
-                        android:layout_alignTop="@+id/imgUser"
-                        app:srcCompat="@drawable/icon_edit" />
-
-                    <ImageView
-                        android:id="@+id/imgMessage"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_above="@+id/txtStatus"
                         android:layout_alignParentEnd="true"
+                        android:background="@drawable/filter_style"
+                        android:drawablePadding="5dp"
+                        android:elevation="3dp"
+                        android:gravity="center"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
+                        android:text="Edit"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/imgMessage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Message"
+                        android:background="@drawable/filter_style"
+                        android:elevation="8dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:paddingStart="15dp"
+                        android:textStyle="bold"
                         android:visibility="invisible"
-                        app:srcCompat="@drawable/icon_mail" />
+                        android:textColor="@color/black"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@+id/txtStdId"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingEnd="15dp"/>
+
 
                 </RelativeLayout>
 
