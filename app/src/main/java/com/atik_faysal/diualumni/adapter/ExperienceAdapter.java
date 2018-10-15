@@ -10,7 +10,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +34,6 @@ import com.atik_faysal.diualumni.important.RequireMethods;
 import com.atik_faysal.diualumni.interfaces.BooleanResponse;
 import com.atik_faysal.diualumni.interfaces.OnResponseTask;
 import com.atik_faysal.diualumni.models.ExperienceModel;
-import com.atik_faysal.diualumni.others.AdditionalInfo;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -244,7 +242,7 @@ public class ExperienceAdapter extends RecyclerView.Adapter<ExperienceAdapter.Vi
                               }
 
                               if(internetConnection.isOnline())
-                                   backgroundTask.InsertData(context.getResources().getString(R.string.updateOperation),maps);
+                                   backgroundTask.insertData(context.getResources().getString(R.string.updateOperation),maps);
                               else
                                    Toast.makeText(context,context.getResources().getString(R.string.noInternet),Toast.LENGTH_LONG).show();
                               alertDialog.dismiss();
@@ -322,7 +320,7 @@ public class ExperienceAdapter extends RecyclerView.Adapter<ExperienceAdapter.Vi
                maps.put("option","expRmv");
                maps.put("id",currentModel.getId());
                if(internetConnection.isOnline())
-                    backgroundTask.InsertData(context.getResources().getString(R.string.deleteOperation),maps);
+                    backgroundTask.insertData(context.getResources().getString(R.string.deleteOperation),maps);
                else Toast.makeText(context,context.getResources().getString(R.string.noInternet),Toast.LENGTH_LONG).show();
           }
 

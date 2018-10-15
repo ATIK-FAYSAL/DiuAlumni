@@ -9,17 +9,22 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar"/>
 
+    <include
+        android:id="@+id/emptyView"
+        layout="@layout/empty"/>
+
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
         android:orientation="vertical"
-        android:layout_above="@+id/linearLayout"
+        android:layout_above="@+id/relativeLayout"
         android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp">
 
-        <ListView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/msgList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -29,12 +34,15 @@
             android:dividerHeight="3dp"
             tools:listitem="@layout/message_model">
 
-        </ListView>
+        </android.support.v7.widget.RecyclerView>
+
+
 
     </LinearLayout>
 
+
     <RelativeLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="5dp"
@@ -47,7 +55,7 @@
             android:id="@+id/txtTextMsg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/url_text_style"
+            android:background="@drawable/style_text_reg"
             android:layout_centerInParent="true"
             android:hint="Enter text"
             android:inputType="textCapSentences|textMultiLine"

@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -408,7 +407,7 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
           this.phone = phone;
 
           if(internetConnection.isOnline())
-               backgroundTask.InsertData(getString(R.string.insertOperation),map);
+               backgroundTask.insertData(getString(R.string.insertOperation),map);
           else dialogClass.errorMessage(getString(R.string.noInternet));
      }
 

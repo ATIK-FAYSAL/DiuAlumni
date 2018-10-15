@@ -12,15 +12,11 @@ import java.util.Map;
 import java.util.Objects;
 
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -169,7 +165,7 @@ public class RequireMethods extends AppCompatActivity
                          if(internetConnection.isOnline())
                          {
                               PostInfoBackgroundTask backgroundTask = new PostInfoBackgroundTask(context,onResponseTask);
-                              backgroundTask.InsertData(activity.getResources().getString(R.string.updateOperation),map);
+                              backgroundTask.insertData(activity.getResources().getString(R.string.updateOperation),map);
                          }else displayMessage.errorMessage(getResources().getString(R.string.noInternet));
                     }else Toast.makeText(context,"Password does not matched",Toast.LENGTH_LONG).show();
                }

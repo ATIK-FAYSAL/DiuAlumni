@@ -8,19 +8,16 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.atik_faysal.diualumni.R;
 import com.atik_faysal.diualumni.adapter.JobsAdapter;
 import com.atik_faysal.diualumni.background.PostInfoBackgroundTask;
-import com.atik_faysal.diualumni.background.SharedPreferencesData;
 import com.atik_faysal.diualumni.interfaces.OnResponseTask;
 import com.atik_faysal.diualumni.main.JobPortal;
 import com.atik_faysal.diualumni.models.JobsModel;
@@ -91,13 +88,13 @@ public class HomeProfile extends Fragment
           maps.put("option","myPost");
           maps.put("stdId",USER);
           if(internetConnection.isOnline())
-               backgroundTask.InsertData(getString(R.string.readInfo),maps);
+               backgroundTask.insertData(getString(R.string.readInfo),maps);
 
           PostInfoBackgroundTask backgroundTask1 = new PostInfoBackgroundTask(getContext(),responseTask);
           Map<String,String>imgMap = new HashMap<>();
           imgMap.put("option","imgName");
           imgMap.put("stdId",USER);
-          backgroundTask1.InsertData(getResources().getString(R.string.readInfo),imgMap);
+          backgroundTask1.insertData(getResources().getString(R.string.readInfo),imgMap);
      }
 
      //view all job information in UI

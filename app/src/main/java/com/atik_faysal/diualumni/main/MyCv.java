@@ -110,7 +110,7 @@ public class MyCv extends AppCompatActivity implements Methods
           if(internetConnection.isOnline())
           {
                backgroundTask = new PostInfoBackgroundTask(this,responseTask);
-               backgroundTask.InsertData(getResources().getString(R.string.readInfo),map);
+               backgroundTask.insertData(getResources().getString(R.string.readInfo),map);
           }else displayMessage.errorMessage(getResources().getString(R.string.noInternet));
      }
 
@@ -202,7 +202,7 @@ public class MyCv extends AppCompatActivity implements Methods
                     if(internetConnection.isOnline())
                     {
                          backgroundTask = new PostInfoBackgroundTask(MyCv.this,onResponseTask);
-                         backgroundTask.InsertData(getResources().getString(R.string.uploadCv),maps);
+                         backgroundTask.insertData(getResources().getString(R.string.uploadCv),maps);
                     }else displayMessage.errorMessage(getResources().getString(R.string.noInternet));
                }
           });
@@ -223,7 +223,7 @@ public class MyCv extends AppCompatActivity implements Methods
           if(internetConnection.isOnline())
           {
                backgroundTask = new PostInfoBackgroundTask(this,getOnResponseTask);
-               backgroundTask.InsertData(getResources().getString(R.string.deleteOperation),map);
+               backgroundTask.insertData(getResources().getString(R.string.deleteOperation),map);
           }else displayMessage.errorMessage(getResources().getString(R.string.noInternet));
      }
 

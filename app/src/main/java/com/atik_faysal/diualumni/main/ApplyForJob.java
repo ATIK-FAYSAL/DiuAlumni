@@ -8,7 +8,6 @@ import com.atik_faysal.diualumni.background.PostInfoBackgroundTask;
 import com.atik_faysal.diualumni.background.SharedPreferencesData;
 import com.atik_faysal.diualumni.important.CheckInternetConnection;
 import com.atik_faysal.diualumni.important.DisplayMessage;
-import com.atik_faysal.diualumni.important.RequireMethods;
 import com.atik_faysal.diualumni.interfaces.Methods;
 import com.atik_faysal.diualumni.interfaces.OnResponseTask;
 
@@ -137,7 +136,7 @@ public class ApplyForJob extends AppCompatActivity implements Methods,View.OnCli
                          if(internetConnection.isOnline())
                          {
                               PostInfoBackgroundTask backgroundTask = new PostInfoBackgroundTask(this,responseTask);
-                              backgroundTask.InsertData(getResources().getString(R.string.sendResume),map);
+                              backgroundTask.insertData(getResources().getString(R.string.sendResume),map);
                               progressDialog.setCancelable(false);
                               progressDialog.setTitle("Please wait");
                               progressDialog.setMessage("Sending your resume");

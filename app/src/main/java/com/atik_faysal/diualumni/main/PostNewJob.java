@@ -11,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,7 +19,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.DatePicker;
@@ -236,7 +234,7 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
                infoMap.put("vacancy",vacancy);
 
                if(internetConnection.isOnline())
-                    backgroundTask.InsertData(getString(R.string.postJob),infoMap);
+                    backgroundTask.insertData(getString(R.string.postJob),infoMap);
                else displayMessage.errorMessage(getResources().getString(R.string.noInternet));
           }else displayMessage.errorMessage(getString(R.string.infoErr));
      }

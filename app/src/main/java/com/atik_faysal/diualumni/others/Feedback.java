@@ -19,7 +19,6 @@ import com.atik_faysal.diualumni.background.PostInfoBackgroundTask;
 import com.atik_faysal.diualumni.background.SharedPreferencesData;
 import com.atik_faysal.diualumni.important.CheckInternetConnection;
 import com.atik_faysal.diualumni.important.DisplayMessage;
-import com.atik_faysal.diualumni.important.MyFabJob;
 import com.atik_faysal.diualumni.important.RequireMethods;
 import com.atik_faysal.diualumni.interfaces.OnResponseTask;
 
@@ -144,7 +143,7 @@ public class Feedback extends AppCompatActivity
                          map.put("feedback",eFeedback.getText().toString());
                          map.put("date",methods.getDateWithTime());
                          PostInfoBackgroundTask backgroundTask = new PostInfoBackgroundTask(Feedback.this,responseTask);
-                         backgroundTask.InsertData(getResources().getString(R.string.otherInsertion),map);
+                         backgroundTask.insertData(getResources().getString(R.string.otherInsertion),map);
                     }else displayMessage.errorMessage(getResources().getString(R.string.noInternet));
 
                }

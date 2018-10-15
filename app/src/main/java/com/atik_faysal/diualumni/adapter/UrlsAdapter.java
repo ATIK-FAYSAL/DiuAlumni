@@ -188,7 +188,7 @@ public class UrlsAdapter extends RecyclerView.Adapter<UrlsAdapter.ViewHolder>
                maps.put("id",currentModel.getuId());
                maps.put("url",url);
                if(internetConnection.isOnline())
-                    backgroundTask.InsertData(context.getResources().getString(R.string.updateOperation),maps);
+                    backgroundTask.insertData(context.getResources().getString(R.string.updateOperation),maps);
                else Toast.makeText(context, context.getResources().getString(R.string.noInternet),Toast.LENGTH_LONG).show();
           }
 
@@ -200,7 +200,7 @@ public class UrlsAdapter extends RecyclerView.Adapter<UrlsAdapter.ViewHolder>
                maps.put("option","deleteUrl");
                maps.put("id",currentModel.getuId());
                if(internetConnection.isOnline())
-                    backgroundTask.InsertData(context.getResources().getString(R.string.deleteOperation),maps);
+                    backgroundTask.insertData(context.getResources().getString(R.string.deleteOperation),maps);
                else Toast.makeText(context, context.getResources().getString(R.string.noInternet),Toast.LENGTH_LONG).show();
           }
 

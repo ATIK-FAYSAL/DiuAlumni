@@ -25,9 +25,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.atik_faysal.diualumni.R;
 import com.atik_faysal.diualumni.adapter.JobsAdapter;
@@ -40,7 +38,6 @@ import com.atik_faysal.diualumni.important.MyFabJob;
 import com.atik_faysal.diualumni.important.RequireMethods;
 import com.atik_faysal.diualumni.interfaces.Methods;
 import com.atik_faysal.diualumni.interfaces.OnResponseTask;
-import com.atik_faysal.diualumni.messages.AllMessages;
 import com.atik_faysal.diualumni.messages.PersonMessage;
 import com.atik_faysal.diualumni.models.JobsModel;
 import com.atik_faysal.diualumni.others.AboutUs;
@@ -258,7 +255,7 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
                     if(internetConnection.isOnline())
                     {
                          backgroundTask = new PostInfoBackgroundTask(JobPortal.this,task);
-                         backgroundTask.InsertData(getResources().getString(R.string.updateOperation),map);
+                         backgroundTask.insertData(getResources().getString(R.string.updateOperation),map);
                     }
                }
           });
@@ -289,7 +286,7 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
           maps.put("option","allJobs");
           maps.put("stdId",sharedPreferencesData.getCurrentUserId());
           if(internetConnection.isOnline())
-               backgroundTask.InsertData(getString(R.string.readInfo),maps);
+               backgroundTask.insertData(getString(R.string.readInfo),maps);
      }
 
      //use toolbar ,still this method is not use

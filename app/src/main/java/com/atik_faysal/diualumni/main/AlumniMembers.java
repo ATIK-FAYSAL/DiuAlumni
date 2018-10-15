@@ -22,7 +22,6 @@ import com.atik_faysal.diualumni.R;
 import com.atik_faysal.diualumni.adapter.AlumniAdapter;
 import com.atik_faysal.diualumni.background.PostInfoBackgroundTask;
 import com.atik_faysal.diualumni.important.CheckInternetConnection;
-import com.atik_faysal.diualumni.important.DisplayMessage;
 import com.atik_faysal.diualumni.important.RequireMethods;
 import com.atik_faysal.diualumni.interfaces.Methods;
 import com.atik_faysal.diualumni.interfaces.OnResponseTask;
@@ -118,7 +117,7 @@ public class AlumniMembers extends AppCompatActivity implements Methods
           Map<String,String>maps = new HashMap<>();
           maps.put("option","alumni");
           if(internetConnection.isOnline())
-               backgroundTask.InsertData(getResources().getString(R.string.readInfo),maps);
+               backgroundTask.insertData(getResources().getString(R.string.readInfo),maps);
      }
 
      @Override

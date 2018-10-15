@@ -1,8 +1,6 @@
 package com.atik_faysal.diualumni.others;
 
 import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -10,10 +8,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.atik_faysal.diualumni.R;
 import com.atik_faysal.diualumni.background.PostInfoBackgroundTask;
@@ -171,7 +167,7 @@ public class EditJobPost extends PostNewJob
                maps.put("vacancy",vacancy);
 
                if(internetConnection.isOnline())
-                    backgroundTask.InsertData(getString(R.string.postJob),maps);
+                    backgroundTask.insertData(getString(R.string.postJob),maps);
                else displayMessage.errorMessage(getResources().getString(R.string.noInternet));
           }else displayMessage.errorMessage(getString(R.string.infoErr));
      }

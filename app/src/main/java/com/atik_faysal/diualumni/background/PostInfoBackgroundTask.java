@@ -29,7 +29,7 @@ public class PostInfoBackgroundTask
         this.onResponseTask = task;
     }
 
-    public void InsertData(final String serverUrl, final Map<String,String> dataMap){
+    public void insertData(final String serverUrl, final Map<String,String> dataMap){
 
         if(internetIsOn.isOnline())
         {

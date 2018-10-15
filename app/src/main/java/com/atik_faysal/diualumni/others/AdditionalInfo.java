@@ -117,7 +117,7 @@ public class AdditionalInfo extends AboutProfile implements DatePickerDialog.OnD
           maps.put("stdId",sharedPreferencesData.getCurrentUserId());
           maps.put("url",url);
           if(internetConnection.isOnline())
-               backgroundTask.InsertData(Objects.requireNonNull(activity).getResources().getString(R.string.otherInsertion),maps);
+               backgroundTask.insertData(Objects.requireNonNull(activity).getResources().getString(R.string.otherInsertion),maps);
           else Toast.makeText(context, Objects.requireNonNull(activity).getResources().getString(R.string.noInternet),Toast.LENGTH_LONG).show();
      }
 
@@ -189,7 +189,7 @@ public class AdditionalInfo extends AboutProfile implements DatePickerDialog.OnD
                          }
 
                          if(internetConnection.isOnline())
-                              backgroundTask.InsertData(context.getResources().getString(R.string.otherInsertion),maps);
+                              backgroundTask.insertData(context.getResources().getString(R.string.otherInsertion),maps);
                          else
                               Toast.makeText(context,getResources().getString(R.string.noInternet),Toast.LENGTH_LONG).show();
                     }else

@@ -14,7 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -25,7 +24,6 @@ import android.widget.Toast;
 
 import com.atik_faysal.diualumni.R;
 import com.atik_faysal.diualumni.background.PostInfoBackgroundTask;
-import com.atik_faysal.diualumni.background.SharedPreferencesData;
 import com.atik_faysal.diualumni.interfaces.Methods;
 import com.atik_faysal.diualumni.interfaces.OnResponseTask;
 
@@ -92,7 +90,7 @@ public class ForgotPassword extends AppCompatActivity implements Methods
                if(internetConnection.isOnline())
                {
                     PostInfoBackgroundTask backgroundTask = new PostInfoBackgroundTask(ForgotPassword.this,responseTask);
-                    backgroundTask.InsertData(getResources().getString(R.string.forgotPass),map);
+                    backgroundTask.insertData(getResources().getString(R.string.forgotPassword),map);
                     progressDialog.setTitle("Please wait");
                     progressDialog.setMessage("Finding your account");
                     progressDialog.setCancelable(false);
@@ -307,7 +305,7 @@ public class ForgotPassword extends AppCompatActivity implements Methods
                          if(internetConnection.isOnline())
                          {
                               PostInfoBackgroundTask backgroundTask = new PostInfoBackgroundTask(ForgotPassword.this,onResponseTask);
-                              backgroundTask.InsertData(getResources().getString(R.string.forgotPass),codes);
+                              backgroundTask.insertData(getResources().getString(R.string.forgotPassword),codes);
                          }else displayMessage.errorMessage(getResources().getString(R.string.noInternet));
                     }else {
                          editTexts[0].setText("");
@@ -377,7 +375,7 @@ public class ForgotPassword extends AppCompatActivity implements Methods
                          if(internetConnection.isOnline())
                          {
                               PostInfoBackgroundTask backgroundTask = new PostInfoBackgroundTask(ForgotPassword.this,getResponseTask);
-                              backgroundTask.InsertData(getResources().getString(R.string.forgotPass),map);
+                              backgroundTask.insertData(getResources().getString(R.string.forgotPassword),map);
                               alertDialog.dismiss();
                          }else displayMessage.errorMessage(getResources().getString(R.string.noInternet));
                     }else Toast.makeText(ForgotPassword.this,"Password does not matched",Toast.LENGTH_LONG).show();

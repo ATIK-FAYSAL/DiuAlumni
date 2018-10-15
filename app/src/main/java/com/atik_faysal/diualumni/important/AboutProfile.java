@@ -1,3 +1,4 @@
+
 package com.atik_faysal.diualumni.important;
 
 import android.Manifest;
@@ -22,7 +23,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,7 +72,7 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
     private TextView txtId,txtStatus,txtGender,txtBatch,txtDate,txtDept,txtAddUrl,txtChoose,txtWork,txtMsgStatus;
     private EditText txtEmail,txtAddress,txtPhone,txtName;
     private Button bChanges;
-    private ImageView imgEdit,imgMessage;
+    private TextView imgEdit,imgMessage;
     private CircleImageView imgUser;
     private RadioButton rStudent,rAlumni;
     private RecyclerView recyclerView,expList;
@@ -194,7 +194,7 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
                     maps.put("msgStatus",msgSetting);
 
                     if(internetConnection.isOnline())
-                        backgroundTask.InsertData(Objects.requireNonNull(getActivity()).getResources().getString(R.string.updateOperation),maps);
+                        backgroundTask.insertData(Objects.requireNonNull(getActivity()).getResources().getString(R.string.updateOperation),maps);
                     else displayMessage.errorMessage(Objects.requireNonNull(getActivity()).getResources().getString(R.string.noInternet));
                 }
                 break;
@@ -236,7 +236,7 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
         maps.put("option","userInfo");
         maps.put("stdId",USER);
         if(internetConnection.isOnline())
-            backgroundTask.InsertData(Objects.requireNonNull(getActivity()).getResources().getString(R.string.readInfo),maps);
+            backgroundTask.insertData(Objects.requireNonNull(getActivity()).getResources().getString(R.string.readInfo),maps);
     }
 
     //get user's all urls from server
@@ -247,7 +247,7 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
         maps.put("option","userUrls");
         maps.put("stdId",USER);
         if(internetConnection.isOnline())
-            backgroundTask.InsertData(context.getResources().getString(R.string.readInfo),maps);
+            backgroundTask.insertData(context.getResources().getString(R.string.readInfo),maps);
     }
 
     //retrieve user experience
@@ -258,7 +258,7 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
         maps.put("option","experience");
         maps.put("stdId",USER);
         if(internetConnection.isOnline())
-            backgroundTask.InsertData(context.getResources().getString(R.string.readInfo),maps);
+            backgroundTask.insertData(context.getResources().getString(R.string.readInfo),maps);
     }
 
     @Override
@@ -521,19 +521,21 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
         /*
          * If this user is not current user
          * Edit button is invisible and disable
-         * Save Changes button is invisible and disable
+         * Save Changes button is invisib   le and disable
          * url and experience text change
          * url and experience remove and update button disable and invisible
          */
         if(sharedPreferencesData.getCurrentUserId().equals(stdId))
         {
+            imgMessage.setVisibility(View.GONE);
             sharedPreferencesData.setMessageSetting(msgStatus);//store current user message setting
             if(sharedPreferencesData.getMessageSettings().equals("enable"))//if user message option is enable then the switch is on
                 msgSwitch.setChecked(true);
             else msgSwitch.setChecked(false);//otherwise switch is disable
         }else{
-            imgEdit.setImageDrawable(null);
-            imgEdit.setEnabled(false);
+            //imgEdit.setImageDrawable(null);
+            //imgEdit.setEnabled(false);
+            imgEdit.setVisibility(View.GONE);
             bChanges.setVisibility(View.GONE);
             txtAddUrl.setEnabled(false);
             txtAddUrl.setText("URL");
@@ -596,7 +598,7 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
                 maps.put("date",methods.getDate());
                 maps.put("imageName",sharedPreferencesData.getImageName());
                 if(internetConnection.isOnline())
-                    backgroundTask.InsertData(getResources().getString(R.string.uploadImage),maps);
+                    backgroundTask.insertData(getResources().getString(R.string.uploadImage),maps);
                 else displayMessage.errorMessage(getResources().getString(R.string.executionFailed));
                 alertDialog.dismiss();
             }
@@ -629,7 +631,7 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
     //get image real path from image uri
     private String getRealPathFromURI(Uri contentUri) {
         String[] imageData = { MediaStore.Images.Media.DATA };
-        CursorLoader loader = new CursorLoader(getContext(), contentUri, imageData, null, null, null);
+        CursorLoader loader = new CursorLoader(getActivity(), contentUri, imageData, null, null, null);
         Cursor cursor = loader.loadInBackground();
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();

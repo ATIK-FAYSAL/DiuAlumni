@@ -124,7 +124,7 @@ public class FilterResult extends AppCompatActivity implements DatePickerDialog.
                     if(internetConnection.isOnline())
                     {
                          backgroundTask = new PostInfoBackgroundTask(context,responseTask);
-                         backgroundTask.InsertData(context.getResources().getString(R.string.readInfo),map);
+                         backgroundTask.insertData(context.getResources().getString(R.string.readInfo),map);
                     }
 
                }
@@ -264,7 +264,7 @@ public class FilterResult extends AppCompatActivity implements DatePickerDialog.
                     if(internetConnection.isOnline())
                     {
                          backgroundTask = new PostInfoBackgroundTask(context,responseTask);
-                         backgroundTask.InsertData(context.getResources().getString(R.string.readInfo),map);
+                         backgroundTask.insertData(context.getResources().getString(R.string.readInfo),map);
                     }
 
                }

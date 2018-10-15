@@ -20,7 +20,6 @@ import com.atik_faysal.diualumni.background.PostInfoBackgroundTask;
 import com.atik_faysal.diualumni.background.SharedPreferencesData;
 import com.atik_faysal.diualumni.interfaces.Methods;
 import com.atik_faysal.diualumni.interfaces.OnResponseTask;
-import com.atik_faysal.diualumni.main.AlumniMembers;
 import com.atik_faysal.diualumni.main.JobPortal;
 import com.atik_faysal.diualumni.models.JobsModel;
 import com.atik_faysal.diualumni.others.NoInternetConnection;
@@ -122,7 +121,7 @@ public class MyFabJob extends AppCompatActivity implements Methods
           maps.put("option","fabJob");
           maps.put("stdId",sharedPreferencesData.getCurrentUserId());
           if(internetConnection.isOnline())
-               backgroundTask.InsertData(getString(R.string.readInfo),maps);
+               backgroundTask.insertData(getString(R.string.readInfo),maps);
      }
 
      //view all job information in UI
