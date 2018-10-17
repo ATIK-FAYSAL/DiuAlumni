@@ -1,6 +1,8 @@
 package com.atik_faysal.diualumni.messages;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,6 +23,7 @@ import android.widget.Toast;
 
 import com.atik_faysal.diualumni.R;
 import com.atik_faysal.diualumni.adapter.JobsAdapter;
+import com.atik_faysal.diualumni.adapter.ListViewAdapter;
 import com.atik_faysal.diualumni.adapter.MessageAdapter;
 import com.atik_faysal.diualumni.background.PostInfoBackgroundTask;
 import com.atik_faysal.diualumni.background.SharedPreferencesData;
@@ -41,12 +45,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class PersonMessage extends AppCompatActivity implements Methods
 {
 
     private EditText txtMessage;
     private ImageView bSend;
-    private RecyclerView recyclerView;
+    private ListView recyclerView;
     private CheckInternetConnection internetConnection;
     private PostInfoBackgroundTask backgroundTask;
     private RequireMethods methods;
@@ -54,8 +60,9 @@ public class PersonMessage extends AppCompatActivity implements Methods
     private DisplayMessage displayMessage;
     private RelativeLayout emptyView;
     private TextView txtNoResult;
-    private LinearLayoutManager layoutManager;
-    private Thread thread;
+    private int modelSize = 0;//for last model size
+    private static String RECEIVER_ID;
+    private static String RECEIVER_NAME;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,13 +86,14 @@ public class PersonMessage extends AppCompatActivity implements Methods
         txtNoResult.setVisibility(View.GONE);
         ProgressBar progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
-        layoutManager = new LinearLayoutManager(this);
 
         internetConnection = new CheckInternetConnection(this);
         methods = new RequireMethods(this);
         sharedPreferencesData = new SharedPreferencesData(this);
         displayMessage = new DisplayMessage(this);
 
+
+        //when input field is not empty,then send button is visible,otherwise invisible
         txtMessage.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
@@ -101,20 +109,22 @@ public class PersonMessage extends AppCompatActivity implements Methods
             public void afterTextChanged(Editable editable) { }
         });
 
+        RECEIVER_ID = Objects.requireNonNull(getIntent().getExtras()).getString("receiverId");//get receiver id from previous activity
+        RECEIVER_NAME = getIntent().getExtras().getString("receiverName");//get receiver name from previous activity
+
         bSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Map<String,String> map = new HashMap<>();
                 String message = txtMessage.getText().toString();
                 String sender = sharedPreferencesData.getCurrentUserId();
-                String receiver = "161-35-1413";
                 String time = methods.getDateWithTime();
 
-                if(!message.isEmpty()&&!sender.isEmpty()&&!receiver.isEmpty()&&!time.isEmpty())
+                if(!message.isEmpty()&&!sender.isEmpty()&&!RECEIVER_ID.isEmpty()&&!time.isEmpty())
                 {
                     map.put("option","message");//option for call method
                     map.put("sender",sender);//sender id
-                    map.put("receiver",receiver);//receiver id
+                    map.put("receiver",RECEIVER_ID);//receiver id
                     map.put("message",message);//text message
                     map.put("time",time);//sending time
                 }else return;
@@ -142,7 +152,7 @@ public class PersonMessage extends AppCompatActivity implements Methods
         {
             map.put("option","fetchMsg");
             map.put("sender",sender);
-            map.put("receiver",receiver);
+            map.put("receiver",RECEIVER_ID);
         }else return;
 
         if(internetConnection.isOnline())
@@ -154,20 +164,20 @@ public class PersonMessage extends AppCompatActivity implements Methods
     }
 
     //set toolbar in top of the layout
+    @SuppressLint("SetTextI18n")
     @Override
     public void setToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
+        TextView receiverName = findViewById(R.id.receiverName);
         setSupportActionBar(toolbar);
+        receiverName.setText(RECEIVER_NAME);
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-        toolbar.setTitle("Atik Faysal");
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setNavigationIcon(R.drawable.icon_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(thread.isAlive())
-                    thread.interrupt();//interrupt running thread
                 finish();//finish current activity
             }
         });
@@ -208,47 +218,44 @@ public class PersonMessage extends AppCompatActivity implements Methods
     }
 
     //view messages in ui
+    @SuppressLint("SetTextI18n")
     private void viewAllMessage(List<MessageModel>models)
     {
         if(models.isEmpty())//if no jobs found
         {
             emptyView.setVisibility(View.VISIBLE);//empty view visible
             txtNoResult.setVisibility(View.VISIBLE);//no result text visible
+            txtNoResult.setText("No Messages");
             recyclerView.setVisibility(View.INVISIBLE);//list invisible
         }
         else//if jobs found
         {
             emptyView.setVisibility(View.INVISIBLE);//empty view invisible
             recyclerView.setVisibility(View.VISIBLE);//no result text invisible
-            MessageAdapter adapter = new MessageAdapter(this, models);
-            recyclerView.setAdapter(adapter);//set adapter in recyler view
-            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            ListViewAdapter adapter = new ListViewAdapter(this, models);
+            if(modelSize<models.size())
+            {
+                recyclerView.setAdapter(adapter);//set adapter in recyler view
+                recyclerView.setSelection(adapter.getCount()-1);
+            }
+            //layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+            //recyclerView.setLayoutManager(layoutManager);
+            // recyclerView.setItemAnimator(new DefaultItemAnimator());
+            modelSize = models.size();
         }
     }
 
     //start a thread to reload messages in every second
     private void reloadMessages()
     {
-         thread = new Thread() {
-             @Override
-             public void run() {
-                 try {
-                     while (!thread.isInterrupted()) {
-                         Thread.sleep(1000);//sleap for 1s
-                         runOnUiThread(new Runnable() {
-                             @Override
-                             public void run() {
-                                 retrieveMessage();//reload data
-                             }
-                         });
-                     }
-                 } catch (InterruptedException e) {
-                     e.printStackTrace();
-                 }
-             }
-        };thread.start();
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                retrieveMessage();
+                handler.postDelayed(this,1000);
+            }
+        },1000);
     }
 
     //insert message server response
@@ -257,7 +264,6 @@ public class PersonMessage extends AppCompatActivity implements Methods
         public void onResultSuccess(String value) {
             if(!value.equals("success"))
                 Toast.makeText(PersonMessage.this,"Message couldn't send.Please retry",Toast.LENGTH_LONG).show();
-            else retrieveMessage();//again fetch data
         }
     };
 

@@ -5,9 +5,27 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <include
+    <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        layout="@layout/toolbar"/>
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@color/color1"
+        android:elevation="4dp"
+        android:gravity="center"
+        app:titleTextColor="@color/white">
+
+        <TextView
+            android:id="@+id/receiverName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="@dimen/seventeen"
+            android:textStyle="bold"/>
+
+    </android.support.v7.widget.Toolbar>
+
 
     <include
         android:id="@+id/emptyView"
@@ -24,7 +42,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp">
 
-        <android.support.v7.widget.RecyclerView
+        <ListView
             android:id="@+id/msgList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -34,7 +52,7 @@
             android:dividerHeight="3dp"
             tools:listitem="@layout/message_model">
 
-        </android.support.v7.widget.RecyclerView>
+        </ListView>
 
 
 
