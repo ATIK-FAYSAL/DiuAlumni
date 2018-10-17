@@ -76,7 +76,7 @@
 
         <activity android:name=".messages.PersonMessage"
             android:screenOrientation="portrait"
-            android:label="Message"/>
+            android:label=""/>
 
 
         <service android:name=".services.FirebaseMessagingService">
