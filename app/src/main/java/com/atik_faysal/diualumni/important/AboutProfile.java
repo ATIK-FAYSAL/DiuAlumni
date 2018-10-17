@@ -41,6 +41,7 @@ import com.atik_faysal.diualumni.background.SharedPreferencesData;
 import com.atik_faysal.diualumni.interfaces.Methods;
 import com.atik_faysal.diualumni.interfaces.OnResponseTask;
 import com.atik_faysal.diualumni.main.JobPortal;
+import com.atik_faysal.diualumni.messages.PersonMessage;
 import com.atik_faysal.diualumni.models.ExperienceModel;
 import com.atik_faysal.diualumni.models.UrlsModel;
 import com.atik_faysal.diualumni.others.AdditionalInfo;
@@ -210,7 +211,10 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
                 additionalInfo.workExperience();
                 break;
             case R.id.imgMessage:
-                Toast.makeText(getActivity(),"Message option start",Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getActivity(),PersonMessage.class);
+                intent.putExtra("receiverId",USER);
+                intent.putExtra("receiverName",txtName.getText().toString());
+                startActivity(intent);
                 break;
         }
     }
