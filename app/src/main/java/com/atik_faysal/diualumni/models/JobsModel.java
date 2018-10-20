@@ -3,148 +3,157 @@ package com.atik_faysal.diualumni.models;
 
 public class JobsModel
 {
-     private String userName,jobTitle,jobDes,mType,education,deadLine,date,company,stdId,jobId;
-     private String requirement,type,category,salary,phone,email,experience,city,vacancy,comUrl,comAddress;
-     private boolean flag;
+    private String userName,jobTitle,jobDes,mType,education,deadLine,date,company,stdId,jobId;
+    private String requirement,type,category,salary,phone,email,experience,city,vacancy,comUrl,comAddress;
+    private boolean flag,appliedJob;
 
-     public JobsModel(String name,String stdId,String mtype,
-                      String id,String title,String des,String education,String exp,String city,
-                      String req,String type,String category,String salary,String vacancy,
-                      String com,String comUrl,String comAddress,String phone,String email,String date,String deadLine,boolean flag)
-     {
-          this.userName = name;
-          this.jobId = id;
-          this.mType = mtype;
-          this.jobTitle = title;
-          this.deadLine = deadLine;
-          this.jobDes = des;
-          this.company = com;
-          this.date = date;
-          this.stdId = stdId;
-          this.education = education;
-          this.requirement = req;
-          this.type = type;
-          this.phone = phone;
-          this.email = email;
-          this.category = category;
-          this.salary = salary;
-          this.vacancy = vacancy;
-          this.comAddress = comAddress;
-          this.comUrl = comUrl;
-          this.experience = exp;
-          this.flag = flag;
-          this.city = city;
-     }
+    public JobsModel(String name,String stdId,String mtype,
+                     String id,String title,String des,String education,String exp,String city,
+                     String req,String type,String category,String salary,String vacancy,
+                     String com,String comUrl,String comAddress,String phone,String email,String date,String deadLine,boolean flag,boolean temp)
+    {
+        this.userName = name;
+        this.jobId = id;
+        this.mType = mtype;
+        this.jobTitle = title;
+        this.deadLine = deadLine;
+        this.jobDes = des;
+        this.company = com;
+        this.date = date;
+        this.stdId = stdId;
+        this.education = education;
+        this.requirement = req;
+        this.type = type;
+        this.phone = phone;
+        this.email = email;
+        this.category = category;
+        this.salary = salary;
+        this.vacancy = vacancy;
+        this.comAddress = comAddress;
+        this.comUrl = comUrl;
+        this.experience = exp;
+        this.flag = flag;
+        this.city = city;
+        this.appliedJob = temp;
+    }
 
-     public String getVacancy() {
-          return vacancy;
-     }
+    public boolean isAppliedJob() {
+        return appliedJob;
+    }
 
-     public void setVacancy(String vacancy) {
-          this.vacancy = vacancy;
-     }
+    public void setAppliedJob(boolean appliedJob) {
+        this.appliedJob = appliedJob;
+    }
 
-     public String getComUrl() {
-          return comUrl;
-     }
+    public String getVacancy() {
+        return vacancy;
+    }
 
-     public void setComUrl(String comUrl) {
-          this.comUrl = comUrl;
-     }
+    public void setVacancy(String vacancy) {
+        this.vacancy = vacancy;
+    }
 
-     public String getComAddress() {
-          return comAddress;
-     }
+    public String getComUrl() {
+        return comUrl;
+    }
 
-     public void setComAddress(String comAddress) {
-          this.comAddress = comAddress;
-     }
+    public void setComUrl(String comUrl) {
+        this.comUrl = comUrl;
+    }
 
-     public String getCity() {
-          return city;
-     }
+    public String getComAddress() {
+        return comAddress;
+    }
 
-     public void setCity(String city) {
-          this.city = city;
-     }
+    public void setComAddress(String comAddress) {
+        this.comAddress = comAddress;
+    }
 
-     public String getmType() {
-          return mType;
-     }
+    public String getCity() {
+        return city;
+    }
 
-     public void setmType(String mType) {
-          this.mType = mType;
-     }
+    public void setCity(String city) {
+        this.city = city;
+    }
 
-     public void setFlag(boolean flag) {
-          this.flag = flag;
-     }
+    public String getmType() {
+        return mType;
+    }
 
-     public boolean isFlag() {
-          return flag;
-     }
+    public void setmType(String mType) {
+        this.mType = mType;
+    }
 
-     public String getExperience() {
-          return experience;
-     }
+    public void setFlag(boolean flag) {
+        this.flag = flag;
+    }
 
-     public String getRequirement() {
-          return requirement;
-     }
+    public boolean isFlag() {
+        return flag;
+    }
 
-     public String getType() {
-          return type;
-     }
+    public String getExperience() {
+        return experience;
+    }
 
-     public String getCategory() {
-          return category;
-     }
+    public String getRequirement() {
+        return requirement;
+    }
 
-     public String getSalary() {
-          return salary;
-     }
+    public String getType() {
+        return type;
+    }
 
-     public String getPhone() {
-          return phone;
-     }
+    public String getCategory() {
+        return category;
+    }
 
-     public String getEmail() {
-          return email;
-     }
+    public String getSalary() {
+        return salary;
+    }
 
-     public String getEducation() {
-          return education;
-     }
+    public String getPhone() {
+        return phone;
+    }
 
-     public String getStdId() {
-          return stdId;
-     }
+    public String getEmail() {
+        return email;
+    }
 
-     public String getUserName() {
-          return userName;
-     }
+    public String getEducation() {
+        return education;
+    }
 
-     public String getJobId() {
-          return jobId;
-     }
+    public String getStdId() {
+        return stdId;
+    }
 
-     public String getJobTitle() {
-          return jobTitle;
-     }
+    public String getUserName() {
+        return userName;
+    }
 
-     public String getJobDes() {
-          return jobDes;
-     }
+    public String getJobId() {
+        return jobId;
+    }
 
-     public String getDeadLine() {
-          return deadLine;
-     }
+    public String getJobTitle() {
+        return jobTitle;
+    }
 
-     public String getCompany() {
-          return company;
-     }
+    public String getJobDes() {
+        return jobDes;
+    }
 
-     public String getDate() {
-          return date;
-     }
+    public String getDeadLine() {
+        return deadLine;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public String getDate() {
+        return date;
+    }
 }

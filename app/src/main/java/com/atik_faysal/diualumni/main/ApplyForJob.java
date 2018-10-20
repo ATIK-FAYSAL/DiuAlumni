@@ -8,6 +8,7 @@ import com.atik_faysal.diualumni.background.PostInfoBackgroundTask;
 import com.atik_faysal.diualumni.background.SharedPreferencesData;
 import com.atik_faysal.diualumni.important.CheckInternetConnection;
 import com.atik_faysal.diualumni.important.DisplayMessage;
+import com.atik_faysal.diualumni.important.RequireMethods;
 import com.atik_faysal.diualumni.interfaces.Methods;
 import com.atik_faysal.diualumni.interfaces.OnResponseTask;
 
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class ApplyForJob extends AppCompatActivity implements Methods,View.OnClickListener
 {
@@ -33,6 +35,7 @@ public class ApplyForJob extends AppCompatActivity implements Methods,View.OnCli
      private CheckInternetConnection internetConnection;
      private ProgressDialog progressDialog;
      private String toEmail;
+     private RequireMethods methods;
 
      @Override
      protected void onCreate(Bundle savedInstanceState) {
@@ -88,15 +91,24 @@ public class ApplyForJob extends AppCompatActivity implements Methods,View.OnCli
           txtDate.setText(info.get("date"));
           txtUsername.setText("Posted by "+info.get("name"));
           toEmail = info.get("email");
+          String appliedJob = info.get("appliedJob");
 
           bApplyJob.setOnClickListener(this);
           txtUsername.setOnClickListener(this);
           txtComUrl.setOnClickListener(this);
 
+          if(appliedJob.equals("yes"))
+          {
+              bApplyJob.setEnabled(false);
+              bApplyJob.setBackgroundDrawable(getResources().getDrawable(R.drawable.disable_button));
+              bApplyJob.setText("Already applied");
+          }
+
           sharedPreferencesData = new SharedPreferencesData(this);
           internetConnection = new CheckInternetConnection(this);
           displayMessage = new DisplayMessage(this);
           progressDialog = new ProgressDialog(this);
+          methods = new RequireMethods(this);
 
           //calling method
           setToolbar();
@@ -106,7 +118,7 @@ public class ApplyForJob extends AppCompatActivity implements Methods,View.OnCli
      public void setToolbar() {
           Toolbar toolbar = findViewById(R.id.toolbar);
           setSupportActionBar(toolbar);toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-          getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+          Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
           getSupportActionBar().setDisplayShowHomeEnabled(true);
           toolbar.setNavigationIcon(R.drawable.icon_back);
           toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -133,6 +145,8 @@ public class ApplyForJob extends AppCompatActivity implements Methods,View.OnCli
                          map.put("phone",sharedPreferencesData.getUserPhone());
                          map.put("email",sharedPreferencesData.getUserEmail());
                          map.put("toEmail",toEmail);
+                         map.put("jobId",txtJobId.getText().toString());
+                         map.put("date",methods.getDate());
                          if(internetConnection.isOnline())
                          {
                               PostInfoBackgroundTask backgroundTask = new PostInfoBackgroundTask(this,responseTask);
@@ -157,12 +171,8 @@ public class ApplyForJob extends AppCompatActivity implements Methods,View.OnCli
           public void onResultSuccess(String value) {
                if(value!=null)
                {
-                    if(progressDialog.isShowing())
-                    {
-                         progressDialog.dismiss();
-                         //Toast.makeText(ApplyForJob.this,"Your Resume is send successfully",Toast.LENGTH_SHORT).show();
-                         displayMessage.congratesMessage("Your Resume is send successfully");
-                    }
+                   progressDialog.dismiss();
+                   displayMessage.congratesMessage("Your Resume is send successfully");
                }
           }
      };
