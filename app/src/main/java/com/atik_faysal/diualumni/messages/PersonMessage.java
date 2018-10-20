@@ -5,9 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -22,9 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.atik_faysal.diualumni.R;
-import com.atik_faysal.diualumni.adapter.JobsAdapter;
 import com.atik_faysal.diualumni.adapter.ListViewAdapter;
-import com.atik_faysal.diualumni.adapter.MessageAdapter;
 import com.atik_faysal.diualumni.background.PostInfoBackgroundTask;
 import com.atik_faysal.diualumni.background.SharedPreferencesData;
 import com.atik_faysal.diualumni.important.CheckInternetConnection;
@@ -32,7 +27,6 @@ import com.atik_faysal.diualumni.important.DisplayMessage;
 import com.atik_faysal.diualumni.important.RequireMethods;
 import com.atik_faysal.diualumni.interfaces.Methods;
 import com.atik_faysal.diualumni.interfaces.OnResponseTask;
-import com.atik_faysal.diualumni.main.JobPortal;
 import com.atik_faysal.diualumni.models.MessageModel;
 
 import org.json.JSONArray;
@@ -45,7 +39,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PersonMessage extends AppCompatActivity implements Methods
 {
@@ -75,6 +68,7 @@ public class PersonMessage extends AppCompatActivity implements Methods
     }
 
 
+    //initialize all component
     @Override
     public void initComponent() {
         txtMessage = findViewById(R.id.txtTextMsg);
@@ -147,8 +141,7 @@ public class PersonMessage extends AppCompatActivity implements Methods
         Map<String,String>map = new HashMap<>();
 
         String sender = sharedPreferencesData.getCurrentUserId();
-        String receiver = "161-35-1413";
-        if(!sender.isEmpty()&&!receiver.isEmpty())
+        if(!sender.isEmpty()&&!RECEIVER_ID.isEmpty())
         {
             map.put("option","fetchMsg");
             map.put("sender",sender);
@@ -262,6 +255,7 @@ public class PersonMessage extends AppCompatActivity implements Methods
     private OnResponseTask responseTask = new OnResponseTask() {
         @Override
         public void onResultSuccess(String value) {
+            Log.d("error",value);
             if(!value.equals("success"))
                 Toast.makeText(PersonMessage.this,"Message couldn't send.Please retry",Toast.LENGTH_LONG).show();
         }
