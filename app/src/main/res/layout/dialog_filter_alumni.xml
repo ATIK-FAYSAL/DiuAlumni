@@ -37,8 +37,9 @@
                 android:padding="8dp"/>
 
             <RadioButton
-                android:text="Search by Department"
-                android:id="@+id/rDepartment"
+                android:padding="3dp"
+                android:text="Search by Department/batch"
+                android:id="@+id/rDeptBatch"
                 android:layout_margin="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -55,12 +56,6 @@
                 android:padding="8dp">
             </Spinner>
 
-            <RadioButton
-                android:text="Search by batch"
-                android:id="@+id/rBatch"
-                android:layout_margin="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
 
             <Spinner
                 android:id="@+id/sBatch"
@@ -69,10 +64,11 @@
                 android:layout_below="@+id/sCategory"
                 style="@style/spinner_theme"
                 android:paddingLeft="15dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginStart="20dp"
                 android:padding="8dp">
             </Spinner>
+
 
             <Button
                 android:id="@+id/bSearch"
