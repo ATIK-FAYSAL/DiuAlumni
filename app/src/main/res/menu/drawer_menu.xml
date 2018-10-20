@@ -37,14 +37,7 @@
             android:icon="@drawable/icon_about_us"
             android:title="About us" />
 
-        <item
-            android:id="@+id/navSignInOut"
-            android:icon="@drawable/icon_log_out"
-            android:title="Sign in" />
 
-    </group>
-
-    <group android:checkableBehavior="single">
         <item
             android:id="@+id/navChangePass"
             android:icon="@drawable/icon_pass"
@@ -54,7 +47,12 @@
             android:icon="@drawable/icon_notification_off"
             app:actionLayout="@layout/switch_layout"
             android:title="Enable notification" />
-    </group>
 
+        <item
+            android:id="@+id/navSignInOut"
+            android:icon="@drawable/icon_log_out"
+            android:title="Sign in" />
+
+    </group>
 
 </menu>
