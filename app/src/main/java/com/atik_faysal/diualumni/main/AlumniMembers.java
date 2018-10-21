@@ -219,7 +219,7 @@ public class AlumniMembers extends AppCompatActivity implements Methods
                public void run() {
                     handler.post(runnable);
                }
-          },2000);
+          },getResources().getInteger(R.integer.progTime));
      }
 
      OnResponseTask onResponseTask = new OnResponseTask() {

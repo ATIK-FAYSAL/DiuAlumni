@@ -201,7 +201,7 @@ public class AllMessages extends AppCompatActivity implements Methods
             public void run() {
                 handler.post(runnable);
             }
-        },2000);
+        },getResources().getInteger(R.integer.progTime));
     }
 
     //start a thread to reload messages in every second

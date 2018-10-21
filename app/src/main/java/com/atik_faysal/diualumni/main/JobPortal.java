@@ -415,7 +415,7 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
             public void run() {
                 handler.post(runnable);
             }
-        },2000);
+        },getResources().getInteger(R.integer.progTime));
     }
 
     //sing out

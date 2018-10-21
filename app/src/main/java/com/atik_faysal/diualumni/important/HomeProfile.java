@@ -141,7 +141,7 @@ public class HomeProfile extends Fragment
                public void run() {
                     handler.post(runnable);
                }
-          },2800);
+          },getResources().getInteger(R.integer.progTime));
      }
 
      //server response result
