@@ -110,6 +110,8 @@
         <item>Innovation and Entrepreneurship</item>
     </string-array>
 
+    <integer name="progTime">1500</integer>
+
     //messages
     <string name="noInternet">Please check your internet connection</string>
     <string name="executionFailed">[Error-1001] Execution failed,please try again latter</string>
