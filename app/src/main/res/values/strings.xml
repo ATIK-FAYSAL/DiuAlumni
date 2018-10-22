@@ -125,18 +125,18 @@
     <string name="invalidError">Oops ! Something is wrong,please try again</string>
 
     //file location
-    <string name="address">http://192.168.56.1/diuAlumni/images/</string>
-    <string name="insertOperation">http://192.168.56.1/diuAlumni/insertOperation.php</string>
-    <string name="login">http://192.168.56.1/diuAlumni/verifyInfo.php</string>
-    <string name="postJob">http://192.168.56.1/diuAlumni/newJob.php</string>
-    <string name="readInfo">http://192.168.56.1/diuAlumni/readInfo.php</string>
-    <string name="deleteOperation">http://192.168.56.1/diuAlumni/deleteOperation.php</string>
-    <string name="updateOperation">http://192.168.56.1/diuAlumni/updateOperation.php</string>
-    <string name="otherInsertion">http://192.168.56.1/diuAlumni/otherInsertion.php</string>
-    <string name="uploadImage">http://192.168.56.1/diuAlumni/uploadImage.php</string>
-    <string name="uploadCv">http://192.168.56.1/diuAlumni/uploadCv.php</string>
-    <string name="sendResume">http://192.168.56.1/diuAlumni/sendResume.php</string>
-    <string name="forgotPassword">http://192.168.56.1/diuAlumni/forgotPass.php</string>
-    <string name="chatMessages">http://192.168.56.1/diuAlumni/chatMessages.php</string>
+    <string name="address">http://diualumni.bdtechnosoft.com/diuAlumni/images/</string>
+    <string name="insertOperation">http://diualumni.bdtechnosoft.com/diuAlumni/insertOperation.php</string>
+    <string name="login">http://diualumni.bdtechnosoft.com/diuAlumni/verifyInfo.php</string>
+    <string name="postJob">http://diualumni.bdtechnosoft.com/diuAlumni/newJob.php</string>
+    <string name="readInfo">http://diualumni.bdtechnosoft.com/diuAlumni/readInfo.php</string>
+    <string name="deleteOperation">http://diualumni.bdtechnosoft.com/diuAlumni/deleteOperation.php</string>
+    <string name="updateOperation">http://diualumni.bdtechnosoft.com/diuAlumni/updateOperation.php</string>
+    <string name="otherInsertion">http://diualumni.bdtechnosoft.com/diuAlumni/otherInsertion.php</string>
+    <string name="uploadImage">http://diualumni.bdtechnosoft.com/diuAlumni/uploadImage.php</string>
+    <string name="uploadCv">http://diualumni.bdtechnosoft.com/diuAlumni/uploadCv.php</string>
+    <string name="sendResume">http://diualumni.bdtechnosoft.com/diuAlumni/sendResume.php</string>
+    <string name="forgotPassword">http://diualumni.bdtechnosoft.com/diuAlumni/forgotPass.php</string>
+    <string name="chatMessages">http://diualumni.bdtechnosoft.com/diuAlumni/chatMessages.php</string>
 
 </resources>

@@ -15,6 +15,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="logInTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/color1</item>
+        <item name="colorPrimaryDark">#0e96fa</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
     <style name="toolbar" parent="Widget.AppCompat.Toolbar">
 
         <item name="android:background">@drawable/toolbar_back</item>
