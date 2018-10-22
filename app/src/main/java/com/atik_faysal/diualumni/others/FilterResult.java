@@ -296,6 +296,7 @@ public class FilterResult extends AppCompatActivity implements DatePickerDialog.
                 String item = parent.getItemAtPosition(i).toString();
                 if (!item.equals("Select a category"))
                     category = parent.getItemAtPosition(i).toString();
+                else category="";
             }
 
             @Override
