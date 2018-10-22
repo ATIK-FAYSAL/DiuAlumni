@@ -46,6 +46,7 @@ import com.atik_faysal.diualumni.others.Feedback;
 import com.atik_faysal.diualumni.others.FilterResult;
 import com.atik_faysal.diualumni.others.NoInternetConnection;
 import com.atik_faysal.diualumni.others.SetTabLayout;
+import com.atik_faysal.diualumni.others.UserPermission;
 import com.bumptech.glide.Glide;
 import com.gdacciaro.iOSDialog.iOSDialog;
 import com.gdacciaro.iOSDialog.iOSDialogBuilder;
@@ -84,6 +85,7 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
     private FilterResult filterResult;
     private ProgressDialog progressDialog;
     private DisplayMessage displayMessage;
+    private UserPermission permission;
 
     private TextView txtName,txtPhone,txtNoResult,txtNumOfJobs;
     private ProgressBar progressBar;
@@ -109,9 +111,13 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
         closeApp();//exit from app
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onStart() {
         super.onStart();
+
+        permission.userPermission();
+
         if(!internetConnection.isOnline())//if internet is not connect go to no internet page ,
         {
             String className = JobPortal.class.getName();
@@ -229,6 +235,7 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
         methods = new RequireMethods(this);
         filterResult = new FilterResult(this);
         displayMessage = new DisplayMessage(this);
+        permission = new UserPermission(this);
 
         methods.reloadPage(refreshLayout,JobPortal.class);//reload this current page
 

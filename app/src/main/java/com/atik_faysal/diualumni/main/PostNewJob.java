@@ -108,6 +108,7 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
           txtComAddress = findViewById(R.id.txtComAddress);
           txtComUrl = findViewById(R.id.txtComUrl);
           txtVacancy = findViewById(R.id.txtVacancy);
+          imgRmv.setVisibility(View.GONE);
 
           //set click listener
           bDone.setOnClickListener(this);
@@ -184,7 +185,11 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
                               imgAdd.setEnabled(false);
                          }
                     }
-                    else txtVacancy.setText("1");
+                    else{
+                         txtVacancy.setText("1");
+                         imgRmv.setVisibility(View.VISIBLE);
+                         imgRmv.setEnabled(true);
+                    }
                     break;
                case R.id.imgRmv:
                     if(txtVacancy.getText().toString().equals(""))

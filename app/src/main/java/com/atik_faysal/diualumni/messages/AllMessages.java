@@ -189,7 +189,6 @@ public class AllMessages extends AppCompatActivity implements Methods
 
                 }catch (NullPointerException e)
                 {
-                    Log.d("error",e.toString());
                     txtNoResult.setVisibility(View.VISIBLE);
                     txtNoResult.setText(getResources().getString(R.string.noResult));
                     progressBar.setVisibility(View.GONE);

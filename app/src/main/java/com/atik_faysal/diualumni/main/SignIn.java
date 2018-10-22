@@ -81,7 +81,7 @@ public class SignIn extends AppCompatActivity implements Methods,View.OnClickLis
           TextView txtForPass = findViewById(R.id.txtForgotPass);
           checkBox = findViewById(R.id.cRemember);
           txtErrMsg = findViewById(R.id.txtErrMsg);
-          txtErrMsg.setVisibility(View.INVISIBLE);
+          txtErrMsg.setVisibility(View.GONE);
 
           //set on click listener
           bSignin.setOnClickListener(this);
