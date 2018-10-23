@@ -213,7 +213,7 @@ public class EditJobPost extends PostNewJob
      }
 
      //define member type
-     protected void chooseJobNature(View view)
+     public void chooseJobNature(View view)
      {
           boolean checked = ((RadioButton)view).isChecked();
 

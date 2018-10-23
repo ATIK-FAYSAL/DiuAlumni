@@ -31,7 +31,7 @@
                 android:layout_marginStart="20dp"
                 android:hint="Enter student id"
                 android:gravity="center_vertical"
-                android:inputType="number"
+                android:inputType="phone"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/job_text_style"
                 android:padding="8dp"/>

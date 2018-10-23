@@ -703,7 +703,7 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
      }
 
      //define member type
-     protected void chooseJobNature(View view)
+     public void chooseJobNature(View view)
      {
           boolean checked = ((RadioButton)view).isChecked();
 
