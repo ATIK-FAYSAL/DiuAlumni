@@ -202,8 +202,10 @@ public class PersonMessage extends AppCompatActivity implements Methods
                 count++;
             }
 
-            viewAllMessage(models);//all data show on UI
+            if(modelSize<models.size())
+                viewAllMessage(models);//all data show on UI
 
+            modelSize = models.size();
         } catch (JSONException e) {
             Log.d("error",e.toString());
         }
@@ -226,15 +228,11 @@ public class PersonMessage extends AppCompatActivity implements Methods
             emptyView.setVisibility(View.INVISIBLE);//empty view invisible
             recyclerView.setVisibility(View.VISIBLE);//no result text invisible
             ListViewAdapter adapter = new ListViewAdapter(this, models);
-            if(modelSize<models.size())
-            {
-                recyclerView.setAdapter(adapter);//set adapter in recyler view
-                recyclerView.setSelection(adapter.getCount()-1);
-            }
+            recyclerView.setAdapter(adapter);//set adapter in recyler view
+            recyclerView.setSelection(adapter.getCount()-1);
             //layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             //recyclerView.setLayoutManager(layoutManager);
             // recyclerView.setItemAnimator(new DefaultItemAnimator());
-            modelSize = models.size();
         }
     }
 

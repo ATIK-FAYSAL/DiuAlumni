@@ -1,5 +1,6 @@
 package com.atik_faysal.diualumni.important;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -106,6 +107,7 @@ public class HomeProfile extends Fragment
           final Timer timer = new Timer();
           final Handler handler = new Handler();
           final  Runnable runnable = new Runnable() {
+               @SuppressLint("SetTextI18n")
                @Override
                public void run() {
                     try {
@@ -131,7 +133,7 @@ public class HomeProfile extends Fragment
                     }catch (NullPointerException ex)
                     {
                          txtNoResult.setVisibility(View.VISIBLE);
-                         txtNoResult.setText(getResources().getString(R.string.noResult));
+                         txtNoResult.setText("No result found");
                          progressBar.setVisibility(View.GONE);
                     }
                }

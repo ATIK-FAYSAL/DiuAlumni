@@ -43,6 +43,8 @@ public class SignIn extends AppCompatActivity implements Methods,View.OnClickLis
      private DesEncryptionAlgo encryptionAlgo;
      private SharedPreferencesData sharedPreferencesData;
      private RequireMethods requireMethods;
+     private ProgressDialog progressDialog;
+
 
      private String studentId,password;
 
@@ -95,6 +97,10 @@ public class SignIn extends AppCompatActivity implements Methods,View.OnClickLis
           encryptionAlgo = new DesEncryptionAlgo(this);
           sharedPreferencesData = new SharedPreferencesData(this);
           requireMethods = new RequireMethods(this);
+          progressDialog = new ProgressDialog(this);
+          progressDialog.setCancelable(false);
+          progressDialog.setTitle("Please wait....");
+          progressDialog.setMessage("Authenticating");
      }
 
      //button click
@@ -114,6 +120,7 @@ public class SignIn extends AppCompatActivity implements Methods,View.OnClickLis
                                    map.put("id",studentId);
                                    map.put("pass",encryptionAlgo.encryptPass(password));
                                    backgroundTask.insertData(getString(R.string.login),map);//send request to server
+                                   progressDialog.show();
                               }
                          }else
                               dialogClass.errorMessage(getString(R.string.noInternet));
@@ -129,7 +136,7 @@ public class SignIn extends AppCompatActivity implements Methods,View.OnClickLis
                case R.id.cRemember:
                     if(userLogIn())//check user information
                     {
-                         if(checkBox.isChecked())//this mehtod contain username ,password,and checkbox status
+                         if(checkBox.isChecked())//this method contain username ,password,and checkbox status
                               sharedPreferencesData.rememberMe(studentId,password,true);
                          else
                               sharedPreferencesData.rememberMe(studentId,password,false);
@@ -158,7 +165,7 @@ public class SignIn extends AppCompatActivity implements Methods,View.OnClickLis
                flag = false;
           if(!flag)
                txtErrMsg.setVisibility(View.VISIBLE);
-          else txtErrMsg.setVisibility(View.INVISIBLE);
+          else txtErrMsg.setVisibility(View.GONE);
 
           return flag;
      }
@@ -191,7 +198,9 @@ public class SignIn extends AppCompatActivity implements Methods,View.OnClickLis
 
                Map<String,String>maps = new HashMap<>();
                maps.put("stdId",studentId);
+               assert name != null;
                maps.put("name",name);
+               assert email != null;
                maps.put("email",email);
                maps.put("phone",phone);
                maps.put("type",type);
@@ -205,21 +214,18 @@ public class SignIn extends AppCompatActivity implements Methods,View.OnClickLis
                if(notification.equals("enable")||notification.equals("disable"))
                     sharedPreferencesData.setNotificationSettings(notification);//store user message setting
 
-
-               final ProgressDialog ringProgressDialog = ProgressDialog.show(this, "Please wait","Authenticating", true);
-               ringProgressDialog.setCancelable(true);
                new Thread(new Runnable() {
                     @Override
                     public void run() {
                          try {
-                              Thread.sleep(2500);
+                              Thread.sleep(getResources().getInteger(R.integer.progTime));
                          } catch (Exception e) {
                               Log.d("error",e.toString());
                          }
-                         ringProgressDialog.dismiss();
+                         progressDialog.dismiss();
                     }
                }).start();
-               ringProgressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+               progressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
                          requireMethods.closeActivity(SignIn.this,JobPortal.class);
@@ -232,8 +238,6 @@ public class SignIn extends AppCompatActivity implements Methods,View.OnClickLis
      }
 
 
-
-
      //check user log in is success
      OnResponseTask responseTask = new OnResponseTask() {
           @Override
@@ -244,6 +248,7 @@ public class SignIn extends AppCompatActivity implements Methods,View.OnClickLis
                     {
                          case "failed":
                               dialogClass.errorMessage(getString(R.string.executionFailed));
+                              progressDialog.dismiss();
                               break;
                          default:
                               processJsonData(value);//processing json data

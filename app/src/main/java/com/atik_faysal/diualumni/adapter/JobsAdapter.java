@@ -151,6 +151,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
             infoMap.put("comUrl",currentModel.getComUrl());
             infoMap.put("comAddress",currentModel.getComAddress());
             infoMap.put("date",currentModel.getDate());
+            infoMap.put("stdId",currentModel.getStdId());
             infoMap.put("name",currentModel.getUserName());
             if(currentModel.isAppliedJob())
                 infoMap.put("appliedJob","yes");

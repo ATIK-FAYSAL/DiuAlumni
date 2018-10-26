@@ -124,6 +124,8 @@
     <string name="nullPointer">[Error-1005] No value found.please try again</string>
     <string name="invalidError">Oops ! Something is wrong,please try again</string>
 
+
+    //localhost : http://192.168.56.1/
     //file location
     <string name="address">http://diualumni.bdtechnosoft.com/diuAlumni/images/</string>
     <string name="insertOperation">http://diualumni.bdtechnosoft.com/diuAlumni/insertOperation.php</string>

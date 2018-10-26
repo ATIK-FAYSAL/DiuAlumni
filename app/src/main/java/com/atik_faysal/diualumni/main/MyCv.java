@@ -2,6 +2,7 @@ package com.atik_faysal.diualumni.main;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 
@@ -54,6 +55,7 @@ public class MyCv extends AppCompatActivity implements Methods
      private TextView txtId,txtChoose;
      private ImageView imgDoc;
      private String path;
+     private ProgressDialog progressDialog;
 
      @Override
      protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,10 @@ public class MyCv extends AppCompatActivity implements Methods
           sharedPreferencesData = new SharedPreferencesData(this);
           internetConnection = new CheckInternetConnection(this);
           displayMessage = new DisplayMessage(this);
+          progressDialog = new ProgressDialog(this);
+          progressDialog.setCancelable(false);
+          progressDialog.setTitle("Please wait");
+          progressDialog.setMessage("Uploading your resume");
           methods = new RequireMethods(this);
           txtId = findViewById(R.id.docId);
           imgDoc = findViewById(R.id.imgDoc);
@@ -203,6 +209,7 @@ public class MyCv extends AppCompatActivity implements Methods
                     {
                          backgroundTask = new PostInfoBackgroundTask(MyCv.this,onResponseTask);
                          backgroundTask.insertData(getResources().getString(R.string.uploadCv),maps);
+                         progressDialog.show();
                     }else displayMessage.errorMessage(getResources().getString(R.string.noInternet));
                }
           });
@@ -270,10 +277,30 @@ public class MyCv extends AppCompatActivity implements Methods
           public void onResultSuccess(String value) {
                if(value.equals("success"))
                {
-                    txtId.setVisibility(View.GONE);
-                    imgDoc.setVisibility(View.VISIBLE);
-                    txtChoose.setText("Change resume");
-                    Toast.makeText(MyCv.this,"Your resume is uploaded",Toast.LENGTH_LONG).show();
+                    Thread thread = new Thread(new Runnable() {
+                         @Override
+                         public void run() {
+                              try
+                              {
+                                   Thread.sleep(getResources().getInteger(R.integer.progTime));
+                                   runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                             progressDialog.dismiss();
+                                             txtId.setVisibility(View.GONE);
+                                             imgDoc.setVisibility(View.VISIBLE);
+                                             txtChoose.setText("Change resume");
+                                             Toast.makeText(MyCv.this,"Your resume is uploaded",Toast.LENGTH_LONG).show();
+                                        }
+                                   });
+                              }catch (InterruptedException e)
+                              {
+                                   e.printStackTrace();
+                              }
+                         }
+                    });
+                    thread.start();
+
                }
                else displayMessage.errorMessage(getResources().getString(R.string.executionFailed));
           }

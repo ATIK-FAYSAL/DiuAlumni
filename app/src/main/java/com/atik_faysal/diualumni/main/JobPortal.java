@@ -19,6 +19,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -224,6 +225,7 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
         TextView txtFilter = findViewById(R.id.txtFilter);
         fab = findViewById(R.id.fab);
         progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(false);
         progressDialog.setTitle("Please wait");
         progressDialog.setMessage("Searching data");
         SwipeRefreshLayout refreshLayout = findViewById(R.id.refresh);

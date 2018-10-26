@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.Selection;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
@@ -37,6 +38,7 @@ import com.atik_faysal.diualumni.others.NoInternetConnection;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class PostNewJob extends AppCompatActivity implements Methods,View.OnClickListener,DatePickerDialog.OnDateSetListener
 {
@@ -62,6 +64,7 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
      protected PostInfoBackgroundTask backgroundTask;
      protected SharedPreferencesData sharedPreferencesData;
      protected RequireMethods methods;
+     protected Button bDone;
 
 
      @Override
@@ -85,6 +88,7 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
      }
 
      //initialize all component
+     @SuppressLint("SetTextI18n")
      @Override
      public void initComponent()
      {
@@ -99,7 +103,7 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
           sCategory = findViewById(R.id.sCategory);
           sLocation = findViewById(R.id.sLocation);
           TextView txtLink = findViewById(R.id.txtLink);
-          Button bDone = findViewById(R.id.bDone);
+          bDone = findViewById(R.id.bDone);
           txtDeadLine = findViewById(R.id.txtDeadLine);
           progressBar = findViewById(R.id.progress);
           txtExp = findViewById(R.id.txtExp);
@@ -107,6 +111,8 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
           imgRmv = findViewById(R.id.imgRmv);
           txtComAddress = findViewById(R.id.txtComAddress);
           txtComUrl = findViewById(R.id.txtComUrl);
+          txtComUrl.setText("http://");
+          Selection.setSelection(txtComUrl.getText(),txtComUrl.getText().length());
           txtVacancy = findViewById(R.id.txtVacancy);
           imgRmv.setVisibility(View.GONE);
 
@@ -141,7 +147,7 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
      {
           Toolbar toolbar = findViewById(R.id.toolbar);
           setSupportActionBar(toolbar);toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-          getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+          Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
           getSupportActionBar().setDisplayShowHomeEnabled(true);
           toolbar.setNavigationIcon(R.drawable.icon_back);
           toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -160,6 +166,9 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
           switch (view.getId())
           {
                case R.id.bDone:
+                    progressBar.setVisibility(View.VISIBLE);
+                    bDone.setEnabled(false);
+                    bDone.setBackgroundDrawable(getResources().getDrawable(R.drawable.disable_button));
                     postNewJob();
                     break;
                case R.id.txtLink:
@@ -460,10 +469,18 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
                @Override
                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
+               @SuppressLint("SetTextI18n")
                @Override
                public void afterTextChanged(Editable editable) {
+
+                   if(!editable.toString().startsWith("http://"))//set default text http
+                   {
+                       txtComUrl.setText("http://");
+                       Selection.setSelection(txtComUrl.getText(),txtComUrl.getText().length());
+                   }
+
                     String text = txtComUrl.getText().toString();
-                    if(text.length()<10)
+                    if(text.length()<15)
                          txtComUrl.setError(INVALID_MSG,iconInvalid);
                     else txtComUrl.setError(VALID_MSG,iconValid);
                }
@@ -759,7 +776,7 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
                                    public void run() {
                                         try
                                         {
-                                             Thread.sleep(2500);
+                                             Thread.sleep(getResources().getInteger(R.integer.progTime));
                                              runOnUiThread(new Runnable() {
                                                   @Override
                                                   public void run() {
@@ -775,7 +792,12 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
                               });
                               thread.start();
                          }
-                         else displayMessage.errorMessage(getResources().getString(R.string.executionFailed));
+                         else{
+                              bDone.setEnabled(true);
+                              bDone.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_done));
+                              progressBar.setVisibility(View.INVISIBLE);
+                              displayMessage.errorMessage(getResources().getString(R.string.executionFailed));
+                         }
                     }
                });
           }

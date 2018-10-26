@@ -3,6 +3,7 @@ package com.atik_faysal.diualumni.important;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 
 import java.text.SimpleDateFormat;
@@ -28,6 +29,7 @@ import com.atik_faysal.diualumni.R;
 import com.atik_faysal.diualumni.background.PostInfoBackgroundTask;
 import com.atik_faysal.diualumni.background.SharedPreferencesData;
 import com.atik_faysal.diualumni.interfaces.OnResponseTask;
+import com.atik_faysal.diualumni.others.Feedback;
 
 @SuppressLint("Registered")
 public class RequireMethods extends AppCompatActivity
@@ -187,6 +189,7 @@ public class RequireMethods extends AppCompatActivity
                          alertDialog.dismiss();
                          if (flag)
                               sharedPreferencesData.rememberMe(sharedPreferencesData.getCurrentUserId(),newPass,sharedPreferencesData.checkBoxStatus());
+                         Toast.makeText(context,"Your password has been updated",Toast.LENGTH_SHORT).show();
                          break;
                     case "not found":
                          displayMessage.errorMessage("Your old password does not match.Please try again");

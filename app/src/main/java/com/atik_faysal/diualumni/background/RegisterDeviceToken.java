@@ -35,7 +35,7 @@ public class RegisterDeviceToken
                .build();
 
           final Request request = new Request.Builder()
-               .url("http://192.168.56.1/diuAlumni/otherInsertion.php")
+               .url("http://diualumni.bdtechnosoft.com/diuAlumni/otherInsertion.php")
                .post(body)
                .build();
 

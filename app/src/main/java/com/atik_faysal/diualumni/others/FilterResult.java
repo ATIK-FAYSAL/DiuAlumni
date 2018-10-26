@@ -76,7 +76,7 @@ public class FilterResult extends AppCompatActivity implements DatePickerDialog.
         sCategory = view.findViewById(R.id.sCategory);
         sLocation = view.findViewById(R.id.sLocation);
         RadioGroup radioGroup = view.findViewById(R.id.radioGroup);
-        Button bSearch = view.findViewById(R.id.bSearch);
+        final Button bSearch = view.findViewById(R.id.bSearch);
 
         txtDeadLine.setVisibility(View.GONE);//Invisible deadLine TextView
         sCategory.setVisibility(View.GONE);//Invisible category spinner
@@ -128,6 +128,7 @@ public class FilterResult extends AppCompatActivity implements DatePickerDialog.
                 map.put("value",result);
                 if(internetConnection.isOnline())
                 {
+                    bSearch.setEnabled(false);
                     backgroundTask = new PostInfoBackgroundTask(context,responseTask);
                     backgroundTask.insertData(context.getResources().getString(R.string.readInfo),map);
                 }
@@ -207,7 +208,7 @@ public class FilterResult extends AppCompatActivity implements DatePickerDialog.
         sBatch = view.findViewById(R.id.sBatch);
 
         RadioGroup radioGroup = view.findViewById(R.id.radioGroup);
-        Button bSearch = view.findViewById(R.id.bSearch);
+        final Button bSearch = view.findViewById(R.id.bSearch);
 
         txtStdId.setVisibility(View.GONE);//Invisible deadLine TextView
         sDepartment.setVisibility(View.GONE);//Invisible category spinner
@@ -249,14 +250,14 @@ public class FilterResult extends AppCompatActivity implements DatePickerDialog.
                         break;
                 }
 
-                Log.d("result",result);
-
                 map.put("option","searchAlumni");
                 map.put("stdId",sharedPreferencesData.getCurrentUserId());
                 map.put("type",type);
+                assert result != null;
                 map.put("value",result);
                 if(internetConnection.isOnline())
                 {
+                    bSearch.setEnabled(false);
                     backgroundTask = new PostInfoBackgroundTask(context,responseTask);
                     backgroundTask.insertData(context.getResources().getString(R.string.readInfo),map);
                 }
@@ -368,7 +369,6 @@ public class FilterResult extends AppCompatActivity implements DatePickerDialog.
     private OnResponseTask responseTask = new OnResponseTask() {
         @Override
         public void onResultSuccess(String value) {
-            Log.d("value",value);
             onResponseTask.onResultSuccess(value);
             alertDialog.dismiss();
         }

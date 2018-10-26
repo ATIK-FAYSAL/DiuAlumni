@@ -50,6 +50,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class UserRegistration extends AppCompatActivity implements View.OnClickListener
 {
@@ -68,6 +69,8 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
      private String memberType=null,phone;
      private String gender = null;
      private String name,email,stdId,address,password,batch,department;
+
+     private Button bProceed;
 
      @Override
      protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +91,7 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
           spinner = findViewById(R.id.sBatch);
           sDepartment = findViewById(R.id.sDepartment);
           TextView txtSignIn = findViewById(R.id.txtSignIn);
-          Button bProceed = findViewById(R.id.bProceed);
+          bProceed = findViewById(R.id.bProceed);
           progressBar = findViewById(R.id.progress);
 
           //set click listener
@@ -129,7 +132,11 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
                     if(validator.userDataValidator(name,stdId,email,password,address,memberType,batch,gender))
                     {
                          if(internetConnection.isOnline())
+                         {
+                              bProceed.setBackgroundDrawable(getResources().getDrawable(R.drawable.disable_button));
+                              bProceed.setEnabled(false);
                               onLogin(LoginType.PHONE);
+                         }
                          else dialogClass.errorMessage(getString(R.string.noInternet));
                     }else dialogClass.errorMessage("Your information is not valid.please check and insert valid information");
                     break;
@@ -303,7 +310,7 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
           Toolbar toolbar = findViewById(R.id.toolbar);
           setSupportActionBar(toolbar);
           toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-          getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+          Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
           getSupportActionBar().setDisplayShowHomeEnabled(true);
           toolbar.setNavigationIcon(R.drawable.icon_back);
           toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -407,7 +414,10 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
           this.phone = phone;
 
           if(internetConnection.isOnline())
+          {
                backgroundTask.insertData(getString(R.string.insertOperation),map);
+               progressBar.setVisibility(View.VISIBLE);
+          }
           else dialogClass.errorMessage(getString(R.string.noInternet));
      }
 
@@ -421,14 +431,14 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
                     public void run() {
                          if(value.equals("success"))
                          {
-                              progressBar.setVisibility(View.VISIBLE);
                               Thread thread = new Thread(new Runnable() {
                                    @Override
                                    public void run() {
                                         try
                                         {
-                                             Thread.sleep(2500);
+                                             Thread.sleep(2200);
                                              Map<String,String>maps = new HashMap<>();
+                                             maps.put("stdId",stdId);
                                              maps.put("name",name);
                                              maps.put("email",email);
                                              maps.put("phone",phone);
@@ -437,6 +447,8 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
                                              //sharedPreferencesData.clearData();//clear all previous data
                                              sharedPreferencesData.currentUserInfo();//store current user information
                                              sharedPreferencesData.isUserLogin(true);//set user as log in true
+                                             sharedPreferencesData.setMessageSetting("enable");//store user message setting
+                                             sharedPreferencesData.setNotificationSettings("enable");//store user message setting
                                              runOnUiThread(new Runnable() {
                                                   @Override
                                                   public void run() {
@@ -452,7 +464,12 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
                               });
                               thread.start();
                          }
-                         else dialogClass.errorMessage("Execution failed,please try again latter");
+                         else {
+                              dialogClass.errorMessage("Execution failed,please try again latter");
+                              progressBar.setVisibility(View.INVISIBLE);
+                              bProceed.setEnabled(true);
+                              bProceed.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_done));
+                         }
                     }
                });
           }

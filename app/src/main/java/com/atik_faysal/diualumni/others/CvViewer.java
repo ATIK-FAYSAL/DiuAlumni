@@ -11,6 +11,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import java.util.Objects;
 
 
 public class CvViewer extends Activity
@@ -21,7 +22,7 @@ public class CvViewer extends Activity
      protected void onCreate(@Nullable Bundle savedInstanceState) {
           super.onCreate(savedInstanceState);
           //setContentView(R.layout.pdf_view);
-          String url = getIntent().getExtras().getString("url");
+          String url = Objects.requireNonNull(getIntent().getExtras()).getString("url");
           //String google = "http://docs.google.com/gview?embedded=true&url=";
 
           WebView webView = new WebView(this);

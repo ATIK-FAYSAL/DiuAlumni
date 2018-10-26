@@ -62,7 +62,7 @@
             android:label="Edit post"
             android:screenOrientation="portrait"/>
         <activity android:name=".main.MyCv"
-            android:label="My CV"
+            android:label="My Resume"
             android:screenOrientation="portrait"/>
         <activity android:name=".others.CvViewer"
             android:screenOrientation="portrait"

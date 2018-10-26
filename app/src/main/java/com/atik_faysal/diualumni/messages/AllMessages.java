@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.atik_faysal.diualumni.R;
 import com.atik_faysal.diualumni.adapter.AlumniAdapter;
@@ -128,6 +129,7 @@ public class AllMessages extends AppCompatActivity implements Methods
 
     @Override
     public void processJsonData(String jsonData) {
+
         try {
             String message,count,imageUrl,personName,personId;
             List<ChatModel>modelList = new ArrayList<>();
@@ -149,7 +151,7 @@ public class AllMessages extends AppCompatActivity implements Methods
                 counter++;
             }
 
-            if(modelSize<modelList.size())
+            if(modelSize<modelList.size()||modelList.size()==0)
                 viewInUI(modelList);
 
             modelSize = modelList.size();
@@ -169,7 +171,7 @@ public class AllMessages extends AppCompatActivity implements Methods
             @Override
             public void run() {
                 try {
-                    if (modelList==null)//if no results found
+                    if (modelList.isEmpty())//if no results found
                     {
                         emptyView.setVisibility(View.VISIBLE);//empty view visible
                         txtNoResult.setVisibility(View.VISIBLE);//no result text visible

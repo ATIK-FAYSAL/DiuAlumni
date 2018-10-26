@@ -5,13 +5,16 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 
+import android.app.ProgressDialog;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,6 +26,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,6 +91,7 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
     protected SharedPreferencesData sharedPreferencesData;
     private RequireMethods methods;
     protected AlertDialog.Builder builder;
+    private ProgressDialog progressDialog;
     protected AlertDialog alertDialog;
     AdditionalInfo additionalInfo;
     protected Context context;
@@ -146,9 +151,11 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
         internetConnection = new CheckInternetConnection(getContext());
         displayMessage = new DisplayMessage(getContext());
         methods = new RequireMethods(getContext());
+        progressDialog = new ProgressDialog(getContext());
         sharedPreferencesData = new SharedPreferencesData(getContext());
         additionalInfo = new AdditionalInfo(getContext());
         USER = Objects.requireNonNull(Objects.requireNonNull(getActivity()).getIntent().getExtras()).getString("user");
+        msgSetting = sharedPreferencesData.getMessageSettings();//get current message setting status
 
         //calling method
         retrieveUserInfo();//retrieve value from server
@@ -184,8 +191,8 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
 
                 if(infoValidator())
                 {
-                    backgroundTask = new PostInfoBackgroundTask(getContext(),responseTask);
                     Map<String,String>maps = new HashMap<>();
+
                     maps.put("option","userUpdate");
                     maps.put("stdId",USER);
                     maps.put("name",name);
@@ -195,7 +202,14 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
                     maps.put("msgStatus",msgSetting);
 
                     if(internetConnection.isOnline())
-                        backgroundTask.insertData(Objects.requireNonNull(getActivity()).getResources().getString(R.string.updateOperation),maps);
+                    {
+                        progressDialog.setCancelable(false);
+                        progressDialog.setTitle("Please wait....");
+                        progressDialog.setMessage("Updating your information");
+                        progressDialog.show();
+                        PostInfoBackgroundTask infoBackgroundTask = new PostInfoBackgroundTask(getContext(),responseTask);
+                        infoBackgroundTask.insertData(Objects.requireNonNull(getActivity()).getResources().getString(R.string.updateOperation),maps);
+                    }
                     else displayMessage.errorMessage(Objects.requireNonNull(getActivity()).getResources().getString(R.string.noInternet));
                 }
                 break;
@@ -675,17 +689,34 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
                     switch (value)
                     {
                         case "success":
-                            Map<String,String>maps = new HashMap<>();
-                            maps.put("stdId",sharedPreferencesData.getCurrentUserId());
-                            maps.put("name",name);
-                            maps.put("email",email);
-                            maps.put("phone",phone);
-                            maps.put("type",type);
-                            SharedPreferencesData preferencesData = new SharedPreferencesData(getContext(),maps);//context and user info map
-                            preferencesData.currentUserInfo();//store current user updated information
-                            sharedPreferencesData.setMessageSetting(msgSetting);//update message setting
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Map<String,String>maps = new HashMap<>();
+                                        maps.put("stdId",sharedPreferencesData.getCurrentUserId());
+                                        maps.put("name",name);
+                                        maps.put("email",email);
+                                        maps.put("phone",phone);
+                                        maps.put("type",type);
+                                        SharedPreferencesData preferencesData = new SharedPreferencesData(getContext(),maps);//context and user info map
+                                        preferencesData.currentUserInfo();//store current user updated information
+                                        sharedPreferencesData.setMessageSetting(msgSetting);//update message setting
+                                        Thread.sleep(Objects.requireNonNull(getContext()).getResources().getInteger(R.integer.progTime));
+                                    } catch (Exception e) {
+                                        displayMessage.errorMessage(Objects.requireNonNull(getContext()).getResources().getString(R.string.executionFailed));
+                                    }
+                                    progressDialog.dismiss();
+                                }
+                            }).start();
+                            progressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                @Override
+                                public void onDismiss(DialogInterface dialog) {
+                                    Toast.makeText(context,"Information's update successfully.",Toast.LENGTH_LONG).show();
+                                    methods.closeActivity(getActivity(),JobPortal.class);
+                                }
+                            });
 
-                            displayMessage.progressDialog("Please wait.....","Updating your information.",JobPortal.class);
                             break;
                         default:
                             displayMessage.errorMessage(getActivity().getResources().getString(R.string.updateFailed));

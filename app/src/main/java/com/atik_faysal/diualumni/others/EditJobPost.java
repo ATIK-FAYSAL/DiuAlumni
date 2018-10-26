@@ -50,7 +50,7 @@ public class EditJobPost extends PostNewJob
           sCategory = findViewById(R.id.sCategory);
           sLocation = findViewById(R.id.sLocation);
           TextView txtLink = findViewById(R.id.txtLink);
-          Button bDone = findViewById(R.id.bDone);
+          bDone = findViewById(R.id.bDone);
           txtDeadLine = findViewById(R.id.txtDeadLine);
           progressBar = findViewById(R.id.progress);
           txtExp = findViewById(R.id.txtExp);
@@ -114,6 +114,9 @@ public class EditJobPost extends PostNewJob
           bDone.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View view) {
+                    progressBar.setVisibility(View.VISIBLE);
+                    bDone.setEnabled(false);
+                    bDone.setBackgroundDrawable(getResources().getDrawable(R.drawable.disable_button));
                     updatePost();
                }
           });
@@ -252,7 +255,7 @@ public class EditJobPost extends PostNewJob
                                    public void run() {
                                         try
                                         {
-                                             Thread.sleep(1500);
+                                             Thread.sleep(getResources().getInteger(R.integer.progTime));
                                              methods.closeActivity(EditJobPost.this,JobPortal.class);
                                         }catch (InterruptedException e)
                                         {
@@ -262,7 +265,12 @@ public class EditJobPost extends PostNewJob
                               });
                               thread.start();
                          }
-                         else displayMessage.errorMessage(getResources().getString(R.string.executionFailed));
+                         else {
+                             bDone.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_done));
+                             bDone.setEnabled(true);
+                             progressBar.setVisibility(View.INVISIBLE);
+                             displayMessage.errorMessage(getResources().getString(R.string.executionFailed));
+                         }
                     }
                });
           }

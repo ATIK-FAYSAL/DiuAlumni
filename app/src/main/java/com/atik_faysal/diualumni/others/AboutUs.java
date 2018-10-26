@@ -1,5 +1,6 @@
 package com.atik_faysal.diualumni.others;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -18,9 +19,9 @@ public class AboutUs extends AppCompatActivity implements View.OnClickListener
 {
      CircleImageView imgFacebook,imgGmail,imgGithub,imgLinkedin;
      private static final String myFacebookProfile = "atikfaysal1404";
-     private static final String myGmail = "atikfaysal1404@logo_gmail.com";
+     private static final String myGmail = "atikfaysal1404@gmail.com";
      private static final String myLinkedin = "https://www.linkedin.com/in/atik-faysal-368a6412b/";
-     private static final String myGithub = "https://logo_github.com/ATIK-FAYSAL";
+     private static final String myGithub = "https://github.com/ATIK-FAYSAL";
      @Override
      protected void onCreate(@Nullable Bundle savedInstanceState) {
           super.onCreate(savedInstanceState);
@@ -65,12 +66,12 @@ public class AboutUs extends AppCompatActivity implements View.OnClickListener
      }
 
      //send a mail to my mail address
+     @SuppressLint("IntentReset")
      private void openGmail()
      {
-          Intent page = new Intent(Intent.ACTION_SEND);
-          page.setType("plain/text");
-          page.putExtra(Intent.EXTRA_EMAIL, new String[]{myGmail});
-          startActivity(page);
+          Uri uri = Uri.fromParts("mailto",myGmail,null);
+          Intent page = new Intent(Intent.ACTION_SENDTO,uri);
+          startActivity(Intent.createChooser(page,""));
      }
 
      ////show my logo_github profile

@@ -1,6 +1,7 @@
 package com.atik_faysal.diualumni.others;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,6 +22,7 @@ import com.atik_faysal.diualumni.important.CheckInternetConnection;
 import com.atik_faysal.diualumni.important.DisplayMessage;
 import com.atik_faysal.diualumni.important.RequireMethods;
 import com.atik_faysal.diualumni.interfaces.OnResponseTask;
+import com.atik_faysal.diualumni.main.MyCv;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +42,7 @@ public class Feedback extends AppCompatActivity
      private DisplayMessage displayMessage;
      private RequireMethods methods;
      private CheckInternetConnection internetConnection;
+     private ProgressDialog progressDialog;
 
      private String currentUser;
      //private static final String FILE_URL = "http://192.168.56.1/feedback.php";
@@ -78,6 +81,7 @@ public class Feedback extends AppCompatActivity
 
           displayMessage = new DisplayMessage(this);
           methods = new RequireMethods(this);
+          progressDialog = new ProgressDialog(this);
           SharedPreferencesData sharedPreferenceData = new SharedPreferencesData(this);
           internetConnection = new CheckInternetConnection(this);
           currentUser = sharedPreferenceData.getCurrentUserId();
@@ -142,8 +146,14 @@ public class Feedback extends AppCompatActivity
                          map.put("stdId",currentUser);
                          map.put("feedback",eFeedback.getText().toString());
                          map.put("date",methods.getDateWithTime());
-                         PostInfoBackgroundTask backgroundTask = new PostInfoBackgroundTask(Feedback.this,responseTask);
-                         backgroundTask.insertData(getResources().getString(R.string.otherInsertion),map);
+                         if(internetConnection.isOnline())
+                         {
+                              progressDialog.setTitle("Please wait....");
+                              progressDialog.setMessage("Adding your feedback");
+                              progressDialog.show();
+                              PostInfoBackgroundTask backgroundTask = new PostInfoBackgroundTask(Feedback.this,responseTask);
+                              backgroundTask.insertData(getResources().getString(R.string.otherInsertion),map);
+                         }
                     }else displayMessage.errorMessage(getResources().getString(R.string.noInternet));
 
                }
@@ -170,8 +180,27 @@ public class Feedback extends AppCompatActivity
                          switch (message)
                          {
                               case "success":
-                                   Toast.makeText(Feedback.this,"Your feedback is added.",Toast.LENGTH_LONG).show();
-                                   finish();
+                                   Thread thread = new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                             try
+                                             {
+                                                  Thread.sleep(getResources().getInteger(R.integer.progTime));
+                                                  runOnUiThread(new Runnable() {
+                                                       @Override
+                                                       public void run() {
+                                                            progressDialog.dismiss();
+                                                            finish();
+                                                            Toast.makeText(Feedback.this,"Your feedback is added.",Toast.LENGTH_LONG).show();
+                                                       }
+                                                  });
+                                             }catch (InterruptedException e)
+                                             {
+                                                  e.printStackTrace();
+                                             }
+                                        }
+                                   });
+                                   thread.start();
                                    break;
                               default:
                                    displayMessage.errorMessage(getResources().getString(R.string.executionFailed));

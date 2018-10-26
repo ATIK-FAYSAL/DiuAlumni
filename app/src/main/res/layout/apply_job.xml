@@ -462,10 +462,6 @@
                         android:textColor="@color/iconColor"
                         android:textSize="13dp" />
 
-
-
-
-
                 </LinearLayout>
 
                 <TextView

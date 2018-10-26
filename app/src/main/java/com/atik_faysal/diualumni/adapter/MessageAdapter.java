@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.atik_faysal.diualumni.R;
@@ -58,6 +59,7 @@ public class MessageAdapter extends  RecyclerView.Adapter<MessageAdapter.ViewHol
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView chatName,chatMsg,unseenMsg;
+        private RelativeLayout msgModel;
         private CircleImageView imageUrl;
         private ChatModel currentModel;
         private int position;
@@ -69,6 +71,7 @@ public class MessageAdapter extends  RecyclerView.Adapter<MessageAdapter.ViewHol
             chatMsg = view.findViewById(R.id.chatMsg);
             unseenMsg = view.findViewById(R.id.unseenMsg);
             imageUrl = view.findViewById(R.id.imgUserImage);
+            msgModel = view.findViewById(R.id.messageModel);
 
             sharedPreferencesData = new SharedPreferencesData(context);
         }
@@ -103,6 +106,7 @@ public class MessageAdapter extends  RecyclerView.Adapter<MessageAdapter.ViewHol
         private void setOnClickListener()
         {
             chatName.setOnClickListener(MessageAdapter.ViewHolder.this);
+            msgModel.setOnClickListener(MessageAdapter.ViewHolder.this);
         }
 
         @Override
@@ -114,6 +118,12 @@ public class MessageAdapter extends  RecyclerView.Adapter<MessageAdapter.ViewHol
                     intent.putExtra("receiverId",currentModel.getPersonId());
                     intent.putExtra("receiverName",currentModel.getPersonName());
                     context.startActivity(intent);
+                    break;
+                case R.id.messageModel:
+                    Intent message = new Intent(context,PersonMessage.class);
+                    message.putExtra("receiverId",currentModel.getPersonId());
+                    message.putExtra("receiverName",currentModel.getPersonName());
+                    context.startActivity(message);
                     break;
             }
         }
