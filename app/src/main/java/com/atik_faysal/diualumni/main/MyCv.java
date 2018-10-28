@@ -1,13 +1,18 @@
 package com.atik_faysal.diualumni.main;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
@@ -82,15 +87,21 @@ public class MyCv extends AppCompatActivity implements Methods
           txtChoose.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View arg0) {
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    intent.addCategory(Intent.CATEGORY_OPENABLE);
-                    intent.setType("*/*");
-                    try {
-                         startActivityForResult(Intent.createChooser(intent, "Choose file"), 1);
-                    }catch (Exception e)
+                    //if storage read permission is not granted
+                    if (ContextCompat.checkSelfPermission(MyCv.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED )
+                         ActivityCompat.requestPermissions(MyCv.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},1);
+                    else
                     {
-                         Log.d("excp",e.toString());
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        intent.addCategory(Intent.CATEGORY_OPENABLE);
+                        intent.setType("*/*");
+                        try {
+                            startActivityForResult(Intent.createChooser(intent, "Choose file"), 1);
+                        }catch (Exception e)
+                        {
+                            Log.d("excp",e.toString());
+                        }
                     }
                }
           });

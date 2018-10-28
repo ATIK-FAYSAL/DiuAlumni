@@ -3,6 +3,7 @@ package com.atik_faysal.diualumni.important;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 
 import android.app.ProgressDialog;
@@ -49,6 +50,7 @@ import com.atik_faysal.diualumni.messages.PersonMessage;
 import com.atik_faysal.diualumni.models.ExperienceModel;
 import com.atik_faysal.diualumni.models.UrlsModel;
 import com.atik_faysal.diualumni.others.AdditionalInfo;
+import com.atik_faysal.diualumni.others.UserPermission;
 import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
@@ -93,8 +95,9 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
     protected AlertDialog.Builder builder;
     private ProgressDialog progressDialog;
     protected AlertDialog alertDialog;
-    AdditionalInfo additionalInfo;
+    protected AdditionalInfo additionalInfo;
     protected Context context;
+    private UserPermission permission;
 
     private String name,stdId,email,phone,type,gender,batch,address,date,status,department,msgStatus,msgSetting;
     private static String USER;
@@ -214,6 +217,9 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
                 }
                 break;
             case R.id.txtChoose:
+                //if storage read permission is not granted
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED )
+                    ActivityCompat.requestPermissions((Activity)context,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},1);
                 openGallery();//open phone gallery and select image
                 break;
             case R.id.txtAddUrl:
