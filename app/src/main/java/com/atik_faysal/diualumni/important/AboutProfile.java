@@ -564,6 +564,7 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
             txtAddUrl.setEnabled(false);
             txtAddUrl.setText("URL");
             txtWork.setText("Work Experience");
+            txtWork.setEnabled(false);
             msgSwitch.setVisibility(View.GONE);
             view.findViewById(R.id.settingText).setVisibility(View.GONE);
             txtMsgStatus.setVisibility(View.GONE);
