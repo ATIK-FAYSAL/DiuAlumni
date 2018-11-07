@@ -162,8 +162,7 @@ public class AlumniMembers extends AppCompatActivity implements Methods
                     String position = object.getString("position");
                     String company = object.getString("company");
                     String department = object.getString("department");
-                    String status = object.getString("status");
-                    modelList.add(new AlumniModel(name,id,gender,batch,phone,email,imageName,department,company,position,status));
+                    modelList.add(new AlumniModel(name,id,gender,batch,phone,email,imageName,department,company,position,""));
                     count++;
                }
           } catch (JSONException | NullPointerException e) {
