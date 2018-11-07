@@ -757,7 +757,7 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
           if(month<10)
                m = "0"+month;
 
-          txtDeadLine.setText(d+"/"+m+"/"+year);
+          txtDeadLine.setText(year+"-"+m+"-"+d);
           txtDeadLine.setError("Valid",iconValid);
      }
 

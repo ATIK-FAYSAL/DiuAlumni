@@ -363,7 +363,7 @@ public class FilterResult extends AppCompatActivity implements DatePickerDialog.
         if (month < 10)
             m = "0" + month;
 
-        txtDeadLine.setText(d + "/" + m + "/" + year);
+        txtDeadLine.setText(year + "-" + m + "-" + d);
     }
 
     private OnResponseTask responseTask = new OnResponseTask() {
