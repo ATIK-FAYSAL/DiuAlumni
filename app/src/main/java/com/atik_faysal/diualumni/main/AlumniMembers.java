@@ -140,7 +140,7 @@ public class AlumniMembers extends AppCompatActivity implements Methods
      public void processJsonData(String jsonData)
      {}
 
-     private List<AlumniModel> jsonDataProcess(String jsonData)
+     public List<AlumniModel> jsonDataProcess(String jsonData)
      {
           String name,id,phone,email,gender,batch,imageName;
           final List<AlumniModel>modelList = new ArrayList<>();

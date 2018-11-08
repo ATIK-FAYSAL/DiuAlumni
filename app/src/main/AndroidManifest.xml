@@ -82,6 +82,9 @@
             android:screenOrientation="portrait"
             android:label=""/>
 
+        <activity android:name=".others.AppliedHistory"
+            android:screenOrientation="portrait"
+            android:label="History"/>
 
         <service android:name=".services.FirebaseMessagingService">
             <intent-filter>
