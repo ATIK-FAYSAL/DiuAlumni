@@ -53,10 +53,10 @@ dependencies {
     implementation 'com.facebook.android:account-kit-sdk:4.28.0'
     implementation 'com.facebook.android:facebook-android-sdk:4.28.0'
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
+    implementation 'com.github.mirrajabi:search-dialog:1.1'
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.android.support:support-v4:28.0.0'
     //noinspection GradleCompatible
-    implementation 'com.borjabravo:readmoretextview:2.0.1'
     implementation 'com.gmail.samehadar:iosdialog:1.0'
     implementation 'com.gdacciaro:iosdialog:1.0.3'
     implementation 'com.wdullaer:materialdatetimepicker:3.6.0'
@@ -66,24 +66,33 @@ dependencies {
     implementation 'com.android.volley:volley:1.1.0'
     implementation 'com.github.bumptech.glide:glide:4.7.1'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.ms-square:expandableTextView:0.1.4'
     implementation 'com.nbsp:library:1.8'
     implementation 'net.gotev:uploadservice:2.1'
-    implementation 'javax.mail:javax.mail-api:1.5.3'
 
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
-    implementation 'com.google.firebase:firebase-core:16.0.4'
-    implementation 'com.google.firebase:firebase-database:16.0.3'
+    implementation 'com.google.firebase:firebase-core:16.0.5'
+    implementation 'com.google.firebase:firebase-database:16.0.4'
+
+
+
+    implementation 'com.android.support:support-annotations:28.0.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation 'com.github.bumptech.glide:glide:4.7.1'
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'com.github.mirrajabi:okhttp-json-mock:1.1.1'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.5@aar') {
-        transitive = true;
+        transitive = true
     }
 }
 apply plugin: 'com.google.gms.google-services'
