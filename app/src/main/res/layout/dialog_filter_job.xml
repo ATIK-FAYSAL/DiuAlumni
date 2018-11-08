@@ -55,6 +55,25 @@
             </Spinner>
 
             <RadioButton
+                android:text="Search by job type"
+                android:id="@+id/rType"
+                android:layout_margin="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/sType"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/sCategory"
+                style="@style/spinner_theme"
+                android:paddingLeft="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="20dp"
+                android:padding="8dp">
+            </Spinner>
+
+            <RadioButton
                 android:text="Search by location"
                 android:id="@+id/rLocation"
                 android:layout_margin="5dp"

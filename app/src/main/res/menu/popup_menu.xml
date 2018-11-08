@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/mHistory"
+        android:title="History"
+        android:icon="@drawable/icon_edit"/>
+
+    <item
         android:id="@+id/mEdit"
         android:title="Edit"
         android:icon="@drawable/icon_edit"/>

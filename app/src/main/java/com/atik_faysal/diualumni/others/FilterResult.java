@@ -41,9 +41,9 @@ public class FilterResult extends AppCompatActivity implements DatePickerDialog.
     private Context context;
     private TextView txtDeadLine;
     private EditText txtStdId;
-    private Spinner sCategory, sLocation,sDepartment,sBatch;
+    private Spinner sCategory, sLocation,sDepartment,sBatch,sType;
     private AlertDialog alertDialog;
-    private String location,category,batch,department;
+    private String location,category,batch,department,jobType;
     protected int day, month, year;
     private String type;
 
@@ -75,12 +75,14 @@ public class FilterResult extends AppCompatActivity implements DatePickerDialog.
         txtDeadLine = view.findViewById(R.id.txtDeadLine);
         sCategory = view.findViewById(R.id.sCategory);
         sLocation = view.findViewById(R.id.sLocation);
+        sType = view.findViewById(R.id.sType);
         RadioGroup radioGroup = view.findViewById(R.id.radioGroup);
         final Button bSearch = view.findViewById(R.id.bSearch);
 
         txtDeadLine.setVisibility(View.GONE);//Invisible deadLine TextView
         sCategory.setVisibility(View.GONE);//Invisible category spinner
         sLocation.setVisibility(View.GONE);//Invisible location spinner
+        sType.setVisibility(View.GONE);//Invisible job type spinner
 
         final Map<String, String> map = new HashMap<>();
 
@@ -95,7 +97,7 @@ public class FilterResult extends AppCompatActivity implements DatePickerDialog.
             @Override
             public void onClick(View view) {
                 if(type==null)return;
-                String result;
+                String result=null;
                 switch (type) {
                     case "deadline":
                         result = txtDeadLine.getText().toString();
@@ -113,7 +115,7 @@ public class FilterResult extends AppCompatActivity implements DatePickerDialog.
                             return;
                         }
                         break;
-                    default:
+                    case "city":
                         result = location;
                         if(result.isEmpty())
                         {
@@ -121,10 +123,19 @@ public class FilterResult extends AppCompatActivity implements DatePickerDialog.
                             return;
                         }
                         break;
+                    case "job_type":
+                        result = jobType;
+                        if(result.isEmpty())
+                        {
+                            Toast.makeText(context,"Please select job type",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        break;
                 }
                 map.put("option","searchJob");
                 map.put("stdId",sharedPreferencesData.getCurrentUserId());
                 map.put("type",type);
+                assert result != null;
                 map.put("value",result);
                 if(internetConnection.isOnline())
                 {
@@ -147,6 +158,7 @@ public class FilterResult extends AppCompatActivity implements DatePickerDialog.
 
         spinnerCategory();//select category from spinner
         spinnerLocation();//select location from spinner
+        spinnerJobType();//select job type from spinner
     }
 
     private void jobSearchOption(int id)
@@ -156,6 +168,7 @@ public class FilterResult extends AppCompatActivity implements DatePickerDialog.
                 txtDeadLine.setVisibility(View.VISIBLE);
                 sCategory.setVisibility(View.GONE);
                 sLocation.setVisibility(View.GONE);
+                sType.setVisibility(View.GONE);
                 type = "deadline";
                 break;
 
@@ -163,11 +176,20 @@ public class FilterResult extends AppCompatActivity implements DatePickerDialog.
                 txtDeadLine.setVisibility(View.GONE);
                 sCategory.setVisibility(View.VISIBLE);
                 sLocation.setVisibility(View.GONE);
+                sType.setVisibility(View.GONE);
                 type = "category";
+                break;
+            case R.id.rType:
+                txtDeadLine.setVisibility(View.GONE);
+                sCategory.setVisibility(View.GONE);
+                sLocation.setVisibility(View.GONE);
+                sType.setVisibility(View.VISIBLE);
+                type = "job_type";
                 break;
             case R.id.rLocation:
                 txtDeadLine.setVisibility(View.GONE);
                 sCategory.setVisibility(View.GONE);
+                sType.setVisibility(View.GONE);
                 sLocation.setVisibility(View.VISIBLE);
                 type = "city";
                 break;
@@ -278,6 +300,23 @@ public class FilterResult extends AppCompatActivity implements DatePickerDialog.
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int i, long l) {
                 location = parent.getItemAtPosition(i).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+    }
+
+    //set job type in spinner
+    protected void spinnerJobType() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context, R.array.jobType, R.layout.support_simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        sType.setAdapter(adapter);
+        sType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int i, long l) {
+                jobType = parent.getItemAtPosition(i).toString();
             }
 
             @Override

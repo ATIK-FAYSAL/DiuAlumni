@@ -738,6 +738,10 @@ public class PostNewJob extends AppCompatActivity implements Methods,View.OnClic
                     if(checked)jobType="other";
                     break;
 
+               case R.id.rIntern:
+                    if(checked)jobType="internship";
+                    break;
+
                case R.id.rContract:
                     if(checked)jobType="contract";
                     break;

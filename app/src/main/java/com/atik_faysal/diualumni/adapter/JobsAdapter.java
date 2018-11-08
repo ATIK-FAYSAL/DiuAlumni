@@ -28,6 +28,7 @@ import com.atik_faysal.diualumni.interfaces.BooleanResponse;
 import com.atik_faysal.diualumni.interfaces.OnResponseTask;
 import com.atik_faysal.diualumni.main.ApplyForJob;
 import com.atik_faysal.diualumni.models.JobsModel;
+import com.atik_faysal.diualumni.others.AppliedHistory;
 import com.atik_faysal.diualumni.others.EditJobPost;
 import com.atik_faysal.diualumni.others.SetTabLayout;
 
@@ -272,6 +273,11 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder>
                         case R.id.mDelete:
                             displayMessage.onResultSuccess(booleanResponse);
                             displayMessage.warning("Do you want to remove this job?");
+                            break;
+                        case R.id.mHistory:
+                            Intent history = new Intent(context,AppliedHistory.class);
+                            history.putExtra("jobId",currentModel.getJobId());
+                            context.startActivity(history);
                             break;
 
                     }

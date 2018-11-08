@@ -81,7 +81,14 @@
         <item>Khulna</item>
         <item>Sylhet</item>
         <item>Maymenshing</item>
+    </string-array>
 
+    <string-array name="jobType">
+        <item>full time</item>
+        <item>part time</item>
+        <item>internship</item>
+        <item>contract</item>
+        <item>other</item>
     </string-array>
 
     <string-array name="department">
