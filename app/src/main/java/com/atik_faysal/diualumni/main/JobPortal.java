@@ -275,7 +275,7 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
             @Override
             public void onClick(View view) {
                 filterResult.onSuccessListener(responseTask);
-                filterResult.filterJob();
+                filterResult.filterJob(progressDialog);
             }
         });
 
@@ -555,7 +555,7 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
         public void onResultSuccess(String value) {
             if(value!=null)
             {
-                progressDialog.show();
+                //progressDialog.show();
                 viewJobInfo(value);
             }
         }

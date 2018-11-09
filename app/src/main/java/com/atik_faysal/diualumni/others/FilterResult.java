@@ -3,6 +3,7 @@ package com.atik_faysal.diualumni.others;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -15,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -64,7 +66,7 @@ public class FilterResult extends AppCompatActivity implements DatePickerDialog.
 
     //job filter by deadline,category,location,this method is call from JobPortal class
     @SuppressLint("InflateParams")
-    public void filterJob() {
+    public void filterJob(final ProgressDialog progressDialog) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         final View view = LayoutInflater.from(context).inflate(R.layout.dialog_filter_job, null);
         builder.setView(view);
@@ -142,6 +144,7 @@ public class FilterResult extends AppCompatActivity implements DatePickerDialog.
                     bSearch.setEnabled(false);
                     backgroundTask = new PostInfoBackgroundTask(context,responseTask);
                     backgroundTask.insertData(context.getResources().getString(R.string.readInfo),map);
+                    progressDialog.show();
                 }
 
             }
@@ -216,7 +219,7 @@ public class FilterResult extends AppCompatActivity implements DatePickerDialog.
     }
 
     //filter alumni member by student id,department,batch ,this method call from AlumniMembers class
-    public void filterAlumni()
+    public void filterAlumni(final ProgressDialog progressDialog)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         @SuppressLint("InflateParams")
@@ -282,6 +285,7 @@ public class FilterResult extends AppCompatActivity implements DatePickerDialog.
                     bSearch.setEnabled(false);
                     backgroundTask = new PostInfoBackgroundTask(context,responseTask);
                     backgroundTask.insertData(context.getResources().getString(R.string.readInfo),map);
+                    progressDialog.show();
                 }
 
             }

@@ -115,7 +115,7 @@ public class AlumniMembers extends AppCompatActivity implements Methods
         txtFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                filterResult.filterAlumni();
+                filterResult.filterAlumni(progressDialog);
                 filterResult.onSuccessListener(responseTask);
             }
         });
@@ -290,7 +290,7 @@ public class AlumniMembers extends AppCompatActivity implements Methods
     OnResponseTask responseTask = new OnResponseTask() {
         @Override
         public void onResultSuccess(String value) {
-            progressDialog.show();
+            //progressDialog.show();
             viewResultInUi(value);
         }
     };
