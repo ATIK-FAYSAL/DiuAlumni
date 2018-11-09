@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -56,103 +58,112 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
 {
 
 
-     private EditText txtName,txtEmail,txtAddress,txtStdId,txtPass;
-     private Spinner spinner,sDepartment;private ProgressBar progressBar;
+    private EditText txtName,txtEmail,txtAddress,txtStdId,txtPass;
+    private Spinner spinner,sDepartment;private ProgressBar progressBar;
 
-     private DataValidator validator;
-     private CheckInternetConnection internetConnection;
-     private DisplayMessage dialogClass;
-     private PostInfoBackgroundTask backgroundTask;
-     private RequireMethods requireMethods;
-     private DesEncryptionAlgo encryptionAlgo;
+    private DataValidator validator;
+    private CheckInternetConnection internetConnection;
+    private DisplayMessage dialogClass;
+    private PostInfoBackgroundTask backgroundTask;
+    private RequireMethods requireMethods;
+    private DesEncryptionAlgo encryptionAlgo;
+    private ProgressDialog progressDialog;
 
-     private String memberType=null,phone;
-     private String gender = null;
-     private String name,email,stdId,address,password,batch,department;
+    private String memberType=null,phone;
+    private String gender = null;
+    private String name,email,stdId,address,password,batch,department;
 
-     private Button bProceed;
+    private Button bProceed;
 
-     @Override
-     protected void onCreate(Bundle savedInstanceState) {
-          super.onCreate(savedInstanceState);
-          setContentView(R.layout.register_layout);
-          initComponent();
-     }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.register_layout);
+        initComponent();
+    }
 
-     //initialize information
-     private void initComponent()
-     {
-          //initialize component variable
-          txtName = findViewById(R.id.txtName);
-          txtEmail = findViewById(R.id.txtEmail);
-          txtAddress = findViewById(R.id.txtAddress);
-          txtStdId = findViewById(R.id.txtStdId);
-          txtPass = findViewById(R.id.txtPassword);
-          spinner = findViewById(R.id.sBatch);
-          sDepartment = findViewById(R.id.sDepartment);
-          TextView txtSignIn = findViewById(R.id.txtSignIn);
-          bProceed = findViewById(R.id.bProceed);
-          progressBar = findViewById(R.id.progress);
+    //initialize information
+    private void initComponent()
+    {
+        //initialize component variable
+        txtName = findViewById(R.id.txtName);
+        txtEmail = findViewById(R.id.txtEmail);
+        txtAddress = findViewById(R.id.txtAddress);
+        txtStdId = findViewById(R.id.txtStdId);
+        txtPass = findViewById(R.id.txtPassword);
+        spinner = findViewById(R.id.sBatch);
+        sDepartment = findViewById(R.id.sDepartment);
+        TextView txtSignIn = findViewById(R.id.txtSignIn);
+        bProceed = findViewById(R.id.bProceed);
+        progressBar = findViewById(R.id.progress);
 
-          //set click listener
-          txtSignIn.setOnClickListener(this);
-          bProceed.setOnClickListener(this);
+        //set click listener
+        txtSignIn.setOnClickListener(this);
+        bProceed.setOnClickListener(this);
 
-          validator = new DataValidator(this);
-          internetConnection = new CheckInternetConnection(this);
-          dialogClass = new DisplayMessage(this);
-          backgroundTask = new PostInfoBackgroundTask(this,responseTask);
-          requireMethods = new RequireMethods(this);
-          encryptionAlgo = new DesEncryptionAlgo(this);
+        validator = new DataValidator(this);
+        internetConnection = new CheckInternetConnection(this);
+        dialogClass = new DisplayMessage(this);
+        requireMethods = new RequireMethods(this);
+        encryptionAlgo = new DesEncryptionAlgo(this);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Please wait...");
+        progressDialog.setMessage("Checking student id");
 
-          setToolbar();
-          userDataValidator();
-          userBatch();//select batch from spinner
-          selectDepartment();//select department from spinner
-     }
+        setToolbar();
+        userDataValidator();
+        userBatch();//select batch from spinner
+        selectDepartment();//select department from spinner
+    }
 
-     //button click listener
-     @Override
-     public void onClick(View view) {
-          switch (view.getId())
-          {
-               case R.id.bProceed:
-                    name = txtName.getText().toString();
-                    email = txtEmail.getText().toString();
-                    stdId = txtStdId.getText().toString();
-                    address = txtAddress.getText().toString();
-                    password = txtPass.getText().toString();
+    //button click listener
+    @Override
+    public void onClick(View view) {
+        switch (view.getId())
+        {
+            case R.id.bProceed:
+                name = txtName.getText().toString();
+                email = txtEmail.getText().toString();
+                stdId = txtStdId.getText().toString();
+                address = txtAddress.getText().toString();
+                password = txtPass.getText().toString();
 
-                    if(batch.equals("Select your batch"))//if don't choose batch
+                if(batch.equals("Select your batch"))//if don't choose batch
+                {
+                    Toast.makeText(UserRegistration.this,"Please select your batch",Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                if(validator.userDataValidator(name,stdId,email,password,address,memberType,batch,gender))
+                {
+                    if(internetConnection.isOnline())
                     {
-                         Toast.makeText(UserRegistration.this,"Please select your batch",Toast.LENGTH_LONG).show();
-                         return;
+                        bProceed.setBackgroundDrawable(getResources().getDrawable(R.drawable.disable_button));
+                        bProceed.setEnabled(false);
+                        Map<String,String> map = new HashMap<>();
+                        map.put("option","verifyId");
+                        map.put("id",stdId);
+                        backgroundTask = new PostInfoBackgroundTask(UserRegistration.this,onResponseTask);
+                        backgroundTask.insertData(getResources().getString(R.string.login),map);
+                        progressDialog.show();
+                        //onLogin(LoginType.PHONE);
                     }
+                    else dialogClass.errorMessage(getString(R.string.noInternet));
+                }else dialogClass.errorMessage("Your information is not valid.please check and insert valid information");
+                break;
+            case R.id.txtSignIn:
+                finish();
+                break;
+        }
+    }
 
-                    if(validator.userDataValidator(name,stdId,email,password,address,memberType,batch,gender))
-                    {
-                         if(internetConnection.isOnline())
-                         {
-                              bProceed.setBackgroundDrawable(getResources().getDrawable(R.drawable.disable_button));
-                              bProceed.setEnabled(false);
-                              onLogin(LoginType.PHONE);
-                         }
-                         else dialogClass.errorMessage(getString(R.string.noInternet));
-                    }else dialogClass.errorMessage("Your information is not valid.please check and insert valid information");
-                    break;
-               case R.id.txtSignIn:
-                    finish();
-                    break;
-          }
-     }
-
-     //check user information is valid or not
-     private void userDataValidator()
-     {
-          final Drawable iconValid = getResources().getDrawable(R.drawable.icon_check);//valid icon
-          iconValid.setBounds(0,0,iconValid.getIntrinsicWidth(),iconValid.getIntrinsicHeight());
-          final Drawable iconInvalid = getResources().getDrawable(R.drawable.icon_wrong);//invalid icon
-          iconInvalid.setBounds(0,0,iconInvalid.getIntrinsicWidth(),iconInvalid.getIntrinsicHeight());
+    //check user information is valid or not
+    private void userDataValidator()
+    {
+        final Drawable iconValid = getResources().getDrawable(R.drawable.icon_check);//valid icon
+        iconValid.setBounds(0,0,iconValid.getIntrinsicWidth(),iconValid.getIntrinsicHeight());
+        final Drawable iconInvalid = getResources().getDrawable(R.drawable.icon_wrong);//invalid icon
+        iconInvalid.setBounds(0,0,iconInvalid.getIntrinsicWidth(),iconInvalid.getIntrinsicHeight());
 
           /*if(txtName.getText().toString().isEmpty())
                txtName.setError("Invalid name",iconInvalid);
@@ -165,479 +176,497 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
           if(txtPass.getText().toString().isEmpty())
                txtPass.setError("Invalid password",iconInvalid);*/
 
-          txtName.addTextChangedListener(new TextWatcher() {
-               @Override
-               public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+        txtName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
-               @Override
-               public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
-               @Override
-               public void afterTextChanged(Editable editable) {
-                    boolean flag = true;
-                    String name = txtName.getText().toString();
-                    if(name.length()<8||name.length()>30)
-                         flag = false;
+            @Override
+            public void afterTextChanged(Editable editable) {
+                boolean flag = true;
+                String name = txtName.getText().toString();
+                if(name.length()<8||name.length()>30)
+                    flag = false;
+                else
+                {
+                    for(int i=0;i<name.length();i++)
+                    {
+                        if(name.charAt(i)>='0'&&name.charAt(i)<='9'||
+                                name.charAt(i)==':'||
+                                name.charAt(i)=='*'||
+                                name.charAt(i)=='@'||
+                                name.charAt(i)=='!'||
+                                name.charAt(i)=='#'||
+                                name.charAt(i)=='&')
+                        {
+                            flag = false;
+                            break;
+                        }
+                    }
+                }
+
+                if(flag)
+                    txtName.setError("Valid",iconValid);
+                else
+                {
+                    txtName.setError("Invalid name",iconInvalid);
+                }
+            }
+        });//user name validator must be in 8-30 characters and does not contain number and some special character
+
+        txtStdId.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String stdId = txtStdId.getText().toString();
+                boolean flag = true;
+                if(stdId.length()<8||stdId.length()>15)
+                    flag = false;
+                for(int i=0;i<stdId.length();i++)
+                {
+                    if((stdId.charAt(i) >='0'&&stdId.charAt(i)<='9')||stdId.charAt(i)=='-')
+                    {}
                     else
                     {
-                         for(int i=0;i<name.length();i++)
-                         {
-                              if(name.charAt(i)>='0'&&name.charAt(i)<='9'||
-                                   name.charAt(i)==':'||
-                                   name.charAt(i)=='*'||
-                                   name.charAt(i)=='@'||
-                                   name.charAt(i)=='!'||
-                                   name.charAt(i)=='#'||
-                                   name.charAt(i)=='&')
-                              {
-                                   flag = false;
-                                   break;
-                              }
-                         }
+                        flag = false;
+                        break;
                     }
+                }
 
-                    if(flag)
-                         txtName.setError("Valid",iconValid);
+                if(flag)txtStdId.setError("Valid",iconValid);
+                else txtStdId.setError("Invalid student id",iconInvalid);
+            }
+        });//student id validator must in 8-15 characters and only contain '-'
+
+        txtAddress.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String address = txtAddress.getText().toString();
+                if(address.length()<15||address.length()>50)
+                    txtAddress.setError("Invalid address",iconInvalid);
+                else txtAddress.setError("Valid",iconValid);
+            }
+        });//address validator,must be in 15-50 characters
+
+        txtPass.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String pass = txtPass.getText().toString();
+                if(pass.length()<8||pass.length()>20)
+                    txtPass.setError("Invalid password",iconInvalid);
+                else
+                {
+                    int alphabet=0,number=0,sChar=0;
+                    if(txtPass.length() <= 10)
+                        txtPass.setError("Short",iconValid);
                     else
                     {
-                         txtName.setError("Invalid name",iconInvalid);
+                        for(int i=0;i<pass.length();i++)
+                        {
+                            if((pass.charAt(i)>='a'&&pass.charAt(i)<='z')||(pass.charAt(i)>='A'&&pass.charAt(i)<='Z'))
+                                alphabet++;
+                            else if(pass.charAt(i)>='0'&&pass.charAt(i)<='9')
+                                number++;
+                            else sChar++;
+                        }
+
+                        if(alphabet>1&&number>1&&sChar>1)
+                            txtPass.setError("Medium",iconValid);
+                        else if(alphabet>2||number>2||sChar>2)
+                            txtPass.setError("Strong",iconValid);
                     }
-               }
-          });//user name validator must be in 8-30 characters and does not contain number and some special character
+                }
+            }
+        });//password validator,must be in 8-20 characters,
 
-          txtStdId.addTextChangedListener(new TextWatcher() {
-               @Override
-               public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+        txtEmail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
-               @Override
-               public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
-               @Override
-               public void afterTextChanged(Editable editable) {
-                    String stdId = txtStdId.getText().toString();
-                    boolean flag = true;
-                    if(stdId.length()<8||stdId.length()>15)
-                         flag = false;
-                    for(int i=0;i<stdId.length();i++)
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String email = txtEmail.getText().toString();
+                if(email.length()<15||email.length()>50||!email.contains("@")||!email.contains("."))
+                    txtEmail.setError("Invalid email",iconInvalid);
+                else txtEmail.setError("Valid",iconValid);
+            }
+        });//email validator,must be in 15-50,must contain "." and "@"
+    }
+
+    //set a toolbar,above the page
+    public void setToolbar()
+    {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationIcon(R.drawable.icon_back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    //define member type
+    public void chooseMemType(View view)
+    {
+        boolean checked = ((RadioButton)view).isChecked();
+
+        switch (view.getId())
+        {
+            case R.id.rAlumni:
+                if(checked)memberType="alumni";
+                break;
+
+            case R.id.rStd:
+                if(checked)memberType="student";
+                break;
+
+        }
+    }
+
+    //define member type
+    public void chooseGender(View view)
+    {
+        boolean checked = ((RadioButton)view).isChecked();
+
+        switch (view.getId())
+        {
+            case R.id.rMale:
+                if(checked)gender="male";
+                break;
+
+            case R.id.rFemale:
+                if(checked)gender="female";
+                break;
+
+        }
+    }
+
+    //select your batch from spinner
+    private void userBatch()
+    {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.batch,R.layout.support_simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int i, long l) {
+                batch = parent.getItemAtPosition(i).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {}
+        });
+    }
+
+    //select your department from spinner
+    private void selectDepartment()
+    {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.department,R.layout.support_simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        sDepartment.setAdapter(adapter);
+        sDepartment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int i, long l) {
+                department = parent.getItemAtPosition(i).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {}
+        });
+    }
+
+    //new user data inserting into server
+    private void registerNewUser(String phone)
+    {
+        Map<String,String>map = new HashMap<>();
+        map.put("option","insert");
+        map.put("name",name);
+        map.put("email",email);
+        map.put("stdId",stdId);
+        map.put("phone",phone);
+        map.put("address",address);
+        map.put("department",department);
+        map.put("gender",gender);
+        map.put("pass",encryptionAlgo.encryptPass(password));
+        map.put("batch",batch);
+        map.put("type",memberType);
+        map.put("date",requireMethods.getDate());
+        if(memberType.equals("alumni"))
+            map.put("status","pending");
+        else map.put("status","done");
+
+        this.phone = phone;
+
+        if(internetConnection.isOnline())
+        {
+            backgroundTask = new PostInfoBackgroundTask(UserRegistration.this,responseTask);
+            backgroundTask.insertData(getString(R.string.insertOperation),map);
+            progressBar.setVisibility(View.VISIBLE);
+        }
+        else dialogClass.errorMessage(getString(R.string.noInternet));
+    }
+
+
+    OnResponseTask onResponseTask = new OnResponseTask() {
+        @Override
+        public void onResultSuccess(String value) {
+            if(value.equals("valid"))
+            {
+                progressDialog.dismiss();
+                onLogin(LoginType.PHONE);
+            }
+            else {
+                progressDialog.dismiss();
+                bProceed.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_done));
+                bProceed.setEnabled(true);
+                dialogClass.errorMessage("This student id already exist please retry.");
+            }
+        }
+    };
+
+    //insert information background task
+    OnResponseTask responseTask = new OnResponseTask() {
+        @Override
+        public void onResultSuccess(final String value) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if(value.equals("success"))
                     {
-                         if((stdId.charAt(i) >='0'&&stdId.charAt(i)<='9')||stdId.charAt(i)=='-')
-                         {}
-                         else
-                         {
-                              flag = false;
-                              break;
-                         }
-                    }
-
-                    if(flag)txtStdId.setError("Valid",iconValid);
-                    else txtStdId.setError("Invalid student id",iconInvalid);
-               }
-          });//student id validator must in 8-15 characters and only contain '-'
-
-          txtAddress.addTextChangedListener(new TextWatcher() {
-               @Override
-               public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-               @Override
-               public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-               @Override
-               public void afterTextChanged(Editable editable) {
-                    String address = txtAddress.getText().toString();
-                    if(address.length()<15||address.length()>50)
-                         txtAddress.setError("Invalid address",iconInvalid);
-                    else txtAddress.setError("Valid",iconValid);
-               }
-          });//address validator,must be in 15-50 characters
-
-          txtPass.addTextChangedListener(new TextWatcher() {
-               @Override
-               public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-
-               @Override
-               public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-
-               @Override
-               public void afterTextChanged(Editable editable) {
-                    String pass = txtPass.getText().toString();
-                    if(pass.length()<8||pass.length()>20)
-                         txtPass.setError("Invalid password",iconInvalid);
-                    else
-                    {
-                         int alphabet=0,number=0,sChar=0;
-                         if(txtPass.length() <= 10)
-                              txtPass.setError("Short",iconValid);
-                         else
-                         {
-                              for(int i=0;i<pass.length();i++)
-                              {
-                                   if((pass.charAt(i)>='a'&&pass.charAt(i)<='z')||(pass.charAt(i)>='A'&&pass.charAt(i)<='Z'))
-                                        alphabet++;
-                                   else if(pass.charAt(i)>='0'&&pass.charAt(i)<='9')
-                                        number++;
-                                   else sChar++;
-                              }
-
-                              if(alphabet>1&&number>1&&sChar>1)
-                                   txtPass.setError("Medium",iconValid);
-                              else if(alphabet>2||number>2||sChar>2)
-                                   txtPass.setError("Strong",iconValid);
-                         }
-                    }
-               }
-          });//password validator,must be in 8-20 characters,
-
-          txtEmail.addTextChangedListener(new TextWatcher() {
-               @Override
-               public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-               @Override
-               public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-               @Override
-               public void afterTextChanged(Editable editable) {
-                    String email = txtEmail.getText().toString();
-                    if(email.length()<15||email.length()>50||!email.contains("@")||!email.contains("."))
-                         txtEmail.setError("Invalid email",iconInvalid);
-                    else txtEmail.setError("Valid",iconValid);
-               }
-          });//email validator,must be in 15-50,must contain "." and "@"
-     }
-
-     //set a toolbar,above the page
-     public void setToolbar()
-     {
-          Toolbar toolbar = findViewById(R.id.toolbar);
-          setSupportActionBar(toolbar);
-          toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-          Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-          getSupportActionBar().setDisplayShowHomeEnabled(true);
-          toolbar.setNavigationIcon(R.drawable.icon_back);
-          toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View v) {
-                    finish();
-               }
-          });
-     }
-
-     //define member type
-     public void chooseMemType(View view)
-     {
-          boolean checked = ((RadioButton)view).isChecked();
-
-          switch (view.getId())
-          {
-               case R.id.rAlumni:
-                    if(checked)memberType="alumni";
-                    break;
-
-               case R.id.rStd:
-                    if(checked)memberType="student";
-                    break;
-
-          }
-     }
-
-     //define member type
-     public void chooseGender(View view)
-     {
-          boolean checked = ((RadioButton)view).isChecked();
-
-          switch (view.getId())
-          {
-               case R.id.rMale:
-                    if(checked)gender="male";
-                    break;
-
-               case R.id.rFemale:
-                    if(checked)gender="female";
-                    break;
-
-          }
-     }
-
-     //select your batch from spinner
-     private void userBatch()
-     {
-          ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.batch,R.layout.support_simple_spinner_dropdown_item);
-          adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-          spinner.setAdapter(adapter);
-          spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-               @Override
-               public void onItemSelected(AdapterView<?> parent, View view, int i, long l) {
-                    batch = parent.getItemAtPosition(i).toString();
-               }
-
-               @Override
-               public void onNothingSelected(AdapterView<?> adapterView) {}
-          });
-     }
-
-     //select your department from spinner
-     private void selectDepartment()
-     {
-          ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.department,R.layout.support_simple_spinner_dropdown_item);
-          adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-          sDepartment.setAdapter(adapter);
-          sDepartment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-               @Override
-               public void onItemSelected(AdapterView<?> parent, View view, int i, long l) {
-                    department = parent.getItemAtPosition(i).toString();
-               }
-
-               @Override
-               public void onNothingSelected(AdapterView<?> adapterView) {}
-          });
-     }
-
-     //new user data inserting into server
-     private void registerNewUser(String phone)
-     {
-          Map<String,String>map = new HashMap<>();
-          map.put("option","insert");
-          map.put("name",name);
-          map.put("email",email);
-          map.put("stdId",stdId);
-          map.put("phone",phone);
-          map.put("address",address);
-          map.put("department",department);
-          map.put("gender",gender);
-          map.put("pass",encryptionAlgo.encryptPass(password));
-          map.put("batch",batch);
-          map.put("type",memberType);
-          map.put("date",requireMethods.getDate());
-          if(memberType.equals("alumni"))
-               map.put("status","pending");
-          else map.put("status","done");
-
-          this.phone = phone;
-
-          if(internetConnection.isOnline())
-          {
-               backgroundTask.insertData(getString(R.string.insertOperation),map);
-               progressBar.setVisibility(View.VISIBLE);
-          }
-          else dialogClass.errorMessage(getString(R.string.noInternet));
-     }
-
-
-     //insert information background task
-     OnResponseTask responseTask = new OnResponseTask() {
-          @Override
-          public void onResultSuccess(final String value) {
-               runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                         if(value.equals("success"))
-                         {
-                              Thread thread = new Thread(new Runnable() {
-                                   @Override
-                                   public void run() {
-                                        try
-                                        {
-                                             Thread.sleep(2200);
-                                             Map<String,String>maps = new HashMap<>();
-                                             maps.put("stdId",stdId);
-                                             maps.put("name",name);
-                                             maps.put("email",email);
-                                             maps.put("phone",phone);
-                                             maps.put("type",memberType);
-                                             SharedPreferencesData sharedPreferencesData = new SharedPreferencesData(UserRegistration.this,maps);
-                                             //sharedPreferencesData.clearData();//clear all previous data
-                                             sharedPreferencesData.currentUserInfo();//store current user information
-                                             sharedPreferencesData.isUserLogin(true);//set user as log in true
-                                             sharedPreferencesData.setMessageSetting("enable");//store user message setting
-                                             sharedPreferencesData.setNotificationSettings("enable");//store user message setting
-                                             runOnUiThread(new Runnable() {
-                                                  @Override
-                                                  public void run() {
-                                                       progressBar.setVisibility(View.INVISIBLE);
-                                                       dialogClass.congratesMessage("Your account has been created successfully");
-                                                  }
-                                             });
-                                        }catch (InterruptedException e)
-                                        {
-                                             e.printStackTrace();
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try
+                                {
+                                    Thread.sleep(2200);
+                                    Map<String,String>maps = new HashMap<>();
+                                    maps.put("stdId",stdId);
+                                    maps.put("name",name);
+                                    maps.put("email",email);
+                                    maps.put("phone",phone);
+                                    maps.put("type",memberType);
+                                    SharedPreferencesData sharedPreferencesData = new SharedPreferencesData(UserRegistration.this,maps);
+                                    //sharedPreferencesData.clearData();//clear all previous data
+                                    sharedPreferencesData.currentUserInfo();//store current user information
+                                    sharedPreferencesData.isUserLogin(true);//set user as log in true
+                                    sharedPreferencesData.setMessageSetting("enable");//store user message setting
+                                    sharedPreferencesData.setNotificationSettings("enable");//store user message setting
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            progressBar.setVisibility(View.INVISIBLE);
+                                            dialogClass.congratesMessage("Your account has been created successfully");
                                         }
-                                   }
-                              });
-                              thread.start();
-                         }
-                         else {
-                              dialogClass.errorMessage("Execution failed,please try again latter");
-                              progressBar.setVisibility(View.INVISIBLE);
-                              bProceed.setEnabled(true);
-                              bProceed.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_done));
-                         }
+                                    });
+                                }catch (InterruptedException e)
+                                {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        thread.start();
                     }
-               });
-          }
-     };
+                    else {
+                        dialogClass.errorMessage("Execution failed,please try again latter");
+                        progressBar.setVisibility(View.INVISIBLE);
+                        bProceed.setEnabled(true);
+                        bProceed.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_done));
+                    }
+                }
+            });
+        }
+    };
 
 
 
-     //phone number validation with facebook account kit
-     private static final int FRAMEWORK_REQUEST_CODE = 1;
-     private int nextPermissionsRequestCode = 4000;
-     @SuppressLint("UseSparseArrays")
-     private final Map<Integer, OnCompleteListener> permissionsListeners = new HashMap<>();
+    //phone number validation with facebook account kit
+    private static final int FRAMEWORK_REQUEST_CODE = 1;
+    private int nextPermissionsRequestCode = 4000;
+    @SuppressLint("UseSparseArrays")
+    private final Map<Integer, OnCompleteListener> permissionsListeners = new HashMap<>();
 
-     private interface OnCompleteListener {
-          void onComplete();
-     }
+    private interface OnCompleteListener {
+        void onComplete();
+    }
 
-     @Override
-     protected void onActivityResult(
-          final int requestCode,
-          final int resultCode,
-          final Intent data) {
-          super.onActivityResult(requestCode, resultCode, data);
+    @Override
+    protected void onActivityResult(
+            final int requestCode,
+            final int resultCode,
+            final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-          if (requestCode != FRAMEWORK_REQUEST_CODE) {
-               return;
-          }
+        if (requestCode != FRAMEWORK_REQUEST_CODE) {
+            return;
+        }
 
-          final String toastMessage;
-          final AccountKitLoginResult loginResult = AccountKit.loginResultWithIntent(data);
-          if (loginResult == null || loginResult.wasCancelled())
-          {
-               toastMessage = "Cancelled";
-               Toast.makeText(UserRegistration.this,toastMessage,Toast.LENGTH_SHORT).show();
-          }
-          else if (loginResult.getError() != null) {
-               Toast.makeText(UserRegistration.this,"Error",Toast.LENGTH_SHORT).show();
-          } else {
-               final AccessToken accessToken = loginResult.getAccessToken();
-               if (accessToken != null) {
+        final String toastMessage;
+        final AccountKitLoginResult loginResult = AccountKit.loginResultWithIntent(data);
+        if (loginResult == null || loginResult.wasCancelled())
+        {
+            toastMessage = "Cancelled";
+            Toast.makeText(UserRegistration.this,toastMessage,Toast.LENGTH_SHORT).show();
+        }
+        else if (loginResult.getError() != null) {
+            Toast.makeText(UserRegistration.this,"Error",Toast.LENGTH_SHORT).show();
+        } else {
+            final AccessToken accessToken = loginResult.getAccessToken();
+            if (accessToken != null) {
 
-                    AccountKit.getCurrentAccount(new AccountKitCallback<Account>() {
-                         @Override
-                         public void onSuccess(final Account account) {
-                              String phoneNumber = account.getPhoneNumber().toString();
-
-                              if(phoneNumber.length()==14)
-                                   phoneNumber = phoneNumber.substring(3);
-                              registerNewUser(phoneNumber);
-                         }
-
-                         @Override
-                         public void onError(final AccountKitError error) {
-                         }
-                    });
-               } else {
-                    toastMessage = "Unknown response type";
-                    Toast.makeText(UserRegistration.this, toastMessage, Toast.LENGTH_SHORT).show();
-               }
-          }
-     }
-
-     public void onLogin(final LoginType loginType)
-     {
-          final Intent intent = new Intent(this, AccountKitActivity.class);
-          final AccountKitConfiguration.AccountKitConfigurationBuilder configurationBuilder = new AccountKitConfiguration.AccountKitConfigurationBuilder(loginType, AccountKitActivity.ResponseType.TOKEN);
-          final AccountKitConfiguration configuration = configurationBuilder.build();
-          intent.putExtra(AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION, configuration);
-          UserRegistration.OnCompleteListener completeListener = new UserRegistration.OnCompleteListener() {
-               @Override
-               public void onComplete() {
-                    startActivityForResult(intent, FRAMEWORK_REQUEST_CODE);
-               }
-          };
-          if (configuration.isReceiveSMSEnabled() && !canReadSmsWithoutPermission()) {
-               final UserRegistration.OnCompleteListener receiveSMSCompleteListener = completeListener;
-               completeListener = new UserRegistration.OnCompleteListener() {
+                AccountKit.getCurrentAccount(new AccountKitCallback<Account>() {
                     @Override
-                    public void onComplete() {
-                         requestPermissions(
-                              android.Manifest.permission.RECEIVE_SMS,
-                              com.atik_faysal.diualumni.R.string.permissions_receive_sms_title,
-                              com.atik_faysal.diualumni.R.string.permissions_receive_sms_message,
-                              receiveSMSCompleteListener);
+                    public void onSuccess(final Account account) {
+                        String phoneNumber = account.getPhoneNumber().toString();
+
+                        if(phoneNumber.length()==14)
+                            phoneNumber = phoneNumber.substring(3);
+                        registerNewUser(phoneNumber);
                     }
-               };
-          }
-          if (configuration.isReadPhoneStateEnabled() && !isGooglePlayServicesAvailable()) {
-               final UserRegistration.OnCompleteListener readPhoneStateCompleteListener = completeListener;
-               completeListener = new UserRegistration.OnCompleteListener() {
+
                     @Override
-                    public void onComplete() {
-                         requestPermissions(
-                              Manifest.permission.READ_PHONE_STATE,
-                              com.atik_faysal.diualumni.R.string.permissions_read_phone_state_title,
-                              com.atik_faysal.diualumni.R.string.permissions_read_phone_state_message,
-                              readPhoneStateCompleteListener);
+                    public void onError(final AccountKitError error) {
                     }
-               };
-          }
-          completeListener.onComplete();
-     }
+                });
+            } else {
+                toastMessage = "Unknown response type";
+                Toast.makeText(UserRegistration.this, toastMessage, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
-     private boolean isGooglePlayServicesAvailable() {
-          final GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-          int googlePlayServicesAvailable = apiAvailability.isGooglePlayServicesAvailable(UserRegistration.this);
-          return googlePlayServicesAvailable == ConnectionResult.SUCCESS;
-     }
+    public void onLogin(final LoginType loginType)
+    {
+        final Intent intent = new Intent(this, AccountKitActivity.class);
+        final AccountKitConfiguration.AccountKitConfigurationBuilder configurationBuilder = new AccountKitConfiguration.AccountKitConfigurationBuilder(loginType, AccountKitActivity.ResponseType.TOKEN);
+        final AccountKitConfiguration configuration = configurationBuilder.build();
+        intent.putExtra(AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION, configuration);
+        UserRegistration.OnCompleteListener completeListener = new UserRegistration.OnCompleteListener() {
+            @Override
+            public void onComplete() {
+                startActivityForResult(intent, FRAMEWORK_REQUEST_CODE);
+            }
+        };
+        if (configuration.isReceiveSMSEnabled() && !canReadSmsWithoutPermission()) {
+            final UserRegistration.OnCompleteListener receiveSMSCompleteListener = completeListener;
+            completeListener = new UserRegistration.OnCompleteListener() {
+                @Override
+                public void onComplete() {
+                    requestPermissions(
+                            android.Manifest.permission.RECEIVE_SMS,
+                            com.atik_faysal.diualumni.R.string.permissions_receive_sms_title,
+                            com.atik_faysal.diualumni.R.string.permissions_receive_sms_message,
+                            receiveSMSCompleteListener);
+                }
+            };
+        }
+        if (configuration.isReadPhoneStateEnabled() && !isGooglePlayServicesAvailable()) {
+            final UserRegistration.OnCompleteListener readPhoneStateCompleteListener = completeListener;
+            completeListener = new UserRegistration.OnCompleteListener() {
+                @Override
+                public void onComplete() {
+                    requestPermissions(
+                            Manifest.permission.READ_PHONE_STATE,
+                            com.atik_faysal.diualumni.R.string.permissions_read_phone_state_title,
+                            com.atik_faysal.diualumni.R.string.permissions_read_phone_state_message,
+                            readPhoneStateCompleteListener);
+                }
+            };
+        }
+        completeListener.onComplete();
+    }
 
-     private boolean canReadSmsWithoutPermission() {
-          final GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-          int googlePlayServicesAvailable = apiAvailability.isGooglePlayServicesAvailable(UserRegistration.this);
-          if (googlePlayServicesAvailable == ConnectionResult.SUCCESS) {
-               return true;
-          }
-          return false;
-     }
+    private boolean isGooglePlayServicesAvailable() {
+        final GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int googlePlayServicesAvailable = apiAvailability.isGooglePlayServicesAvailable(UserRegistration.this);
+        return googlePlayServicesAvailable == ConnectionResult.SUCCESS;
+    }
 
-     private void requestPermissions(
-          final String permission,
-          final int rationaleTitleResourceId,
-          final int rationaleMessageResourceId,
-          final UserRegistration.OnCompleteListener listener) {
-          if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-               if (listener != null) {
-                    listener.onComplete();
-               }
-               return;
-          }
+    private boolean canReadSmsWithoutPermission() {
+        final GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int googlePlayServicesAvailable = apiAvailability.isGooglePlayServicesAvailable(UserRegistration.this);
+        if (googlePlayServicesAvailable == ConnectionResult.SUCCESS) {
+            return true;
+        }
+        return false;
+    }
 
-          checkRequestPermissions(permission, rationaleTitleResourceId, rationaleMessageResourceId, listener);
-     }
+    private void requestPermissions(
+            final String permission,
+            final int rationaleTitleResourceId,
+            final int rationaleMessageResourceId,
+            final UserRegistration.OnCompleteListener listener) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            if (listener != null) {
+                listener.onComplete();
+            }
+            return;
+        }
 
-     @TargetApi(23)
-     private void checkRequestPermissions(final String permission, final int rationaleTitleResourceId, final int rationaleMessageResourceId, final UserRegistration.OnCompleteListener listener) {
-          if (checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
-               if (listener != null) {
-                    listener.onComplete();
-               }
-               return;
-          }
+        checkRequestPermissions(permission, rationaleTitleResourceId, rationaleMessageResourceId, listener);
+    }
 
-          final int requestCode = nextPermissionsRequestCode++;
-          permissionsListeners.put(requestCode, listener);
+    @TargetApi(23)
+    private void checkRequestPermissions(final String permission, final int rationaleTitleResourceId, final int rationaleMessageResourceId, final UserRegistration.OnCompleteListener listener) {
+        if (checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
+            if (listener != null) {
+                listener.onComplete();
+            }
+            return;
+        }
 
-          if (shouldShowRequestPermissionRationale(permission)) {
-               new AlertDialog.Builder(this).setTitle(rationaleTitleResourceId).setMessage(rationaleMessageResourceId).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(final DialogInterface dialog, final int which) {
-                         requestPermissions(new String[] { permission }, requestCode);
-                    }
-               }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(final DialogInterface dialog, final int which) {
-                         permissionsListeners.remove(requestCode);
-                    }
-               }).setIcon(android.R.drawable.ic_dialog_alert).show();
-          } else requestPermissions(new String[]{ permission }, requestCode);
+        final int requestCode = nextPermissionsRequestCode++;
+        permissionsListeners.put(requestCode, listener);
 
-     }
+        if (shouldShowRequestPermissionRationale(permission)) {
+            new AlertDialog.Builder(this).setTitle(rationaleTitleResourceId).setMessage(rationaleMessageResourceId).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(final DialogInterface dialog, final int which) {
+                    requestPermissions(new String[] { permission }, requestCode);
+                }
+            }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(final DialogInterface dialog, final int which) {
+                    permissionsListeners.remove(requestCode);
+                }
+            }).setIcon(android.R.drawable.ic_dialog_alert).show();
+        } else requestPermissions(new String[]{ permission }, requestCode);
 
-     @TargetApi(23)
-     @SuppressWarnings("unused")
-     @Override
-     public void onRequestPermissionsResult(final int requestCode, final @NonNull String permissions[], final @NonNull int[] grantResults) {
-          final UserRegistration.OnCompleteListener permissionsListener = permissionsListeners.remove(requestCode);
-          if (permissionsListener != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-               permissionsListener.onComplete();
-          }
-     }
+    }
+
+    @TargetApi(23)
+    @SuppressWarnings("unused")
+    @Override
+    public void onRequestPermissionsResult(final int requestCode, final @NonNull String permissions[], final @NonNull int[] grantResults) {
+        final UserRegistration.OnCompleteListener permissionsListener = permissionsListeners.remove(requestCode);
+        if (permissionsListener != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            permissionsListener.onComplete();
+        }
+    }
 }

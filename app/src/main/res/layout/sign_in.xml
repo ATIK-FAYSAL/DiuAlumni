@@ -46,28 +46,42 @@
                     android:layout_marginRight="45dp"
                     android:background="@drawable/sign_text_style"
                     android:drawableLeft="@drawable/icon_img"
-                    android:gravity="center"
+                    android:gravity="center_vertical"
                     android:hint="Student id"
+                    android:drawablePadding="10dp"
                     android:inputType="textPersonName"
                     android:padding="10dp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textColorHint="@color/white" />
 
-                <EditText
-                    android:id="@+id/txtPass"
+
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="45dp"
-                    android:background="@drawable/sign_text_style"
-                    android:drawableLeft="@drawable/icon_pass"
-                    android:gravity="center"
-                    android:hint="Password"
-                    android:inputType="textPassword"
-                    android:padding="10dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white" />
+                    android:layout_height="wrap_content"
+                    app:passwordToggleEnabled="true"
+                    app:hintTextAppearance="@color/white"
+                    app:hintAnimationEnabled="false"
+                    app:hintEnabled="false"
+                    android:layout_marginTop="10dp">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/txtPass"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginEnd="45dp"
+                        android:background="@drawable/sign_text_style"
+                        android:drawableStart="@drawable/icon_pass"
+                        android:gravity="center_vertical"
+                        android:hint="Password"
+                        android:drawablePadding="10dp"
+                        android:inputType="textPassword"
+                        android:padding="10dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/white" />
+
+
+                </android.support.design.widget.TextInputLayout>
 
                 <TextView
                     android:id="@+id/txtErrMsg"
