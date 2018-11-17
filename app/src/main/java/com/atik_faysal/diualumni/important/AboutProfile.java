@@ -433,7 +433,7 @@ public class AboutProfile extends Fragment implements Methods,View.OnClickListen
             department = root.getString("department");
             String imageName = root.getString("imageName");
 
-            if(msgStatus.equals("enable"))//if user message option is enable then message icon show
+            if(msgStatus.equals("enable")&&sharedPreferencesData.getIsUserLogin())//if user message option is enable then message icon show
                 imgMessage.setVisibility(View.VISIBLE);
             if(!imageName.equals("none"))//if user has image,then it will show
                 Glide.with(this).
