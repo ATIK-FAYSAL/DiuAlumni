@@ -495,7 +495,9 @@ public class JobPortal extends AppCompatActivity implements NavigationView.OnNav
                 break;
 
             case R.id.navChangePass:
-                methods.changePassword();//change password
+                if(sharedPreferencesData.getIsUserLogin())
+                    methods.changePassword();//change password
+                else startActivity(new Intent(JobPortal.this,SignIn.class));
                 break;
 
 //               case R.id.navStopNotification:
